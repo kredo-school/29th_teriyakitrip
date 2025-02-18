@@ -1,0 +1,27 @@
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    display: flex;
+    gap: 10px;
+}
+
+.itinerary-card, .restaurant-card {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+img {
+    width: 100px;
+    height: auto;
+}
+
+button {
+    background-color: #ccc;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
