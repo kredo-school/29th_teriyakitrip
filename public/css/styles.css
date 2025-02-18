@@ -1,0 +1,46 @@
+/* styles.css */
+
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+.review-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+.review-item h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.review-count{
+  font-size: 18px;
+}
+
+.photos {
+  display: flex;
+  gap: 10px;
+}
+
+.photos img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.d-none {
+  display: none !important;
+}
+
