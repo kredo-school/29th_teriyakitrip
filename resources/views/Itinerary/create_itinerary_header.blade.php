@@ -44,32 +44,33 @@
 /
     }
 
-    .swiper-button-prev, .swiper-button-next {
-        color: #e91e63;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 10; /* 矢印を前面に */
-        background: rgba(255, 255, 255, 0.8); /* 背景をつけて見やすく */
-        border-radius: 50%;
-        width: 25px;  /* 幅を小さく */
-        height: 25px; /* 高さを小さく */
-        font-size: 14px; /* アイコンの大きさも調整 */
-        line-height: 25px;
-        border: 1px solid #e91e63; /* 境界線はそのまま */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    /* Swiper の矢印ボタン */
+.swiper-button-prev, .swiper-button-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10; /* ボタンを前面に */
+    background: rgba(255, 255, 255, 0.8); /* 背景をつけて見やすく */
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e91e63;
+    color: #e91e63;
+    cursor: pointer;
+}
 
     /* 左矢印の位置調整 */
     .swiper-button-prev {
-        left: 5px; /* 左端に配置 */
+        left: -10px; /* 左端に配置 */
     }
 
     /* 右矢印の位置調整 */
     .swiper-button-next {
-        right: 5px; /* 右端に配置 */
+        right: -10px; /* 右端に配置 */
     }
 
     .swiper-wrapper {
@@ -83,6 +84,39 @@
         padding: 10px; /* 余白をつける */
     }
 
+    .overview-margin {
+        margin-left: 30px;
+        margin-right: 30px
+    }
+
+
+    .form-item {
+    margin: 18px auto;
+    border-bottom: 1px solid #000;
+    overflow: hidden;
+    
+    }
+
+    label {
+    float: left;
+    width: 20px;
+    margin-right: 10px;
+    text-align: center;
+    }
+
+    input {
+    float: left;
+    width: 89%;
+    padding: 0 0 6px 0;
+    /* background-color: #fff; */
+    color: #000;
+    font: 25px "Helvetica Neue";
+    font-family: poppins;
+    /* font-weight: 200px; */
+    letter-spacing: 1.5px;
+    outline: none;
+    border: none;
+    }
 </style>
 
 <div class="container">
@@ -92,11 +126,17 @@
           {{-- title, edit done btn --}}
           <div class="row align-items-center mt-2">
               <div class="col-auto">
-                  <i class="fa-solid fa-arrow-left fs-2"></i>
+                <a href="#" class="text-dark">
+                    <i class="fa-solid fa-arrow-left fs-2"></i>
+                </a>
+                  
               </div>
-              <div class="col-8" style="display: inline-block; border-bottom: 1px solid black;">
+              <div class="col-8">
                 
-                  <p class="h4 fw-bold">2025 Okinawa Trip</p>
+                  <div class="form-item">
+                        <label for="title"></label>
+                        <input type="text" name="title" id="title" placeholder="2025 Okinawa Trip" required autofocus class="bg-transparent">
+                  </div>
                 
                   
               </div>
@@ -104,7 +144,9 @@
                   <i class="fa-solid fa-lock fs-2"></i>
               </div>
               <div class="col-auto float-end">
-                <i class="fa-solid fa-pencil"></i> Done
+                    <button type="submit" class="border-0 bg-transparent btn-sm">
+                        <i class="fa-solid fa-pencil"></i> Done
+                    </button>
               </div>
           </div>
           {{-- dates, destination, avatar --}}
@@ -134,19 +176,22 @@
           {{-- overview, day --}}
           <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide active-tab ">Overview</div>
-                    <div class="swiper-slide">Jan 17 <br> Day 1</div>
-                    <div class="swiper-slide">Jan 18 <br> Day 2</div>
-                    <div class="swiper-slide">Jan 19 <br> Day 3</div>
-                    <div class="swiper-slide">Jan 20 <br> Day 4</div>
+                    <div class="swiper-slide active-tab overview-margin">Overview</div>
+                    <div class="swiper-slide">Day 1</div>
+                    <div class="swiper-slide">Day 2</div>
+                    <div class="swiper-slide">Day 3</div>
+                    <div class="swiper-slide">Day 4</div>
+                    <div class="swiper-slide"> 
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
                 </div>
         
                 <!-- 左右のナビゲーションボタン -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev ms-2"></div>
+                <div class="swiper-button-next me-2"></div>
                 
           </div>
-        
+                
           {{-- <div class="row align-items-center">
                 <div class="col-12 bg-light border border-1 border-dark" style="height: 50px;">
                     <div class="row">
@@ -156,6 +201,9 @@
                     </div>
                 </div>
           </div> --}}
+
+          {{-- include body here--}}
+          @include('itinerary.create_itinerary_body')
         </div>
     </div>
 </div>
