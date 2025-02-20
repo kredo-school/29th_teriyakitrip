@@ -95,9 +95,7 @@ footer {
     font-size: 1.5rem;
     margin: 16px 0 8px;
 }
-  
-.custom-follow-btn {
-    /* background-color: white;
-    color: #e64a00;
-    border: 3px solid #e64a00; */
+
+footer nav a:hover {
+    text-decoration: underline;
 }
