@@ -2,6 +2,7 @@
 
 @section('content')
 
+<link rel="stylesheet" href="{{ asset('css/view_review.css') }}">
 <div class="container my-5 px-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -10,5 +11,8 @@
         </div>
     </div>
 </div>
+
+<!-- JavaScripts -->
+<script src="{{ asset('js/view_review.js') }}"></script>
 
 @endsection
