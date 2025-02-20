@@ -4,6 +4,7 @@
 
 @section('content')
   {{-- Select tab: Go back to Previous page, Search or Favorite --}}
+<link rel="stylesheet" href="{{ asset('css/itinerary_search.css') }}">
 <div class="container">
     <ul class="nav px-auto text-center fw-bold">
         <li class="nav-item border py-0">
@@ -33,7 +34,7 @@
     </div>
 </div> 
 
-@section('scripts')
+
 <script>
     document.getElementById('search-button').addEventListener('click', function() {
         document.getElementById('search-content').style.display = 'block';
@@ -45,6 +46,4 @@
         document.getElementById('favorite-content').style.display = 'block';
     });
 </script>
-@endsection
-
 @endsection
