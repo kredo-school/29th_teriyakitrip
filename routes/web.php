@@ -11,6 +11,8 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+   
+    
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
         Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
         Route::get('/create', [ItinerariesController::class, 'create'])->name('create');

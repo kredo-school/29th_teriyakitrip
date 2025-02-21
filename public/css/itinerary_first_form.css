@@ -1,0 +1,65 @@
+* {
+    font-family: "Poppins", sans-serif;
+}
+
+.img-md {
+    width: 100%;
+    height: 100%;
+}
+
+.photo-icon {
+    border: 3px solid gray;
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.nav-link p {
+    font-size: 0.8em;
+}
+
+/* back ground color */
+.bg-orange {
+    background-color: #e97911; /* オレンジ色 */
+}
+
+/* text color */
+.text-orange {
+    color: #e97911; /* オレンジ色 */
+}
+
+/* border color */
+.border-orange {
+    border-color: #e97911; /* オレンジ色 */
+}
+
+/* orange button */
+.btn-orange {
+    background-color: #e97911; /* オレンジの背景色 */
+    color: white; /* 白文字 */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.btn-orange:hover {
+    background-color: #e66100; /* 濃いオレンジ色 */
+    border: 1px solid #e66100; /* 濃いオレンジのボーダー */
+}
+
+/* white button with orange border */
+.btn-white-orange {
+    background-color: white; /* 白の背景色 */
+    color: #e97911; /* オレンジのテキスト */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.btn-white-orange:hover {
+    background-color: #e97911; /* オレンジの背景色 */
+    color: white; /* 白文字 */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+}

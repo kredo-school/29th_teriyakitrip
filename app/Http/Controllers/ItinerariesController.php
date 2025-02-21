@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Regions;
 use App\Models\Itineraries;
 use Illuminate\Http\Request;
 
@@ -18,8 +19,11 @@ class ItinerariesController extends Controller
      */
     public function create()
     {
-        return view('itineraries.create');
+        $regions = Regions::with('prefectures')->get();
+
+        return view('itineraries.itinerary_first_form', compact('regions'));
     }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -34,7 +38,7 @@ class ItinerariesController extends Controller
      */
     public function show(Itineraries $itineraries)
     {
-        return view('itineraries.show');
+        //
     }
 
     /**
