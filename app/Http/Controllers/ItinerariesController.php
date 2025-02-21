@@ -22,6 +22,10 @@ class ItinerariesController extends Controller
     public function create()
     {
         //
+        
+    }
+
+    public function addList(){
         return view('itinerary.create_itinerary_header');
     }
 
