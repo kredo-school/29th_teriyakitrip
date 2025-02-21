@@ -1,0 +1,46 @@
+/* タブのデフォルトスタイル */
+.custom-tabs .nav-link {
+    color: black; /* 通常時の文字色 */
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+/* アクティブなタブの文字をオレンジに変更 */
+.custom-tabs .nav-link.active {
+    color: #ff9900 !important;
+    font-weight: bold;
+    border-bottom: 2px solid #ff9900; /* 下線をオレンジに */
+}
+
+/* ホバー時にオレンジにする（オプション） */
+.custom-tabs .nav-link:hover {
+    color: #ff9900;
+}
+
+/* "+ New Itinerary" ボタンのスタイル */
+.btn-new-itinerary {
+    background-color: #ff9900; /* オレンジ色 */
+    color: white;
+    border: 2px solid #ff9900;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ホバー時の色変更 */
+.btn-new-itinerary:hover {
+    background-color: white;
+    color: #ff9900;
+    border: 2px solid #ff9900;
+}
+
+/* タブメニューのデザイン */
+.custom-tabs {
+    margin-bottom: 0;
+}
+
+/* タブとボタンをまとめるエリア */
+.border-bottom {
+    border-bottom: 2px solid #ddd !important; /* タブ下の線 */
+}
