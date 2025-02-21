@@ -1,0 +1,117 @@
+* {
+    font-family: poppins;
+}
+
+.wrapper { 
+    min-width: 500px; 
+}
+
+.icon-sm {
+    font-size: 2rem;
+}
+
+
+.swiper-container {
+    width: 100%;
+    overflow: hidden;
+    /* padding: 10px 0; */
+    background: #fff;
+    position: relative;
+}
+
+.swiper-wrapper {
+    display: flex;
+}
+
+.swiper-slide {
+   
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 0;
+    min-width: 100px; /* スライドの最小幅 */
+}
+
+
+.swiper-slide.active::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #ff4081; /* ピンクのアンダーライン */
+}
+
+
+
+.active-tab {
+    border-bottom: 3px solid #e91e63;
+    color: black;
+}
+
+/* ナビゲーションボタン */
+.swiper-button-prev,
+.swiper-button-next {
+    color: #ff4081; /* 矢印の色 */
+    width: 30px;
+}
+
+.swiper-button-prev {
+    left: 0;
+}
+
+.swiper-button-next {
+    right: 0;
+}
+
+.swiper-wrapper {
+    display: flex;
+}
+
+.swiper-slide {
+    flex: 0 0 auto;
+    width: 120px; /* 幅を広げる */
+    text-align: center; /* テキストを中央揃え */
+    padding: 10px; /* 余白をつける */
+    
+}
+
+.overview-margin {
+    margin-left: 45px;
+    margin-right: 45px
+}
+
+.swiper-button-prev{
+    margin-right: 0;
+}
+
+.form-item {
+    margin: 18px auto;
+    border-bottom: 1px solid #000;
+    overflow: hidden;
+    width: auto;
+}
+
+.edit-title {
+    float: left;
+    width: 20px;
+    margin-right: 10px;
+    text-align: center;
+} 
+
+.itinerary-header {
+    float: left;
+    width: 89%;
+    padding: 0 0 6px 0;
+    background-color: #fff;
+    color: #000;
+    font: 25px "Helvetica Neue";
+    font-family: poppins;
+    letter-spacing: 1.5px;
+    outline: none;
+    border: none;
+}
+
+main {
+    margin: 10px auto;
+}
