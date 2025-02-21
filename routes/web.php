@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItinerariesController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ItineraryController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -19,4 +21,8 @@ Route::group(['middleware' => 'auth'], function() {
         // Route::get('/{user_id}/edit', [ItinerariesController::class, 'edit'])->name('edit');
     });
 });
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/my-itinerary', [ItineraryController::class, 'index'])->name('itinerary.index');
 
