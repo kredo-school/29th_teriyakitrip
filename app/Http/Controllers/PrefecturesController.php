@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Itineraries;
+use App\Models\Prefectures;
 use Illuminate\Http\Request;
 
-class ItinerariesController extends Controller
+class PrefecturesController extends Controller
 {
-    private $itinerary;
-
-    public function __construct(Itineraries $itinerary) {
-        $this->itinerary = $itinerary;
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
     }
 
     /**
@@ -18,7 +20,7 @@ class ItinerariesController extends Controller
      */
     public function create()
     {
-        return view('itineraries.create');
+        //
     }
 
     /**
@@ -32,15 +34,15 @@ class ItinerariesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Itineraries $itineraries)
+    public function show(Prefectures $prefectures)
     {
-        return view('itineraries.show');
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Itineraries $itineraries)
+    public function edit(Prefectures $prefectures)
     {
         //
     }
@@ -48,7 +50,7 @@ class ItinerariesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Itineraries $itineraries)
+    public function update(Request $request, Prefectures $prefectures)
     {
         //
     }
@@ -56,20 +58,8 @@ class ItinerariesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Itineraries $itineraries)
+    public function destroy(Prefectures $prefectures)
     {
         //
     }
-    public function index()
-    {
-        //
-    }
-
-    public function addList(){
-        return view('itinerary.create_itinerary_header');
-    }
-
-    
 }
-
-
