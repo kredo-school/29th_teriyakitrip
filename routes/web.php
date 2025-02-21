@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\RestaurantReviewController;
@@ -23,3 +24,10 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/itineraries/create', [ItinerariesController::class, 'addList'])->name('itinerary.create_itinerary_header');
+    
+});
+Route::get('/tabs', function () {
+    return view('tabs');
+});

@@ -60,4 +60,16 @@ class ItinerariesController extends Controller
     {
         //
     }
+    public function index()
+    {
+        //
+    }
+
+    public function addList(){
+        return view('itinerary.create_itinerary_header');
+    }
+
+    
 }
+
+
