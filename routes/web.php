@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItinerariesController;
+use App\Http\Controllers\RestaurantReviewController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -20,3 +21,5 @@ Route::group(['middleware' => 'auth'], function() {
     });
 });
 
+
+Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');
