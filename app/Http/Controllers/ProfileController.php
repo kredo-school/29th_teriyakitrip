@@ -19,12 +19,12 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'username' => 'required|string|max:255',
+            'user_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $user->username = $request->username;
+        $user->user_name = $request->user_name;
         $user->email = $request->email;
 
         if ($request->hasFile('avatar')) {
