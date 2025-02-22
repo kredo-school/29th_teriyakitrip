@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\ItineraryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ItineraryController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\RestaurantReviewController;
 
@@ -25,9 +26,7 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
-
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
         Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
@@ -37,6 +36,9 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
         // Route::get('/{user_id}/edit', [ItinerariesController::class, 'edit'])->name('edit');
     });
 });
+
+Route::get('/itineraries/create', [ItineraryController::class, 'create'])->name('create_itinerary');
+Route::get('/reviews/create', [ReviewController::class, 'create'])->name('create_review');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

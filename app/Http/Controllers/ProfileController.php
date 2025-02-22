@@ -19,13 +19,15 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'username' => 'required|string|max:255',
+           'user_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'introduction' => 'nullable|string',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $user->username = $request->username;
+        $user->user_name = $request->user_name;
         $user->email = $request->email;
+        $user->introduction = $request->introduction;
 
         if ($request->hasFile('avatar')) {
             // 古いアバター画像を削除
@@ -42,6 +44,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Updated Profile');
-    }
+        return redirect()->back()->with('success', 'Profile updated successfully.');
+}
 }

@@ -9,27 +9,27 @@
 
 
 .custom-btn {
-  border: 2px solid #E97911;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin-left: 10px;
-  color: #E97911;
-  transition: background-color 0.3s, color 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  height: 60px;
-  text-align: center;
-  line-height: 1.2;
-  text-decoration: none;
+  border: 2px solid #E97911 !important;
+  border-radius: 10px !important;
+  padding: 5px 10px !important;
+  margin-left: 10px !important;
+  color: #E97911 !important;
+  transition: background-color 0.3s, color 0.3s !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100px !important;
+  height: 60px !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
 }
 
 .custom-btn:hover {
-  background-color: #E97911;
-  color: white;
-  text-decoration: none;  /* ホバー時の下線を削除 */
+  background-color: #E97911 !important;
+  color: white !important;
+  text-decoration: none !important;  /* ホバー時の下線を削除 */
 }
 
 /* Register Page 各フィールドをタイトルの先頭に合わせる */
