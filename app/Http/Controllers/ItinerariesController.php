@@ -66,7 +66,7 @@ class ItinerariesController extends Controller
     }
 
     public function addList(){
-        return view('itinerary.create_itinerary_header');
+        return view('itineraries.create_itinerary_header');
     }
 
     

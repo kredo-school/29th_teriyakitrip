@@ -24,10 +24,11 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/itineraries/create', [ItinerariesController::class, 'addList'])->name('itinerary.create_itinerary_header');
     
 });
-Route::get('/tabs', function () {
-    return view('tabs');
-});
+// Route::get('/tabs', function () {
+//     return view('tabs');
+// });
