@@ -2,6 +2,12 @@
 
 @section('title', 'Hokkaido Overview')
 
+
+{{-- ここでCSSを読み込む（他の人には影響なし） --}}
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/regions-style.css') }}">
+@endpush
+
 @section('content')
 <div class="container mt-4">
     <h1 class="page-title"></h1>
@@ -26,7 +32,7 @@
         @endforeach
     </div>
     <div class="text-center mt-3">
-        <a href="{{ url('/itinerary') }}" class="btn-more">MORE</a>
+        <a href="{{ url('/regions/itinerary') }}" class="btn-more">MORE</a>
     </div>
     
 
@@ -60,7 +66,7 @@
         @endforeach
     </div>
     <div class="text-center mt-3">
-        <a href="{{ url('/restaurant-review') }}" class="btn-more">MORE</a>
+        <a href="{{ url('/regions/restaurant-review') }}" class="btn-more">MORE</a>
     </div>
 </div>
 

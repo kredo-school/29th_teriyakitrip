@@ -2,6 +2,12 @@
 
 @section('title', 'Itinerary')
 
+{{-- ここでCSSを読み込む（他の人には影響なし） --}}
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/regions-style.css') }}">
+@endpush
+
+
 @section('content')
 <div class="container mt-4">
     <h2 class="fw-bold">Itinerary</h2>
