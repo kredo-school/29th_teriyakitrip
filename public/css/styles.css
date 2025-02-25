@@ -40,34 +40,11 @@ body {
 .banner-text p{
     color: black;
 }
-
-.region-list {
-    
-}
-
-.toppage {
-    /* max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    text-align: center; */
-  }
-  
   .itinerary-wrapper {
     display: flex;
     justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap; /* 画面が狭いときに折り返す */
-  }
-  
-  .card {
-    /* flex: 1;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    max-width: 20%;
-    min-width: 280px;
-    margin-bottom: 20px; */
   }
   
   .itinerary-card img {
@@ -95,4 +72,3 @@ body {
 footer nav a:hover {
     text-decoration: underline;
 } */
-
