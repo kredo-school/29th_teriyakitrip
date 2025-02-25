@@ -27,11 +27,15 @@ Route::put('/profile/update', [ProfileController::class, 'update'])->name('profi
 
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
 
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+// Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
         Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
         Route::get('/create', [ItinerariesController::class, 'create'])->name('create');
+        Route::get('/{id}/edit-destination', [ItinerariesController::class, 'editDestination'])->name('editDestination');
+        Route::put('/{id}/update/', [ItinerariesController::class, 'updateDestination'])->name('itinerary.updateDestination');
+
         // Route::post('/store', [ItinerariesController::class, 'store'])->name('store');
         // Route::delete('/{user_id}/destroy', [ItinerariesController::class, 'destroy'])->name('destroy');
         // Route::get('/{user_id}/edit', [ItinerariesController::class, 'edit'])->name('edit');
