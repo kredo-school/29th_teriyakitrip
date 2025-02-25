@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{{ asset('css/itinerary_header_styles.css') }}">
 <div class="container">
     <div class="row y-0">
-        <div class="col-6 bg-warning w-50 wrapper">
+        <div class="col-6 w-50 wrapper">
 
         {{-- title, edit done btn --}}
         <div class="row align-items-center mt-2">

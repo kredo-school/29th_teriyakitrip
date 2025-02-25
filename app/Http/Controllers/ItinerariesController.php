@@ -43,6 +43,7 @@ class ItinerariesController extends Controller
     public function edit(Itineraries $itineraries)
     {
         //
+        return view('itineraries.edit_itinerary');
     }
 
     /**
