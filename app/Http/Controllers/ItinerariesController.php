@@ -22,7 +22,7 @@ class ItinerariesController extends Controller
         // Get regions and load prefectures by region
         $regions = Regions::with('prefectures')->get();
 
-        return view('itineraries.create', compact('regions'));
+             return view('itineraries.itinerary_first_form', compact('regions'));
     }
 
     /**

@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Regions extends Model
 {
     use HasFactory;
-
+    
+    protected $table = 'regions'; // specify the table name if it's different from the default
     protected $fillable = ['name'];
 
     /**
