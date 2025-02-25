@@ -75,7 +75,6 @@
   display: block;
   padding: 10px 15px;
   color: #333;
-  text-decoration: none;
   transition: background-color 0.3s;
 }
 
@@ -119,5 +118,64 @@
 .user-info-container:hover {
   background-color: #E97911;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  color: white;
   transform: scale(1.05) translateY(-2px);
 }
+
+.nav-item .avatar-image {
+    border: 3px solid transparent !important;
+    transition: border-color 0.3s ease !important;
+}
+
+.nav-item .avatar-image:hover {
+    border-color: #E97911 !important;
+}
+
+.slightly-right-aligned {
+    padding-left: 20px; /* この値は調整可能です */
+}
+
+.tabs-container {
+      border: 1px solid #D3D3D3;  /* 薄いグレーの枠線 */
+      border-radius: 10px;  /* 角の丸み */
+      padding: 10px;  /* 内側の余白 */
+  }
+
+  .nav-tabs-mypage {
+      border-bottom: none;
+      justify-content: center;
+  }
+
+  .nav-tabs-mypage .nav-link-mypage {
+      color: black;
+      border: none;
+      background-color: transparent;
+      font-weight: 500;
+      padding: 10px 15px;
+      transition: all 0.3s ease;
+  }
+
+  .nav-tabs-mypage .nav-link-mypage:hover,
+  .nav-tabs-mypage .nav-link-mypage:focus {
+      background-color: #e97911;
+      color: white;
+      border-radius: 5px;
+  }
+
+  .nav-tabs-mypage .nav-link-mypage.active {
+      background-color: transparent;
+      border-bottom: 3px solid #e97911;
+      color: black;
+  }
+
+  .nav-tabs-mypage .nav-link-mypage.active:hover {
+      background-color: #e97911;
+      color: white;
+  }
+
+  /* More buttun */
+  .btn-outline-secondary:hover {
+      color: white !important;
+      background-color: #000000 !important;
+    }
+                      

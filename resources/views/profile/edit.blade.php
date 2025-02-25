@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Edit Profile')
 
 @section('content')
 <div class="container">
@@ -20,9 +21,9 @@
                         <div class="mb-3 text-center">
                             <div class="avatar-wrapper">
                                 @if($user->avatar)
-                                    <img src="{{ Storage::url($user->avatar) }}" alt="Current Avatar" class="rounded-circle img-thumbnail" width="100">
+                                    <img src="{{ Storage::url($user->avatar) }}" alt="Current Avatar" class="rounded-circle avatar-image" width="80" height="80">
                                 @else
-                                    <img src="{{ asset('images/default-avatar.jpeg') }}" alt="Default Avatar" class="rounded-circle img-thumbnail" width="100">
+                                    <img src="{{ asset('images/default-avatar.jpeg') }}" alt="Default Avatar" class="rounded-circle avatar-image" width="80" height="80">
                                 @endif
                                 <div class="camera-icon">
                                     <i class="fas fa-camera"></i>

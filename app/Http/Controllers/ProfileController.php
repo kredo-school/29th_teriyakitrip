@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+
+    public function show(User $user)
+    {
+        $itineraries = $user->itineraries; // ユーザーの旅程を取得
+        $restaurantReviews = $user->restaurantReviews; // ユーザーのレストランレビューを取得
+
+        return view('profile.show', compact('user', 'itineraries', 'restaurantReviews'));
+    }
     public function edit()
     {
         $user = Auth::user();
