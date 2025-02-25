@@ -48,6 +48,9 @@ Route::get('/tabs', function () {
     return view('tabs');
 });
 
+Route::get('/restaurant-reviews/create', [RestaurantReviewController::class, 'create'])->name('restaurant-reviews.create');
+Route::post('/restaurant-reviews', [RestaurantReviewController::class, 'store'])->name('restaurant-reviews.store');
+
 Route::get('/regions/overview', function () {
     return view('Regions.home', [
         'allItineraries' => [
