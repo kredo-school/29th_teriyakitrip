@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Regions;
 use App\Models\Itineraries;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,10 @@ class ItinerariesController extends Controller
      */
     public function create()
     {
-        return view('itineraries.create');
+        // Get regions and load prefectures by region
+        $regions = Regions::with('prefectures')->get();
+
+        return view('itineraries.create', compact('regions'));
     }
 
     /**
@@ -45,12 +49,30 @@ class ItinerariesController extends Controller
         //
     }
 
+    public function editDestination($id){
+        $itinerary = Itineraries::find($id);
+        $regions = Regions::with('prefectures')->get();
+        
+        // Get selected prefectures from itinerary
+        $selectedPrefectures = $itinerary ? $itinerary->prefectures()->pluck('prefectures.id')->toArray() : [];
+    
+        return view('itineraries.edit_itinerary_destination', compact('itinerary', 'regions', 'selectedPrefectures'));
+    }
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Itineraries $itineraries)
     {
         //
+    }
+
+    public function updateDestination(Request $request, $id) {
+        $itinerary = Itineraries::findOrFail($id);
+        
+        // Update itinerary's destinations
+        $itinerary->prefectures()->sync($request->input('prefectures', []));
+    
+        return redirect()->route('itinerary.create_itinerary_header')->with('success', 'Destination updated successfully.');
     }
 
     /**

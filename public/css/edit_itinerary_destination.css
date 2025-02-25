@@ -1,0 +1,53 @@
+.container {
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.region-title {
+    font-weight: bold;
+    text-align: center;
+    height: 40px;
+}
+
+.form-check-input {
+    width: 18px;
+    height: 18px;
+}
+
+/* back ground color */
+.bg-orange {
+    background-color: #e97911; /* オレンジ色 */
+}
+
+/* text color */
+.text-orange {
+    color: #e97911; /* オレンジ色 */
+}
+
+/* border color */
+.border-orange {
+    border-color: #e97911; /* オレンジ色 */
+}
+
+/* white button with orange border */
+.btn-white-orange {
+    background-color: white; /* 白の背景色 */
+    color: #e97911; /* オレンジのテキスト */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.btn-white-orange:hover {
+    background-color: #e97911; /* オレンジの背景色 */
+    color: white; /* 白文字 */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+}
+
+.region-options {
+    width: 120px;
+ } 
