@@ -6,21 +6,22 @@
 
 /* アクティブなタブの文字をオレンジに変更 */
 .custom-tabs .nav-link.active {
-    color: #ff9900 !important;
+    background-color: white; /* 白の背景色 */
+    color: #e97911 !important;
     font-weight: bold;
-    border-bottom: 2px solid #ff9900; /* 下線をオレンジに */
+    border-bottom: 2px solid #e97911; /* 下線をオレンジに */
 }
 
 /* ホバー時にオレンジにする（オプション） */
 .custom-tabs .nav-link:hover {
-    color: #ff9900;
+    color: #e97911;
 }
 
 /* "+ New Itinerary" ボタンのスタイル */
 .btn-new-itinerary {
-    background-color: #ff9900; /* オレンジ色 */
-    color: white;
-    border: 2px solid #ff9900;
+    background-color: white; /* 白の背景色 */
+    color: #e97911; /* オレンジのテキスト */
+    border: 1px solid #e97911; /* オレンジのボーダー */
     padding: 8px 16px;
     border-radius: 5px;
     font-size: 14px;
@@ -30,9 +31,9 @@
 
 /* ホバー時の色変更 */
 .btn-new-itinerary:hover {
-    background-color: white;
-    color: #ff9900;
-    border: 2px solid #ff9900;
+    background-color: #e97911; /* オレンジの背景色 */
+    color: white; /* 白文字 */
+    border: 1px solid #e97911; /* オレンジのボーダー */
 }
 
 /* タブメニューのデザイン */
@@ -44,3 +45,130 @@
 .border-bottom {
     border-bottom: 2px solid #ddd !important; /* タブ下の線 */
 }
+
+/* 画像のdivをrelativeにすることで、ボタンを画像の上に配置 */
+.position-relative {
+    position: relative;
+}
+
+/* 画像のdivをrelativeにすることで、ボタンを画像の上に配置 */
+.position-relative {
+    position: relative;
+}
+
+/* ユーザーアイコン */
+.shared-user-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #fff; 
+    object-fit: cover;
+    /* もしアイコンがボタンより前に出てしまう場合は下記を追加
+       position: relative;
+       z-index: 1;
+    */
+}
+
+/* 3点ボタンのスタイル */
+.btn-more-options {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    z-index: 10;
+}
+
+.btn-more-options:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* ドロップダウンボタンの矢印を非表示にする */
+.btn-more-options.dropdown-toggle::after {
+    content: none !important;
+}
+
+.save-changes-btn {
+    background-color: white; /* 白の背景色 */
+    color: #e97911; /* オレンジのテキスト */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+}
+
+.save-changes-btn:hover {
+    background-color: #e97911; /* オレンジの背景色 */
+    color: white; /* 白文字 */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+}
+
+.custom-close-btn {
+    background-color: white; /* 白の背景色 */
+    color: #e97911; /* オレンジのテキスト */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+}
+
+.custom-close-btn:hover {
+    background-color: #e97911; /* オレンジの背景色 */
+    color: white; /* 白文字 */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+}
+
+/* Cancelボタンのカスタムスタイル */
+.custom-cancel-btn {
+    background-color: white !important; /* 白の背景色 */
+    color: #e97911; /* オレンジのテキスト */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+}
+.custom-cancel-btn:hover {
+    background-color: #e97911 !important; /* オレンジの背景色 */
+    color: white !important; /* 白文字 */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+}
+
+/* Send Inviteボタンのカスタムスタイル */
+.custom-sendinvite-btn {
+    background-color: white !important; /* 白の背景色 */
+    color: #e97911 !important; /* オレンジのテキスト */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+}
+.custom-sendinvite-btn:hover {
+    background-color: #e97911 !important; /* オレンジの背景色 */
+    color: white !important; /* 白文字 */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+}
+
+/* Yes ボタンのカスタムスタイル */
+.custom-yes-btn {
+    background-color: white !important; /* 白の背景色 */
+    color: #e97911 !important; /* オレンジのテキスト */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+}
+.custom-yes-btn:hover {
+    background-color: #e97911 !important; /* オレンジの背景色 */
+    color: white !important; /* 白文字 */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+}
+
+/* Cancel ボタンのカスタムスタイル */
+.custom-cancel-btn {
+    background-color: white !important; /* 白の背景色 */
+    color: #e97911 !important; /* オレンジのテキスト */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+}
+.custom-cancel-btn:hover {
+    background-color: #e97911 !important; /* オレンジの背景色 */
+    color: white !important; /* 白文字 */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+}
+
+
+
+
+
+
