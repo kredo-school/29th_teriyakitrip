@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'username',
+        'user_name',
         'email',
         'password',
         'avatar',
@@ -57,10 +57,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function reviews()
-    {
-        return $this->hasMany(RestaurantReview::class, 'user_id');
-    }
-
 }

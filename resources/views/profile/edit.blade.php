@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Edit Profile')
 
 @section('content')
 <div class="container">
@@ -20,23 +21,23 @@
                         <div class="mb-3 text-center">
                             <div class="avatar-wrapper">
                                 @if($user->avatar)
-                                    <img src="{{ Storage::url($user->avatar) }}" alt="Current Avatar" class="rounded-circle img-thumbnail" width="100">
+                                    <img src="{{ Storage::url($user->avatar) }}" alt="Current Avatar" class="rounded-circle avatar-image" width="80" height="80">
                                 @else
-                                    <img src="{{ asset('images/default-avatar.jpeg') }}" alt="Default Avatar" class="rounded-circle img-thumbnail" width="100">
+                                    <img src="{{ asset('images/default-avatar.jpeg') }}" alt="Default Avatar" class="rounded-circle avatar-image" width="80" height="80">
                                 @endif
                                 <div class="camera-icon">
                                     <i class="fas fa-camera"></i>
                                 </div>
                             </div>
-                            <h4 style="margin-top: 1rem;">{{ $user->username }}</h4>
+                            <h4 style="margin-top: 1rem;">{{ $user->user_name }}</h4>
                         </div><br>
 
                         <!-- Username -->
                         <div class="mb-3">
-                            <label for="username" class="form-label">{{ __('Username') }}</label>
-                            <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username', $user->username) }}" required autocomplete="username" autofocus>
+                            <label for="user_name" class="form-label">{{ __('USERNAME') }}</label>
+                            <input id="user_name" type="text" class="form-control @error('user_name') is-invalid @enderror" name="user_name" value="{{ old('user_name', $user->user_name) }}" required autocomplete="user_name" autofocus>
 
-                            @error('username')
+                            @error('user_name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -46,7 +47,7 @@
                         <!-- Email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">{{ __('Email') }}<small class="text-danger">   (can not be changed)</small></label>
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}" required autocomplete="email" disabled>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}" required autocomplete="email" readonly>
                             
 
                             @error('email')
@@ -94,11 +95,11 @@
 
                         <!-- Buttons -->
                         <div class="mb-0 d-flex justify-content-center">
-                            <button type="submit" class="btn btn-outline-warning me-2">
+                            <button type="submit" class="btn custom-btn me-2">
                                 {{ __('Save') }}
                             </button>
                         
-                            <button type="button" class="btn btn-outline-warning" onclick="window.location.href='{{ url()->previous() }}'">
+                            <button type="button" class="btn custom-btn" onclick="window.location.href='{{ url()->previous() }}'">
                                 {{ __('Cancel') }}
                             </button>
                         </div>
