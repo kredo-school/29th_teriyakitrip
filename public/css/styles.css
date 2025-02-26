@@ -5,7 +5,7 @@ footer {
     padding: 20px;
 }
 
-body {
+* {
     font-family: 'Poppins', sans-serif;
 }
 
@@ -15,7 +15,7 @@ body {
     background-position: center;
     position: relative;
     width: 100%;
-    height: 670px;
+    height: 500px;
 }
 
 .banner-text{
@@ -41,58 +41,68 @@ body {
     color: black;
 }
 
-.region-list {
-    
+.region-list-width {
+    max-width: 1500px !important;
+  }
+
+.region-1 {
+    color: #8a85e0;
 }
 
-.toppage {
-    /* max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    text-align: center; */
-  }
-  
-  .itinerary-wrapper {
+.region-2 {
+    color: #47a1f1;
+}
+
+.region-3 {
+    color: #00ac30;
+}
+
+.region-4 {
+    color: #87ce02;
+}
+
+.region-5 {
+    color: #fac100;
+}
+
+.region-6 {
+    color: #ff9300;
+}
+
+.region-7 {
+    color: #ff95a2;
+}
+
+.region-8 {
+    color: #ff55f4;
+}
+
+.region-9 {
+    color: #ff555a;
+}
+
+.region-10 {
+    color: #ff555a;
+}
+
+.itinerary-wrapper {
     display: flex;
     justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap; /* 画面が狭いときに折り返す */
-  }
-  
-  .card {
-    /* flex: 1;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    max-width: 20%;
-    min-width: 280px;
-    margin-bottom: 20px; */
-  }
-  
-  .itinerary-card img {
+}
+
+.itinerary-card img {
     width: 100%;
     height: 300px;
     object-fit: cover;
-  }
+}
   
-  .itinerary-card h3 {
+.itinerary-card h3 {
     font-size: 1.5rem;
     margin: 16px 0 8px;
-  }
-  
-  .itinerary-card p {
-    color: #666;
-    padding: 0 50px 16px;
-  }
-  
-/* footer nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
 }
 
 footer nav a:hover {
     text-decoration: underline;
-} */
-
+}
