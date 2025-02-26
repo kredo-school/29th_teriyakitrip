@@ -19,11 +19,11 @@ class ItinerariesController extends Controller
      */
     public function create()
     {
-        // Get regions and load prefectures by region
         $regions = Regions::with('prefectures')->get();
 
-             return view('itineraries.itinerary_first_form', compact('regions'));
+        return view('itineraries.itinerary_first_form', compact('regions'));
     }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +38,7 @@ class ItinerariesController extends Controller
      */
     public function show(Itineraries $itineraries)
     {
-        return view('itineraries.show');
+        //
     }
 
     /**
@@ -88,7 +88,7 @@ class ItinerariesController extends Controller
     }
 
     public function addList(){
-        return view('itinerary.create_itinerary_header');
+        return view('itineraries.create_itinerary_header');
     }
 
     
