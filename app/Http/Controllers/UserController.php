@@ -7,6 +7,8 @@ use App\Models\Itineraries;
 use App\Models\RestaurantReview;
 use Illuminate\Http\Request;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; // NotFoundHttpException をインポート
+
 class UserController extends Controller
 {
     /**
@@ -19,10 +21,12 @@ class UserController extends Controller
     public function show(Request $request, $id)
     {
         $user = User::findOrFail($id);
+
         $itineraries = Itineraries::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->take(3)
             ->get();
+
         $restaurantReviews = RestaurantReview::where('user_id', $user->id)
             ->orderBy('likes', 'desc')
             ->get();

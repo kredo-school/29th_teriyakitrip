@@ -44,12 +44,19 @@
                             <button class="nav-link-mypage fs-2" id="restaurant-reviews-tab" data-bs-toggle="tab" data-bs-target="#restaurant-reviews" type="button" role="tab" aria-controls="restaurant-reviews" aria-selected="false">Restaurant Reviews</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage fs-2" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers" type="button" role="tab" aria-controls="followers" aria-selected="false">10 Followers</button>
+                            <button class="nav-link-mypage fs-2" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers" type="button" role="tab" aria-controls="followers" aria-selected="false">
+                                {{-- {{ $follower._count }} --}}
+                                Follower
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage fs-2" id="following-tab" data-bs-toggle="tab" data-bs-target="#following" type="button" role="tab" aria-controls="following" aria-selected="false">56 Following</button>
+                            <button class="nav-link-mypage fs-2" id="followed-tab" data-bs-toggle="tab" data-bs-target="#followed" type="button" role="tab" aria-controls="followed" aria-selected="false">
+                                {{-- {{ $follow_count }} --}}
+                                Following
+                            </button>
                         </li>
-                    </ul>
+                        
+                        </ul>
                 </div>
             </div>
 

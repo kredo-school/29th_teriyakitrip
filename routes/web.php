@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\RestaurantReviewController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -50,3 +51,19 @@ Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile
 
 Route::get('/', [ItinerariesController::class, 'index'])->name('mypage.itinerary.show');
 Route::post('/itineraries', [ItinerariesController::class, 'store'])->name('store_itinerary');
+
+//プロフィール閲覧で使用するユーザー情報の取得
+Route::get('/profile/{id}',[ProfileController::class,'get_user']);
+
+//フォロー状態の確認
+Route::get('/follow/status/{id}',[FollowController::class,'check_following']);
+
+//フォロー付与
+Route::post('/follow/add',[FollowController::class,'following']);
+
+//フォロー解除
+Route::post('/follow/remove',[FollowController::class,'unfollowing']);
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/show','FollowsController@show');
+    });

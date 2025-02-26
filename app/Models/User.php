@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -69,4 +71,37 @@ class User extends Authenticatable
     {
         return $this->hasMany(RestaurantReview::class);
     }
+
+    //フォローしているユーザー
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follows','following', 'followed');
+    }
+
+    //フォローされているユーザー
+    public function followed()
+    {
+        return $this->belongsToMany(User::class, 'follows','followed','following');   
+    }
+
+    public function follow($user_id)
+    {
+        return $this->follows()->attach($user_id);
+    }
+
+    public function unfollow($user_id)
+    {
+        return $this->follows()->detach($user_id);
+    }
+
+    public function isFollowing($user_id)
+    {
+        return (boolean) $this->follows()->where('followed', $user_id)->exists();
+    }
+
+    public function isFollowed($user_id)
+    {
+        return (boolean) $this->followers()->where('following', $user_id)->exists();
+    }
+
 }

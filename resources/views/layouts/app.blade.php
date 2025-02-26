@@ -160,7 +160,7 @@
                                         <div class="modal-body">
                                             <div class="card border-0" style="background-color: #f0f0f0;">
                                                 <div class="card-body">
-                                                    <a href="{{ route('profile.show', Auth::user()) }}" class="text-decoration-none text-reset">
+                                                    <a href="{{ route('profile.show', Auth::user()) }}" class="text-reset">
                                                         <div class="user-info-container d-flex align-items-center">
                                                             <div class="me-3">
                                                                 <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}" 
