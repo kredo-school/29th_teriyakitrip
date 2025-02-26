@@ -47,10 +47,7 @@ Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 
 Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');
 
-// Route::middleware(['auth'])->group(function () {
-    
-    
-});
+
 Route::get('/tabs', function () {
     return view('tabs');
 });
