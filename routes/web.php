@@ -7,6 +7,7 @@ use App\Http\Controllers\ItineraryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\RestaurantReviewController;
+use App\Http\Controllers\RestaurantSearchController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -41,6 +42,9 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');
+
+Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])->name('restaurants.search');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/itineraries/create', [ItinerariesController::class, 'addList'])->name('itinerary.create_itinerary_header');
     

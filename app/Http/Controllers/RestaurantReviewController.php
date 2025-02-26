@@ -36,7 +36,7 @@ class RestaurantReviewController extends Controller
      */
     public function show()
     {
-        // ダミーデータ
+        // dummy data
         $restaurant = (object)[
             'name' => 'Sample Restaurant',
             'reviews' => [
