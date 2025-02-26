@@ -57,16 +57,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    // Itineraries リレーション
-    public function itineraries()
-    {
-        return $this->hasMany(Itineraries::class);
-    }
-
-    // RestaurantReviews リレーション
-    public function restaurantReviews()
-    {
-        return $this->hasMany(RestaurantReview::class);
-    }
 }
