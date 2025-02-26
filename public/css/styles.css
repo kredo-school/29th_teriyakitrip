@@ -85,6 +85,13 @@ footer {
     color: #ff555a;
 }
 
+.itinerary-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap; /* 画面が狭いときに折り返す */
+}
+
 .itinerary-card img {
     width: 100%;
     height: 300px;

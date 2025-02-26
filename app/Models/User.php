@@ -105,3 +105,9 @@ class User extends Authenticatable
     }
 
 }
+    public function reviews()
+    {
+        return $this->hasMany(RestaurantReview::class, 'user_id');
+    }
+
+}

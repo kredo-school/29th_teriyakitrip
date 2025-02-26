@@ -1,0 +1,98 @@
+
+
+.rating {
+  display: flex;
+  gap: 10px;
+}
+
+.label-rate{
+  font-size: 16px;
+}
+
+.rating-label:hover i {
+  color: #E97911; /* オレンジ */
+}
+
+.rating-label i {
+  font-size: 24px;
+  color: #E97911; /* デフォルトの色 */
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.rating-label i.selected {
+  color: #E97911; /* オレンジ色 */
+}
+
+.img-fluid {
+  max-height: 400px; /* 最大高さを 400px に制限 */
+  width: auto; /* 幅は自動調整 */
+  height: auto; /* 高さも自動調整 */
+  object-fit: contain; /* 画像全体を表示（カットなし） */
+  display: block; /* 画像の配置を適切にする */
+  margin: auto; /* 画像を中央寄せ */
+  max-width: 100%; /* 親要素の幅を超えない */
+}
+
+.btn-delete, .btn-submit, .btn-cancel{
+  background-color: white;
+  color:  #E97911;
+  border: 2px solid #e97911; 
+}
+
+.btn-delete:hover, .btn-submit:hover, .btn-cancel:hover{
+  background-color: #e97911; /* オレンジの背景色 */
+  color: white; /* 白文字 */
+  border: 2px solid #e97911; /* オレンジのボーダー */
+}
+
+.btn-delete:active, .btn-submit:active, .btn-cancel:active{
+  background-color: #e97911 !important; /* オレンジの背景色 */
+  color: white !important; /* 白文字 */
+  border: 2px solid #e97911 !important; /* オレンジのボーダー */
+}
+
+.restaurant-header {
+  margin-bottom: 20px;
+}
+
+.restaurant-header h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.restaurant-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 画像を枠内に収める */
+  border-radius: 10px;
+}
+
+.restaurant-itineraries {
+  margin-top: 20px;
+}
+
+.restaurant-itineraries {
+  margin-top: 20px;
+}
+
+.itinerary-card{
+  height: auto;
+  border-radius: 8px;
+}
+.itinerary-card img {
+  object-fit: cover; 
+  height: 150px;
+  border-radius: 8px 8px 0 0;
+}
+
+.itinerary-card p {
+  font-size: 14px;
+  font-weight: bold;
+  overflow-wrap: break-word; /* 長い単語を折り返す */
+  word-break: break-word; /* 必要に応じて改行 */
+  width: 100%; /* w-50 の幅に収める */
+  text-align: center; /* 中央揃え */
+  white-space: normal; /* 自然に改行 */
+  display: block;
+}
