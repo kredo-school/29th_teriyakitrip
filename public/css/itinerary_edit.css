@@ -1,0 +1,73 @@
+/* .icon-time {
+  font-size: 18px;
+  margin-top: 10px;
+  margin-left: 5px;
+} */
+
+.day-box {
+  background-color: #E6722A; /* 好きな色 */
+  border-radius: 8px;
+  font-weight: bold;
+  display: inline-block;
+  white-space: nowrap; /* テキストが折り返されないようにする */
+}
+
+.icon-time {
+  font-size: 18px; /* アイコンのサイズ調整 */
+}
+
+.edit-time {
+  font-size: 18px;
+  line-height: 1;  /* アイコンと高さを揃える */
+  margin-left: 4px; /* アイコンと時刻の間に少しだけ余白を入れる */
+}
+
+.itinerary-card {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  width: 100%; /* 横幅を親要素いっぱいにする */
+  max-width: 100%; /* はみ出し防止 */
+  padding: 8px;
+}
+
+.itinerary-card img {
+  width: 70px; /* 画像サイズを調整 */
+  height: 70px;
+  object-fit: cover; /* 画像のアスペクト比を維持 */
+  border-radius: 8px;
+}
+
+.itinerary-card .card-body {
+  padding: 4px 8px; /* 余白を減らす */
+  flex-grow: 1;
+  min-width: 0; /* テキストの折り返しを許可 */
+}
+
+.itinerary-card .card-title {
+  font-size: 14px; /* タイトルのサイズを小さく */
+  margin-bottom: 2px; /* 余白を縮める */
+  
+}
+
+.itinerary-card .card-text {
+  font-size: 12px; 
+  line-height: 1.2; 
+  /* white-space: nowrap;  */
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
+.itinerary-card .icon-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px; /* アイコンの間隔 */
+  padding-right: 10px;
+}
+
+.itinerary-card .icon-area i {
+  font-size: 16px; 
+}
+
