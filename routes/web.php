@@ -46,6 +46,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::get('/tabs', function () {
-    return view('tabs');
-});
+// Route::get('/tabs', function () {
+//     return view('tabs');
+// });
