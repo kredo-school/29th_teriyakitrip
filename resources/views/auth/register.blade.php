@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Register')
 
 @section('content')
 
@@ -28,10 +29,10 @@
 
                   <div class="form-container">
                     <div class="form-group">
-                        <label for="username">USERNAME</label>
-                        <input id="username" type="text" class="form-control custom-width custom-input" name="username">
+                        <label for="use_rname">USERNAME</label>
+                        <input id="user_name" type="text" class="form-control custom-width custom-input" name="user_name">
 
-                        @error('username')
+                        @error('user_name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

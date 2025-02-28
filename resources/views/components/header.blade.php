@@ -37,8 +37,8 @@
 
             <!-- ナビゲーションボタンとプロフィール画像 -->
             <div class="d-flex align-items-center">
-                <a href="#" class="btn btn-outline-warning me-2">Create Itinerary</a>
-                <a href="#" class="btn btn-outline-warning me-2">Create Review</a>
+                <a href="#" class="btn custom-btn me-2">Create Itinerary</a>
+                <a href="#" class="btn custom-btn me-2">Create Review</a>
                 <img src="{{ asset('images/default-profile.png') }}" alt="Profile" class="rounded-circle" width="40" height="40">
             </div>
         </div>
