@@ -190,4 +190,15 @@
     </div>
     @yield('scripts')
 </body>
+
+{{-- Jquery
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+
+Google maps API 
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}" async defer></script>
+ 
+
+<script src="{{asset('js/gmaps.js')}}"></script>--}}
 </html>

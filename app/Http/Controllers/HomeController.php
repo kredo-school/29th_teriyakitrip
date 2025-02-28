@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function index()
     {
         // return view('itineraries.create_add');
-        return view('regions.regions');
+        return view('home');
         // return view('home');
 
     }
