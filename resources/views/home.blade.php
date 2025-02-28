@@ -1,6 +1,18 @@
 @extends('layouts.app')
-
 @section('content')
+
+{{-- @section('content')
+<style>
+    #map{
+        width: 100%;
+        height: 400px;
+    }
+</style>
+<h1 class="text-center">Google Map Test</h1>
+<div id="map"></div> --}}
+
+
+<link rel="stylesheet" href="{{ asset(path: 'css/top_page.css') }}">
     <div> <!-- BANNER SECTION -->
         <div class="banner" id="banner">
             <div class="banner-text">
