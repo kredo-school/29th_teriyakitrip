@@ -135,7 +135,7 @@
 
                         <!-- ログイン後のヘッダー -->
                             <li class="nav-item">
-                                {{-- <a class="nav-link custom-btn" href="{{ route('create_itinerary') }}"> --}}
+                                <a class="nav-link custom-btn" href="#">
                                     <span>Create</span>
                                     <span>Itinerary</span>
                                 </a>
