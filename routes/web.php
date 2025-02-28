@@ -24,13 +24,18 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-        Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
-            Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
-            Route::get('/create', [ItinerariesController::class, 'create'])->name('create');
-            // Route::post('/store', [ItinerariesController::class, 'store'])->name('store');
-            // Route::delete('/{user_id}/destroy', [ItinerariesController::class, 'destroy'])->name('destroy');
-            // Route::get('/{user_id}/edit', [ItinerariesController::class, 'edit'])->name('edit');
-        });
+        
+    Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
+        Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
+        Route::get('/create', [ItinerariesController::class, 'create'])->name('create');
+        Route::get('/create_itinerary', [ItinerariesController::class, 'addList'])->name('itineraries.create_itinerary_header');
+        // Edit itinerary P33
+        Route::get('/edit', [ItinerariesController::class, 'edit'])->name('itineraries.edit_itinerary');
+        Route::get('/{id}/edit-destination', [ItinerariesController::class, 'editDestination'])->name('editDestination');
+        Route::put('/{id}/update/', [ItinerariesController::class, 'updateDestination'])->name('itinerary.updateDestination');
+
+        
+    });
 });
 
 Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');

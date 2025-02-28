@@ -2,8 +2,15 @@
     font-family: poppins;
 }
 
+.col-6 {
+    padding: 3px;
+    background-color: #FFCA7A;
+  }
+
 .wrapper { 
-    min-width: 500px; 
+    /* min-width: 500px;  */
+    width: 100%;
+    overflow: hidden;
 }
 
 .icon-sm {
