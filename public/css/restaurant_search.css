@@ -1,0 +1,166 @@
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+
+/* 🍽 検索結果リスト */
+
+.restaurant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center; /* 中央揃え */
+  margin-top: 20px;
+}
+
+/* 🆎 ボタンエリア */
+.buttons {
+  display: flex;
+  flex-direction: column; /* 小画面では縦並び */
+  flex-wrap: wrap; /* 必要に応じて改行 */
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+  .buttons {
+      flex-direction: row; /* 大画面では横並び */
+  }
+}
+
+/* 📷 レストラン画像 */
+.restaurant-img {
+  width: 100%;
+  height: auto;
+  max-width: 80px; /* 画像サイズを調整 */
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+
+/* 🏠 レストランリストの1つの要素 */
+.restaurant-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: 65%; /* 検索バーより少し大きめ */
+}
+
+
+
+#viewReviewButton, #createReviewButton{
+  background-color: white; /* 白の背景色 */
+  color: #e97911; /* オレンジのテキスト */
+  border: 1px solid #e97911; /* オレンジのボーダー */
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 5px;
+
+  width: 100%;
+  margin-top: 5px;
+}
+
+#viewReviewButton:hover,#createReviewButton:hover {
+  background-color: #e97911; /* オレンジの背景色 */
+  color: white; /* 白文字 */
+  border: 1px solid #e97911; /* オレンジのボーダー */
+}
+
+#viewReviewButton:active,#createReviewButton:active {
+  background-color: #e97911 !important; /* オレンジの背景色 */
+  color: white !important; /* 白文字 */
+  border: 2px solid #e97911 !important; /* オレンジのボーダー */
+}
+
+/* 🔍 検索バーのコンテナ */
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  margin: 0 auto;
+  border: 2px solid #ccc;
+  border-radius: 30px;
+  padding: 5px 15px;
+  background-color: white;
+}
+
+/* 🔍 入力エリア */
+.search-bar {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 30px;
+}
+
+/* 🔍 アイコンボタン */
+.search-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+  padding: 5px;
+}
+
+.search-button:hover {
+  color: #333;
+}
+
+/* 🎯 サジェストカルーセル */
+.suggestion-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.suggestion-list {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 10px;
+  max-width: 100%;
+  scroll-behavior: smooth;
+}
+
+.suggestion-card {
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  min-width: 150px;
+}
+
+.suggestion-img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* 矢印ボタン */
+.carousel-prev, .carousel-next {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.break-line{
+  display: block;
+  margin-top: 5px;
+}
+
+#moreButton {
+  display: none !important;
+}
