@@ -100,9 +100,59 @@
                         @else
                             <p>まだ旅程がありません。No Itineraries yet.</p>
                         @endif
+
+                        <br>
+                        <!-- デザイン -->
+                        <div class="container toppage mt-5"> <!-- RECOMMENDED ITINERALIES SECTION -->
+                            
+                            <div class="row mt-3">
+                                <div class="col-4"> <!-- Itinerary 1 -->
+                                    <div class="card shadow-sm border-0 w-100 rounded-4">
+                                        <img src="/images/sample2.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
+                                        <div class="card-body p-2">
+                                            <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Okinawa Trip </h6>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                                <span class="ms-2 fw-bold">Toshimi's Japan'</span>
+                                                <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4"> <!-- Itinerary 2 -->
+                                    <div class="card shadow-sm border-0 w-100 rounded-4">
+                                        <img src="/images/sample3.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
+                                        <div class="card-body p-2">
+                                            <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2019 Hokkaido Trip </h6>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                                <span class="ms-2 fw-bold">Toshimi's Japan'</span>
+                                                <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4"> <!-- Itinerary 3 -->
+                                    <div class="card shadow-sm border-0 w-100 rounded-4">
+                                        <img src="/images/sample4.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
+                                        <div class="card-body p-2">
+                                            <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Miyazaki Trip </h6>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                                <span class="ms-2 fw-bold">Toshimi's Japan'</span>
+                                                <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
                         
                         <div class="text-center mt-2">
-                                <button class="btn btn-outline-secondary" style="color: #000000; border-color: #000000; font-size: 1em; padding: 0.25rem 0.5rem; margin-bottom: 0.5cm;">More</button>
+                            <a href="{{ route('itineraries.index') }}" class="btn btn-outline-secondary" 
+                            style="color: rgb(104,102,102); border-color: rgb(104,102,102); font-size: 1em; padding: 0.25rem 0.5rem; margin-bottom: 0.5cm;">
+                             More
+                         </a>
                         </div>
                     </div>
 
@@ -129,6 +179,72 @@
                             <p>まだレビューがありません。No Restaurant's review yet.</p>
                         @endif
 
+                        <div class="container toppage mt-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
+                            <div class="row mt-3">
+                                <div class="col-4"> <!-- Restaurant Review 1 -->
+                                    <div class="card shadow-sm border-0 w-100 rounded-4">
+                                        <img src="/images/sample5.jpeg" alt="Itinerary 1" class="element-style rounded-top-4">
+                                        <div class="card-body p-2">
+                                            <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">  ABC Cafe
+                                                <i class="fa-solid fa-circle ms-4" style="color: #E97911;""></i> <i class="fa-solid fa-circle" style="color: #E97911;></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-regular fa-circle text-warning"></i> (3 reviews)</h6>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                                <span class="ms-2">Fantastic!!!</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                                <span class="ms-2">Amazing place</span>
+                                            </div>
+                                            <div class="text-center">
+                                                <a href="reviews.html" class="btn btn-link" style="color: #E97911;"">View more review</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4"> <!-- Restaurant Review 2 -->
+                                    <div class="card shadow-sm border-0 w-100 rounded-4">
+                                        <img src="/images/sample6.jpeg" alt="Itinerary 1" class="element-style rounded-top-4">
+                                        <div class="card-body p-2">
+                                            <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">  ABC Cafe
+                                                <i class="fa-solid fa-circle ms-4 text-warning"></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-regular fa-circle text-warning"></i> (3 reviews)</h6>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                                <span class="ms-2">Fantastic!!!</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                                <span class="ms-2">Amazing place</span>
+                                            </div>
+                                            <div class="text-center">
+                                                <a href="reviews.html" class="btn btn-link" style="color: #E97911;"">View more review</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4"> <!-- Restaurant Review 3 -->
+                                    <div class="card shadow-sm border-0 w-100 rounded-4">
+                                        <img src="/images/sample7.jpg" alt="Itinerary 1" class="rounded-top-4">
+                                        <div class="card-body p-2">
+                                            <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">  ABC Cafe
+                                                <i class="fa-solid fa-circle ms-4 text-warning"></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-regular fa-circle text-warning"></i> (3 reviews)</h6>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                                <span class="ms-2">Fantastic!!!</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                                <span class="ms-2">Amazing place</span>
+                                            </div>
+                                            <div class="text-center">
+                                                <a href="reviews.html" class="btn btn-link" style="color: #E97911;"">View more review</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
                         <div class="text-center mt-2">
                             <button class="btn btn-outline-secondary" style="color: #000000; border-color: #000000; font-size: 1em; padding: 0.25rem 0.5rem; margin-bottom: 0.5cm;">More</button>
                         </div>

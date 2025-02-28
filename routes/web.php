@@ -2,13 +2,16 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\RestaurantReviewController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\FollowController;
-use App\Http\Controllers\RegionsController;
+use App\Http\Controllers\ItineraryController;
+use App\Http\Controllers\MypageController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -20,7 +23,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
 
-Route::get('/create-itinerary', [ItineraryController::class, 'create'])->name('create_itinerary');
+// Route::get('/create-itinerary', [ItineraryController::class, 'create'])->name('create_itinerary');
 Route::get('/create-review', [ReviewController::class, 'create'])->name('create_review');
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 
@@ -31,8 +34,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-// Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
-Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+
+// Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
         Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
@@ -44,7 +47,7 @@ Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
         // Route::post('/store', [ItinerariesController::class, 'store'])->name('store');
         // Route::delete('/{user_id}/destroy', [ItinerariesController::class, 'destroy'])->name('destroy');
         // Route::get('/{user_id}/edit', [ItinerariesController::class, 'edit'])->name('edit');
-    });
+
 
 
 Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');
@@ -67,7 +70,7 @@ Route::get('/create-review', [App\Http\Controllers\ReviewController::class, 'cre
 
 Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
 
-Route::get('/', [ItinerariesController::class, 'index'])->name('mypage.itinerary.show');
+// Route::get('/', [ItinerariesController::class, 'index'])->name('mypage.itinerary.show');
 Route::post('/itineraries', [ItinerariesController::class, 'store'])->name('store_itinerary');
 
 //プロフィール閲覧で使用するユーザー情報の取得
@@ -133,3 +136,11 @@ Route::get('/regions/restaurant-review', function () {
     ]);
 });
     
+Route::get('/itineraries', [ItineraryController::class, 'index'])->name('itineraries.index');
+Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])->name('restaurant_reviews.index');
+
+// マイページ関連のルートを単一のルートにまとめる
+Route::get('/mypage/{tab?}', [MypageController::class, 'show'])->name('mypage.show');
+
+// デフォルトのホームページをMypageControllerのindexアクションに設定
+Route::get('/', [MypageController::class, 'index'])->name('mypage.index');

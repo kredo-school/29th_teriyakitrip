@@ -104,7 +104,6 @@ class User extends Authenticatable
         return (boolean) $this->followers()->where('following', $user_id)->exists();
     }
 
-}
     public function reviews()
     {
         return $this->hasMany(RestaurantReview::class, 'user_id');

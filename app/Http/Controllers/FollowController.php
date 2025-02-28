@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Follow;//Followモデルをインポート
+use App\Models\User;
 use Illuminate\Support\Facades\Auth; // Authファサードを読み込む
 use Illuminate\Support\Facades\DB;
-use App\User;
 use App\Post;
 
 class FollowController extends Controller

@@ -87,8 +87,6 @@ class ItinerariesController extends Controller
         // それ以外の場合（エラーハンドリングなど）
         abort(404);
     }    
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
