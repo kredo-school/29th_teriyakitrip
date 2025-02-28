@@ -141,7 +141,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                {{-- <a class="nav-link custom-btn" href="{{ route('create_review') }}"> --}}
+                                <a class="nav-link custom-btn" href="#">
                                     <span>Create</span>
                                     <span>Review</span>
                                 </a>
