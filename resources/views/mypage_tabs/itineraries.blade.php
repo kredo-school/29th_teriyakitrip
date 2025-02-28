@@ -22,7 +22,7 @@
     {{ $itineraries->links() }}
 </div>
 
-{{-- <div class="container">
+<div class="container">
     <div class="row">
         <!-- Profile Header -->
         <div class="col-md-12">
@@ -76,6 +76,6 @@
             </div>
         </div>
     </div>
-</div> --}}
+</div>
 
 @endsection
