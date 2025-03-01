@@ -6,9 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\RegionsController;//moko
@@ -16,10 +14,6 @@ use App\Http\Controllers\ApiProxyController; //naho
 use App\Http\Controllers\ItineraryController;//Toshimi
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Auth::routes();
 
@@ -59,9 +53,10 @@ Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/profile', function () {
+    return view('profile', ['user' => Auth::user()]);
+})->name('profile.show')->middleware('auth');
 
-// Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
         Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
