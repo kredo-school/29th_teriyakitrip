@@ -94,6 +94,7 @@ class ItinerariesController extends Controller
     public function edit(Itineraries $itineraries)
     {
         //
+        return view('itineraries.edit_itinerary');
     }
 
     public function editDestination($id){
@@ -139,10 +140,15 @@ class ItinerariesController extends Controller
     return view('home', compact('itineraries'));
     }
 
+    // create_itinerary_header, create_itinerary_body - SAKI
     public function addList(){
         return view('itineraries.create_itinerary_header');
     }
 
+    // show_itinerary - SAKI
+    public function showItinerary(){
+        return view('itineraries.show_itinerary');
+    }
     
 }
 

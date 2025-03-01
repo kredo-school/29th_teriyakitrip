@@ -135,13 +135,13 @@
 
                         <!-- ログイン後のヘッダー -->
                             <li class="nav-item">
-                                {{-- <a class="nav-link custom-btn" href="{{ route('create_itinerary') }}"> --}}
+                                <a class="nav-link custom-btn" href="#">
                                     <span>Create</span>
                                     <span>Itinerary</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                {{-- <a class="nav-link custom-btn" href="{{ route('create_review') }}"> --}}
+                                <a class="nav-link custom-btn" href="#">
                                     <span>Create</span>
                                     <span>Review</span>
                                 </a>
@@ -149,7 +149,7 @@
                             
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="modal" data-bs-target="#profileModal" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}" alt="Avatar" class="rounded-circle avatar-image" width="70" height="70">
+                                    <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('/images/default-avatar.jpeg') }}" alt="Avatar" class="rounded-circle avatar-image" width="70" height="70">
                                 </a>
                             </li>                            
 
@@ -160,7 +160,7 @@
                                         <div class="modal-body">
                                             <div class="card border-0" style="background-color: #f0f0f0;">
                                                 <div class="card-body">
-                                                    {{-- <a href="{{ route('profile.show', Auth::user()) }}" class="text-decoration-none text-reset"> --}}
+                                                    <a href="#" class="text-decoration-none text-reset">
                                                         <div class="user-info-container d-flex align-items-center">
                                                             <div class="me-3">
                                                                 <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}" 
