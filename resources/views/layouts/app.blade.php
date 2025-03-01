@@ -37,41 +37,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var swiper = new Swiper(".swiper-container", {
-                slidesPerView: "auto",
-                spaceBetween: 10,
-                freeMode: true,
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            });
-
-            // タブのアクティブ表示を切り替える
-            document.querySelectorAll('.swiper-slide').forEach(tab => {
-                tab.addEventListener('click', function () {
-                    document.querySelectorAll('.swiper-slide').forEach(t => t.classList.remove('active-tab'));
-                    this.classList.add('active-tab');
-                });
-            });
-
-            // URLのパラメータに基づいて最初からアクティブなタブを設定
-            const urlParams = new URLSearchParams(window.location.search);
-            const tabParam = urlParams.get('tab');
-            if (tabParam) {
-                // tabパラメータに基づいて対応するタブをアクティブにする
-                document.querySelectorAll('.swiper-slide').forEach(tab => {
-                    if (tab.textContent.trim().toLowerCase() === tabParam) {
-                        tab.classList.add('active-tab');
-                    }
-                });
-            }
-        });
-    </script>
-        
+     
 </head>
 
 <body>

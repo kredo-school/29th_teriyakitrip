@@ -5,47 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Itineraries;
+use App\Models\RestaurantReview;
 use App\Models\User;
 
 class MypageController extends Controller
 {
     public function show($tab = 'overview')
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
+    $itineraries = Itineraries::where('user_id', $user->id)->get();
+    $restaurantReviews = RestaurantReview::where('user_id', $user->id)->get();
+    // $followers = $user->followers()->paginate(20);
+    // $following = $user->following()->paginate(20);
 
-        $view = 'mypage_tabs.' . $tab;
-
-        // ビューが存在しない場合は、デフォルトのビューを表示
-        if (!view()->exists($view)) {
-            $view = 'mypage_tabs.overview';
-        }
-
-        if ($tab === 'itineraries') {
-            $itineraries = Itineraries::where('user_id', $user->id)->paginate(6);
-            return view($view, compact('itineraries', 'user'));
-        }
-
-        $data = compact('user');
-        if ($tab === 'restaurant_reviews') {
-            $reviews = []; // 実際のレビュー取得に変更
-            $data = compact('reviews', 'user');
-        }
-
-        if ($tab === 'followers') {
-            $followers = []; // 実際のフォロワー取得に変更
-            $data = compact('followers', 'user');
-        }
-
-        if ($tab === 'following') {
-            $following = []; // 実際のフォロー中ユーザー取得に変更
-            $data = compact('following', 'user');
-        }
-
-        return view('index', ['tabContent' => $view, 'data' => $data]);
+    // タブに応じて適切なビューを返す
+    switch($tab) {
+        case 'itineraries':
+            return view('mypage.itineraries', compact('user', 'itineraries', 'tab'));
+            case 'restaurant_reviews':
+                return view('mypage.restaurant_reviews', compact('user', 'restaurantReviews', 'tab'));
+        // case 'followers':
+        //     // followers機能が実装されていない場合は、一時的にoverviewにリダイレクト
+        //     return redirect()->route('mypage.show', 'overview');
+        // case 'following':
+        //     // following機能が実装されていない場合は、一時的にoverviewにリダイレクト
+        //     return redirect()->route('mypage.show', 'overview');
+        default:
+            return view('mypage.overview', compact('user', 'itineraries', 'restaurantReviews', 'tab'));
+    
     }
-
-    public function index()
-    {
-        return $this->show(); // デフォルトで 'overview' タブを表示
-    }
+}
 }

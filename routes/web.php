@@ -140,7 +140,9 @@ Route::get('/itineraries', [ItineraryController::class, 'index'])->name('itinera
 Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])->name('restaurant_reviews.index');
 
 // マイページ関連のルートを単一のルートにまとめる
-Route::get('/mypage/{tab?}', [MypageController::class, 'show'])->name('mypage.show');
+Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
+    ->name('mypage.show')
+    ->where('tab', 'overview|itineraries|restaurant_reviews');
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
-Route::get('/', [MypageController::class, 'index'])->name('mypage.index');
+Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
