@@ -64,5 +64,13 @@ class ItineraryController extends Controller
     public function destroy(string $id)
     {
         //
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index()
+    {
+        return view('itinerary.index');
     }
 }

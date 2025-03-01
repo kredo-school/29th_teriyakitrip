@@ -4,14 +4,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\MypageController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItinerariesController;
-use App\Http\Controllers\RestaurantReviewController;
-use App\Http\Controllers\ItineraryController;
-use App\Http\Controllers\MypageController;
+use App\Http\Controllers\RegionsController;//moko
+use App\Http\Controllers\ApiProxyController; //naho
+use App\Http\Controllers\ItineraryController;//Toshimi
+use App\Http\Controllers\RestaurantReviewController; //naho
+use App\Http\Controllers\RestaurantSearchController; //naho
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -27,8 +31,30 @@ Route::group(['middleware' => 'auth'], function() {
 Route::get('/create-review', [ReviewController::class, 'create'])->name('create_review');
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//ログイン後のみ入れる
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/restaurant-reviews/create', [RestaurantReviewController::class, 'create'])->name('restaurant-reviews.create'); //naho
+    Route::post('/restaurant-reviews', [RestaurantReviewController::class, 'store'])->name('restaurant-reviews.store'); //naho
+
+    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+});
+
+Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
+
+    Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
+        Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
+        Route::get('/create', [ItinerariesController::class, 'create'])->name('create');
+        Route::get('/create_itinerary', [ItinerariesController::class, 'addList'])->name('create_itinerary_header');
+        // Edit itinerary P33
+        Route::get('/edit', [ItinerariesController::class, 'edit'])->name('edit_itinerary'); // SAKI
+        Route::get('/{id}/edit-destination', [ItinerariesController::class, 'editDestination'])->name('editDestination');
+        Route::put('/{id}/update/', [ItinerariesController::class, 'updateDestination'])->name('itinerary.updateDestination');
+    });
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -51,24 +77,24 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/itineraries/create', [ItinerariesController::class, 'addList'])->name('itinerary.create_itinerary_header');
     
 });
-
-
 Route::get('/tabs', function () {
     return view('tabs');
 });
 
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 
-Route::get('/create-itinerary', [App\Http\Controllers\ItinerariesController::class, 'create'])->name('create_itinerary');
+//  region:Overview moko
+Route::get('/regions/overview', [RegionsController::class, 'overview']);
 
-Route::get('/create-review', [App\Http\Controllers\ReviewController::class, 'create'])->name('create_review');
+//  region:Itinerary moko
+Route::get('/regions/itinerary', [RegionsController::class, 'itinerary']);
 
-Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+// region: Restaurant Review moko
+Route::get('/regions/restaurant-review', [RegionsController::class, 'restaurantReview']);
 
 // Route::get('/', [ItinerariesController::class, 'index'])->name('mypage.itinerary.show');
 Route::post('/itineraries', [ItinerariesController::class, 'store'])->name('store_itinerary');

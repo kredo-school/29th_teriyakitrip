@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,8 +16,10 @@
     <link href="https://fonts.googleapis.com/f2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
@@ -24,11 +27,14 @@
     <link rel="stylesheet" href="{{ asset('css/nozomi.css') }}">
 
 
-     <!-- font awasome -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <!-- font awasome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -106,13 +112,15 @@
                         @else
                             <!-- ログイン後のヘッダー -->
                             <li class="nav-item">
-                                <a class="nav-link custom-btn" href="{{ route('create_itinerary') }}">
+                                <a class="nav-link custom-btn" href="#">
+                                <a class="nav-link custom-btn" href="#">
                                     <span>Create</span>
                                     <span>Itinerary</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link custom-btn" href="{{ route('create_review') }}">
+                                <a class="nav-link custom-btn" href="#">
+                                <a class="nav-link custom-btn" href="#">
                                     <span>Create</span>
                                     <span>Review</span>
                                 </a>
@@ -120,13 +128,17 @@
 
                             <!-- プロフィールモーダル -->
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="modal" data-bs-target="#profileModal" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}" alt="Avatar" class="rounded-circle avatar-image" width="70" height="70">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="modal" data-bs-target="#profileModal" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}"
+                                        alt="Avatar" class="rounded-circle avatar-image" width="70" height="70">
                                 </a>
                             </li>
 
                             <!-- Modal -->
-                            <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel"
+                                aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-body">
@@ -135,8 +147,9 @@
                                                     <a href="{{ route('profile.show', Auth::user()) }}" class="text-reset text-decoration-none">
                                                         <div class="user-info-container d-flex align-items-center">
                                                             <div class="me-3">
-                                                                <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}" 
-                                                                     alt="Avatar" class="rounded-circle" width="70" height="70">
+                                                                <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}"
+                                                                    alt="Avatar" class="rounded-circle" width="70"
+                                                                    height="70">
                                                             </div>
                                                             <div>
                                                                 <h5 class="card-title user-info-container d-flex align-items-center">{{ Auth::user()->user_name }}</h5>
@@ -146,24 +159,9 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <ul class="list-unstyled slightly-right-aligned">
-                                                <li><a class="dropdown-item" href="#">My Itineraries</a></li>
-                                                <li><a class="dropdown-item" href="#">My Restaurant's Reviews</a></li>
-                                                <li><a class="dropdown-item" href="#">My Favorites</a></li>
-                                                <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Edit Profile</a></li>
-                                                <li>
-                                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                                       onclick="event.preventDefault();
-                                                                     document.getElementById('logout-form').submit();">
-                                                        {{ __('Logout') }}
-                                                    </a>
-                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                                        @csrf
-                                                    </form>
-                                                </li><br>
-                                            </ul>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         @endguest
@@ -172,10 +170,16 @@
             </div>
         </nav>
 
-        <main>
-            @yield('content')
-        </main>
-        @include('layouts.footer')
+                @endguest
+                </ul>
+            </div>
+    </div>
+    </nav>
+
+    <main>
+        @yield('content')
+    </main>
+    @include('layouts.footer')
     </div>
     @yield('scripts')
 
