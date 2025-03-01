@@ -106,3 +106,14 @@ footer {
 footer nav a:hover {
     text-decoration: underline;
 }
+
+/* クリック可能な地域のデザイン */
+.region-clickable {
+    cursor: pointer; /* カーソルをポインターに変更（クリックできることを示す） */
+    transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.region-clickable:hover {
+    transform: scale(1.1); /* 少し拡大して強調 */
+}
+

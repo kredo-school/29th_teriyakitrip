@@ -2,46 +2,56 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\ItineraryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ItinerariesController;
-use App\Http\Controllers\RestaurantReviewController;
-use App\Http\Controllers\RegionsController;
+use App\Http\Controllers\ItineraryController;//Toshimi
+use App\Http\Controllers\RestaurantReviewController; //naho
+use App\Http\Controllers\RestaurantSearchController; //naho
+use App\Http\Controllers\ApiProxyController; //naho
+use App\Http\Controllers\RegionsController;//moko
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
 Auth::routes();
-Route::group(['middleware' => 'auth'], function() {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show'); //naho
+Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])->name('restaurants.search'); //naho
 
-Route::get('/create-itinerary', [ItineraryController::class, 'create'])->name('create_itinerary');
-Route::get('/create-review', [ReviewController::class, 'create'])->name('create_review');
+Route::get('/show', [ItinerariesController::class, 'showItinerary'])->name('itineraries.show_itinerary');
+
+Route::get('/my-itineraries', [ItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
+Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
+Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete');//Toshimi
+
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//ログイン後のみ入れる
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
+    Route::get('/restaurant-reviews/create', [RestaurantReviewController::class, 'create'])->name('restaurant-reviews.create'); //naho
+    Route::post('/restaurant-reviews', [RestaurantReviewController::class, 'store'])->name('restaurant-reviews.store'); //naho
 
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+});
 
-    Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
+Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
+
+    Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
         Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
         Route::get('/create', [ItinerariesController::class, 'create'])->name('create');
-        Route::get('/create_itinerary', [ItinerariesController::class, 'addList'])->name('itineraries.create_itinerary_header');
+        Route::get('/create_itinerary', [ItinerariesController::class, 'addList'])->name('create_itinerary_header');
         // Edit itinerary P33
-        Route::get('/edit', [ItinerariesController::class, 'edit'])->name('itineraries.edit_itinerary');
+        Route::get('/edit', [ItinerariesController::class, 'edit'])->name('edit_itinerary'); // SAKI
         Route::get('/{id}/edit-destination', [ItinerariesController::class, 'editDestination'])->name('editDestination');
         Route::put('/{id}/update/', [ItinerariesController::class, 'updateDestination'])->name('itinerary.updateDestination');
-
-        
     });
 });
 
@@ -57,13 +67,13 @@ Route::get('/tabs', function () {
 });
 
 
-// 📌 Overviewページ
+//  region:Overview moko
 Route::get('/regions/overview', [RegionsController::class, 'overview']);
 
-// 📌 Itineraryページ
+//  region:Itinerary moko
 Route::get('/regions/itinerary', [RegionsController::class, 'itinerary']);
 
-// 📌 Restaurant Reviewページ
+// region: Restaurant Review moko
 Route::get('/regions/restaurant-review', [RegionsController::class, 'restaurantReview']);
 
     
