@@ -15,7 +15,7 @@
 
             <div class="d-flex align-items-center justify-content-start w-100">
                 <div class="col-auto">
-                    <a href="#" class="text-dark">
+                    <a href="{{ route('') }}" class="text-dark">
                         <i class="fa-solid fa-arrow-left fs-2"></i>
                     </a>
                 </div>
@@ -54,8 +54,10 @@
                     <button type="" class="btn btn-light btn-md">Destination</button>
             </div>
             <div class="col-auto">
-                    <i class="fa-solid fa-circle-user text-secondary icon-sm"></i>
-                    <i class="fa-solid fa-user-plus icon-sm"></i>
+                {{-- Auth icon --}}
+                <i class="fa-solid fa-circle-user text-secondary icon-sm"></i>
+                {{-- member + icon --}}
+                <i class="fa-solid fa-user-plus"></i>
             </div>
 
         </div>

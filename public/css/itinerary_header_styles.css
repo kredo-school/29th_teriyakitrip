@@ -14,7 +14,13 @@
 }
 
 .icon-sm {
-    font-size: 2rem;
+    font-size: 2.5rem;
+}
+
+.fa-user-plus{
+    font-size: 20px;
+    margin-top: 15px;
+    margin-left: 5px;
 }
 
 
