@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ItinerariesController;
+use App\Http\Controllers\ItineraryController;//Toshimi
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
 use App\Http\Controllers\ApiProxyController; //naho
@@ -21,11 +23,15 @@ Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])-
 
 Route::get('/show', [ItinerariesController::class, 'showItinerary'])->name('itineraries.show_itinerary');
 
+Route::get('/my-itineraries', [ItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
+Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
+Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete');//Toshimi
+
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //ログイン後のみ入れる
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
@@ -33,9 +39,11 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/restaurant-reviews', [RestaurantReviewController::class, 'store'])->name('restaurant-reviews.store'); //naho
 
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+});
 
-        
-    Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
+Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
+
+    Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
         Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
         Route::get('/create', [ItinerariesController::class, 'create'])->name('create');
         Route::get('/create_itinerary', [ItinerariesController::class, 'addList'])->name('create_itinerary_header');
