@@ -2,12 +2,25 @@
     font-family: poppins;
 }
 
+.col-6 {
+    padding: 3px;
+    background-color: #FFCA7A;
+  }
+
 .wrapper { 
-    min-width: 500px; 
+    /* min-width: 500px;  */
+    width: 100%;
+    overflow: hidden;
 }
 
 .icon-sm {
-    font-size: 2rem;
+    font-size: 2.5rem;
+}
+
+.fa-user-plus{
+    font-size: 20px;
+    margin-top: 15px;
+    margin-left: 5px;
 }
 
 

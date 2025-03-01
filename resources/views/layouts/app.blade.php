@@ -146,11 +146,13 @@
                             <!-- ログイン後のヘッダー -->
                             <li class="nav-item">
                                 <a class="nav-link custom-btn" href="#">
+                                <a class="nav-link custom-btn" href="#">
                                     <span>Create</span>
                                     <span>Itinerary</span>
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link custom-btn" href="#">
                                 <a class="nav-link custom-btn" href="#">
                                     <span>Create</span>
                                     <span>Review</span>
