@@ -1,0 +1,101 @@
+/* カードデザイン */
+.review-card {
+    max-height: 200px; /* カードの最大高さを制限 */
+    overflow: hidden; /* 内容が多すぎる場合、はみ出しを隠す */
+    padding: 10px; /* 余白を調整 */
+}
+
+.review-image {
+    max-width: 300px; /* 画像の最大幅を制限 */
+    height: 250px; /* 高さを調整 */
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* + Create Review ボタンのスタイル */
+.create-review-btn {
+    background-color: white !important; /* 白の背景色 */
+    color: #e97911 !important; /* オレンジのテキスト */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+    text-decoration: none !important;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.create-review-btn:hover {
+    background-color: #E97911 !important;
+  color: white !important;
+  text-decoration: none !important;  /* ホバー時の下線を削除 */
+}
+
+/* View This Review ボタンのスタイル */
+.view-review-btn {
+    background-color: white !important; /* 白の背景色 */
+    color: #e97911 !important; /* オレンジのテキスト */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+    text-decoration: none !important;
+    padding: 4px 8px;
+    border-radius: 5px;
+    margin-top: 20px; /* ボタンをさらに下に移動 */
+}
+
+.view-review-btn:hover {
+    background-color: #E97911 !important;
+  color: white !important;
+  text-decoration: none !important;  /* ホバー時の下線を削除 */
+}
+
+.delete-review-btn {
+    background-color: white !important; /* 白の背景色 */
+    color: #e97911 !important; /* オレンジのテキスト */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+    text-decoration: none !important;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 1.8rem; /* アイコンのサイズを大きく */
+    cursor: pointer;
+}
+
+.delete-review-btn:hover {
+    background-color: #E97911 !important;
+  color: white !important;
+  text-decoration: none !important;  /* ホバー時の下線を削除 */
+}
+
+/* Cancel ボタンのスタイル */
+.cancel-btn {
+    background-color: white !important; /* 白の背景色 */
+    color: #e97911 !important; /* オレンジのテキスト */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+    text-decoration: none !important;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.cancel-btn:hover {
+    background-color: #E97911 !important;
+  color: white !important;
+  text-decoration: none !important;  /* ホバー時の下線を削除 */
+}
+
+/* Delete ボタンのスタイル */
+.delete-btn {
+    background-color: white !important; /* 白の背景色 */
+    color: #e97911 !important; /* オレンジのテキスト */
+    border: 1px solid #e97911 !important; /* オレンジのボーダー */
+    text-decoration: none !important;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.delete-btn:hover {
+    background-color: #E97911 !important;
+  color: white !important;
+  text-decoration: none !important;  /* ホバー時の下線を削除 */
+}
+
+
+
+
+
+
