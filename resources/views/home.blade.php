@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-
 <link rel="stylesheet" href="{{ asset('css/top_page.css') }}">
+
     <div> <!-- BANNER SECTION -->
         <div class="banner" id="banner">
             <div class="banner-text">
