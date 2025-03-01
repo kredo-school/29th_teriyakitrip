@@ -4,6 +4,9 @@
 
 @section('content')
 
+<div class="container mt-4">
+    <h1 class="page-title"></h1>
+
 <link rel="stylesheet" href="{{ asset('css/regions-style.css') }}">
 
 
