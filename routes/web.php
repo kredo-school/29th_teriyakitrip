@@ -10,6 +10,7 @@ use App\Http\Controllers\ItineraryController;//Toshimi
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
 use App\Http\Controllers\ApiProxyController; //naho
+use App\Http\Controllers\RegionsController;//moko
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -54,8 +55,25 @@ Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
     });
 });
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/itineraries/create', [ItinerariesController::class, 'addList'])->name('itinerary.create_itinerary_header');
+    
+});
+Route::get('/tabs', function () {
+    return view('tabs');
+});
 
 
-Route::get('/api/photo', [ApiProxyController::class, 'fetchPhoto']); //naho
+//  region:Overview moko
+Route::get('/regions/overview', [RegionsController::class, 'overview']);
 
-Route::get('/api/places', [ApiProxyController::class, 'fetchPlaces']); //naho
+//  region:Itinerary moko
+Route::get('/regions/itinerary', [RegionsController::class, 'itinerary']);
+
+// region: Restaurant Review moko
+Route::get('/regions/restaurant-review', [RegionsController::class, 'restaurantReview']);
+
+    
