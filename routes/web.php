@@ -26,6 +26,12 @@ Route::get('/show', [ItinerariesController::class, 'showItinerary'])->name('itin
 Route::get('/my-itineraries', [ItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
 Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
 Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete');//Toshimi
+Route::post('/itinerary/favorite/{id}', function ($id) {
+    // ダミー処理: お気に入りの状態をトグルする（本来はデータベースを更新）Toshimi
+    session()->put("favorite_$id", !session("favorite_$id", false));
+    return redirect()->back(); // ページを更新して状態を反映
+})->name('itinerary.favorite');
+
 
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 
