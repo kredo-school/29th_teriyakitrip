@@ -43,30 +43,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var swiper = new Swiper(".swiper-container", {
-                slidesPerView: "auto",
-                spaceBetween: 10,
-                freeMode: true,
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            });
-
-            // タブのアクティブ表示を切り替える
-            document.querySelectorAll('.swiper-slide').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    document.querySelectorAll('.swiper-slide').forEach(t => t.classList.remove(
-                        'active-tab'));
-                    this.classList.add('active-tab');
-                });
-            });
-        });
-    </script>
-
+     
 </head>
 
 <body>
@@ -75,11 +52,10 @@
             <div class="container">
                 <div class="d-flex align-items-center">
                     <header>
-                        @if (!isset($hideLogo))
+                        @if(!isset($hideLogo))
                             <div class="logo">
                                 <a class="logo-link" href="{{ url('/home') }}">
-                                    <img src="{{ asset('images/Teriyaki_logo.png') }}" alt="ロゴ" width="96"
-                                        height="80">
+                                    <img src="{{ asset('images/Teriyaki_logo.png') }}" alt="ロゴ" width="96" height="80">
                                 </a>
                             </div>
                         @endif
@@ -88,33 +64,24 @@
                     <!-- Search Bar -->
                     <div class="search-bar ms-3">
                         <div class="input-group">
-                            <select class="form-select rounded-start"
-                                style="width: 100px!important; background-color: #ffe59d;">
+                            <select class="form-select rounded-start"  style="width: 100px!important; background-color: #ffe59d;">
                                 <option value="all">Select</option>
                                 <option value="itinerary">Itinerary</option>
                                 <option value="review">Restaurant's Review</option>
                             </select>
-                            <input type="text" class="form-control" style="width: 180px!important;"
-                                placeholder="Search here...">
+                            <input type="text" class="form-control" style="width: 180px!important;" placeholder="Search here...">
                             <button class="btn btn-outline-secondary" type="button">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
                     </div>
                 </div>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    {{-- <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul> --}}
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto align-items-center">
                         <!-- Authentication Links -->
@@ -157,6 +124,7 @@
                                 </a>
                             </li>
 
+                            <!-- プロフィールモーダル -->
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="modal" data-bs-target="#profileModal" data-bs-toggle="dropdown"
@@ -174,7 +142,7 @@
                                         <div class="modal-body">
                                             <div class="card border-0" style="background-color: #f0f0f0;">
                                                 <div class="card-body">
-                                                    <a href="#" class="text-decoration-none text-reset">
+                                                    <a href="{{ route('profile.show', Auth::user()) }}" class="text-reset text-decoration-none">
                                                         <div class="user-info-container d-flex align-items-center">
                                                             <div class="me-3">
                                                                 <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}"
@@ -182,42 +150,24 @@
                                                                     height="70">
                                                             </div>
                                                             <div>
-                                                                <h5
-                                                                    class="card-title user-info-container d-flex align-items-center">
-                                                                    {{ Auth::user()->user_name }}</h5>
-                                                                <p>{{ Auth::user()->email }}</p>
+                                                                <h5 class="card-title user-info-container d-flex align-items-center">{{ Auth::user()->user_name }}</h5>
+                                                                <p class="text-decoration-none">{{ Auth::user()->email }}</p>
                                                             </div>
                                                         </div>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <ul class="list-unstyled slightly-right-aligned">
-                                            <li><a class="dropdown-item" href="#">My Itineraries</a></li>
-                                            <li><a class="dropdown-item" href="#">My Restaurant's Reviews</a></li>
-                                            <li><a class="dropdown-item" href="#">My Favorites</a></li>
-                                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Edit
-                                                    Profile</a></li>
-                                            <li>
-                                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                                    onclick="event.preventDefault();
-                                                                     document.getElementById('logout-form').submit();">
-                                                    {{ __('Logout') }}
-                                                </a>
-                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                    class="d-none">
-                                                    @csrf
-                                                </form>
-                                            </li><br>
-                                        </ul>
                                     </div>
 
                                 </div>
                             </div>
-                    </div>
-
-                @endguest
-                </ul>
+                        @endguest
+                    </ul>
+                </div>
             </div>
+        </nav>
+
     </div>
     </nav>
 
@@ -227,19 +177,20 @@
     @include('layouts.footer')
     </div>
     @yield('scripts')
+
+
+
+    <!-- ここにBootstrapのJavaScriptを追加 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
+    {{-- Jquery--}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    {{-- Google Maps API --}}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}" async defer></script>
 
-{{-- Jquery --}}
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-{{-- Google maps API --}}
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}" async defer></script>
-
-<script src="{{ asset('js/gmaps.js') }}"></script>
+    
+    <script src="{{asset('js/gmaps.js')}}"></script>
 
 </html>
-
-{{-- GOOGLE MAPS PLATFORM --}}
-

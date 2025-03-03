@@ -147,25 +147,24 @@
   }
 
   .nav-tabs-mypage .nav-link-mypage {
-      color: black;
+      color: rgb(104, 102, 102);
       border: none;
       background-color: transparent;
       font-weight: 500;
       padding: 10px 15px;
-      transition: all 0.3s ease;
+      transition: color 0.3s ease, background-color 0.3s ease;
   }
 
   .nav-tabs-mypage .nav-link-mypage:hover,
   .nav-tabs-mypage .nav-link-mypage:focus {
-      background-color: #e97911;
-      color: white;
-      border-radius: 5px;
+      color: #e97911;
+      background-color: transparent;
   }
 
   .nav-tabs-mypage .nav-link-mypage.active {
       background-color: transparent;
       border-bottom: 3px solid #e97911;
-      color: black;
+      color: rgb(104, 102, 102);
   }
 
   .nav-tabs-mypage .nav-link-mypage.active:hover {
@@ -178,4 +177,5 @@
       color: white !important;
       background-color: #000000 !important;
     }
+
                       
