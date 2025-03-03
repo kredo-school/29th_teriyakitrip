@@ -117,3 +117,25 @@ footer nav a:hover {
     transform: scale(1.1); /* 少し拡大して強調 */
 }
 
+/* お気に入りボタンのデザイン */
+.favorite-btn {
+    font-size: 24px;
+    cursor: pointer;
+    color: #ccc; /* デフォルトはグレー */
+    transition: transform 0.2s ease-in-out, color 0.3s;
+}
+
+.favorite-btn .fa-star {
+    transition: transform 0.2s ease-in-out;
+}
+
+.favorite-btn:hover .fa-star {
+    transform: scale(1.2);
+}
+
+.favorite-btn .fa-solid {
+    color: #ffcc00; /* お気に入り登録済みは黄色 */
+}
+
+
+
