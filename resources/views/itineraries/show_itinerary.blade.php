@@ -27,7 +27,7 @@
                     
               <div class="col-auto ms-auto">
                 
-                <a href="{{ route('itineraries.edit_itinerary') }}" method="GET" class="border-0 bg-transparent btn-sm">
+                <a href="{{ route('itineraries.edit_itinerary') }}" method="GET" class="border-0 bg-transparent btn-sm text-decoration-none text-dark">
                     <i class="fa-solid fa-pencil"></i> Edit
                 </a>
                 

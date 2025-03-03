@@ -19,7 +19,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show'); //naho
 Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])->name('restaurants.search'); //naho
 
-Route::get('/show', [ItinerariesController::class, 'showItinerary'])->name('itineraries.show_itinerary');
+Route::get('/itinerary/show', [ItinerariesController::class, 'showItinerary'])->name('itineraries.show_itinerary');
 
 //ログイン後のみ入れる
 Route::group(['middleware' => 'auth'], function() {
