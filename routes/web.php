@@ -14,6 +14,7 @@ use App\Http\Controllers\ApiProxyController; //naho
 use App\Http\Controllers\ItineraryController;//Toshimi
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
+use App\Http\Controllers\FavoritesController; //Toshimi
 
 Auth::routes();
 
@@ -79,8 +80,6 @@ Route::get('/profile', function () {
         // Route::post('/store', [ItinerariesController::class, 'store'])->name('store');
         // Route::delete('/{user_id}/destroy', [ItinerariesController::class, 'destroy'])->name('destroy');
         // Route::get('/{user_id}/edit', [ItinerariesController::class, 'edit'])->name('edit');
-
-
 
 Route::get('/reviews/show', [RestaurantReviewController::class, 'show'])->name('reviews.show');
 Route::middleware(['auth'])->group(function () {
@@ -178,3 +177,22 @@ Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+
+
+
+
+
+
+
+
+
+
+
+Route::get('/my-favorites', [FavoritesController::class, 'index']) //Toshimi
+    // ->middleware('auth')  // ログインユーザーのみアクセス可能
+    ->name('favorites.list');
+
+Route::post('/itinerary/unfavorite/{id}', [FavoritesController::class, 'unfavorite']) //Toshimi
+        ->name('itinerary.unfavorite');
+    
+    
