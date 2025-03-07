@@ -70,38 +70,65 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
     // 🔹 Saveボタンが押されたときの処理
-    saveDestinationBtn.addEventListener("click", function () {
-        let selectedPrefectures = [];
-        let selectedPrefectureIds = [];
+saveDestinationBtn.addEventListener("click", function () {
+    let selectedPrefectures = [];
+    let selectedPrefectureIds = []; // 🔥 ここで空の配列を定義 🔥
 
-        document.querySelectorAll('input[name="prefectures[]"]:checked').forEach((checkbox) => {
-            let name = checkbox.parentElement.querySelector("span").textContent.trim();
-            let color = checkbox.getAttribute("data-color");
+    document.querySelectorAll('input[name="prefectures[]"]:checked').forEach((checkbox) => {
+        let name = checkbox.parentElement.querySelector("span").textContent.trim();
+        let color = checkbox.getAttribute("data-color");
 
-            selectedPrefectures.push({ id: checkbox.value, name: name, color: color });
-            selectedPrefectureIds.push(checkbox.value);
-        });
-
-        console.log("Saved to localStorage:", selectedPrefectures);
-        console.log("Selected Prefecture IDs (for DB):", selectedPrefectureIds);
-
-        if (selectedPrefectures.length === 0) {
-            alert("Please select at least one destination.");
-            return;
-        }
-
-        localStorage.setItem("selectedDestinations", JSON.stringify(selectedPrefectures));
-        document.getElementById("selected-prefectures").value = JSON.stringify(selectedPrefectureIds);
-
-        updateDestinationList();
-
-        // モーダルを閉じる処理
-        setTimeout(() => {
-            modalInstance.hide();
-            console.log("✅ モーダルを閉じました！");
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-        }, 100);
+        selectedPrefectures.push({id: parseInt(checkbox.value, 10), name: name, color: color});
+        selectedPrefectureIds.push(parseInt(checkbox.value, 10)); // 🔥 修正点: ここを正しい配列に追加
     });
+
+    console.log("Saved to localStorage:", selectedPrefectures);
+    console.log("Selected Prefecture IDs (for DB):", selectedPrefectureIds);
+
+    if (selectedPrefectures.length === 0) {
+        alert("Please select at least one destination.");
+        return;
+    }
+
+    localStorage.setItem("selectedDestinations", JSON.stringify(selectedPrefectures));
+    document.getElementById("selected-prefectures").value = selectedPrefectureIds.join(',');
+
+    updateDestinationList();
+
+    // モーダルを閉じる処理
+    setTimeout(() => {
+        modalInstance.hide();
+        console.log("✅ モーダルを閉じました！");
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    }, 100);
+});
+
+
+    function updateDestinationList() {
+        let selectedDestinations = localStorage.getItem("selectedDestinations");
+
+        if (selectedDestinations) {
+            selectedDestinations = JSON.parse(selectedDestinations);
+            let destinationContainer = document.getElementById("selected-destination-list");
+
+            if (!destinationContainer) {
+                console.error("Error: #selected-destination-list が見つかりません");
+                return;
+            }
+
+            destinationContainer.innerHTML = "";
+
+            selectedDestinations.forEach((destination) => {
+                let badge = document.createElement("span");
+                badge.className = "badge rounded-pill px-3 py-2 text-white me-2 fs-6";
+                badge.style.backgroundColor = destination.color;
+                badge.textContent = destination.name;
+                destinationContainer.appendChild(badge);
+            });
+
+            console.log("Updated UI with selected destinations");
+        }
+    }
 
     function updateDates() {
         console.log("✅ updateDates() が実行された");
@@ -241,59 +268,84 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 🔹 フォーム送信時に `selected-prefectures` にデータをセット
-    document.getElementById("itinerary-form").addEventListener("submit", function (event) {
-        event.preventDefault(); // 🔹 デフォルトのフォーム送信を防ぐ
+// ✅ フォーム送信時の処理（修正済み・user_idのnullチェック削除）
+document.getElementById("itinerary-form").addEventListener("submit", function (event) {
+    event.preventDefault(); // 🔹 デフォルトのフォーム送信を防ぐ
 
-        // 🔹 `selected-prefectures` をフォーム送信前に更新
-        let selectedPrefectures = localStorage.getItem("selectedDestinations");
-        let formData = new FormData(this); // 🔹 フォームデータを取得
-        if (selectedPrefectures) {
-            let selectedPrefectureIds = JSON.parse(selectedPrefectures).map(p => p.id);
-            console.log("✅ selected-prefectures 更新:", selectedPrefectureIds);
-    
-            // 🔹 `FormData` に `selected_prefectures[]` を適切に追加
-            selectedPrefectureIds.forEach(id => {
-                formData.append('selected_prefectures[]', id);
-            });
-        } else {
-            console.warn("⚠️ 選択された都道府県がありません！");
-        }
+    let formData = new FormData(this); // 🔹 フォームデータを取得
 
-        let itineraryId = document.getElementById("itinerary-id")?.value || null;
-        let url = itineraryId ? `/itineraries/save/${itineraryId}` : `/itineraries/save`;
-    
-        // 🔹 CSRF トークンを `FormData` に追加
+    // ✅ selected_prefectures をセット
+    let selectedPrefectures = localStorage.getItem("selectedDestinations");
+    let selectedPrefectureIds = selectedPrefectures 
+        ? JSON.parse(selectedPrefectures).map(p => parseInt(p.id, 10)) 
+        : [];
+
+    console.log("🟢 現在の選択 Prefectures:", selectedPrefectureIds);
+
+    selectedPrefectureIds.forEach(id => {
+        formData.append('selected_prefectures[]', id);
+    });
+
+    // ✅ start_date, end_date を強制的にセット（バリデーションエラー回避）
+    let startDateInput = document.getElementById("start_date");
+    let endDateInput = document.getElementById("end_date");
+
+    formData.append("start_date", startDateInput.value);
+    formData.append("end_date", endDateInput.value);
+
+    // ✅ itinerary_id の取得
+    let itineraryId = document.getElementById("itinerary-id")?.value || null;
+    let url = itineraryId ? `/itineraries/save/${itineraryId}` : `/itineraries/save`;
+
+    // ✅ CSRF トークンを `FormData` に追加
     let csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     formData.append('_token', csrfToken);
-        console.log("🟢 送信データ:", Object.fromEntries(formData.entries()));
-    
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: formData
-        })
-        .then(response => {
-            console.log("🔄 Fetch Response Status:", response.status);
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status}`);
-            }
-            return response.json();
-        })
+
+    console.log("🟢 送信データ:", Object.fromEntries(formData.entries()));
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": csrfToken
+        },
+        body: formData
+    })
+    .then(response => {
+        console.log("🔄 Fetch Response Status:", response.status);
         
-        .then(data => {
+        // JSON 形式以外のレスポンスを弾く
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("❌ サーバーがJSONを返していません");
+        }
+    
+        return response.json();
+    })
+    
+    .then(data => {
         console.log("✅ サーバーからのレスポンス:", data);
+    
         if (data?.success) {
-            window.location.href = "/home";
+            alert("✅ 保存が完了しました: " + data.message);
+            console.log("✅ Redirecting to:", data.redirect);
+            window.location.href = data.redirect;  // ✅ LaravelからのリダイレクトURLを使用
         } else {
             alert("⚠️ エラー: " + (data.message || "不明なエラー"));
         }
-})
-.catch(error => console.error("❌ フェッチエラー:", error));
-    });
-    
+    })
+    .catch(error => console.error("❌ フェッチエラー:", error));
+});
+
+
+    // 🔹 ページロード時に Prefecture 選択を復元
+document.addEventListener("DOMContentLoaded", function () {
+    let restoredPrefectures = localStorage.getItem("selectedDestinationsBackup");
+    if (restoredPrefectures) {
+        localStorage.setItem("selectedDestinations", restoredPrefectures);
+        localStorage.removeItem("selectedDestinationsBackup");
+        console.log("🔄 Prefecture 選択を復元しました:", restoredPrefectures);
+    }
+});
 
     // 🔹 `updateDestinationList` 関数を統合
     function updateDestinationList() {

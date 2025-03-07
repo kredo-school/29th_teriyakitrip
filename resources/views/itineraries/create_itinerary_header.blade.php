@@ -5,7 +5,7 @@
     <div id="itinerary-data" data-itinerary-id="{{ $itinerary->id }}"></div>
     <form id="itinerary-form" method="POST" action="{{ route('itineraries.save', ['id' => $itinerary->id]) }}">
     @csrf
-    <input type="hidden" id="itinerary-id" name="itinerary_id" value="{{ $itinerary->id ?? '' }}">
+    <input type="hidden" id="user-id" name="user_id" value="{{ auth()->id() }}">
     <div class="row y-0">
         <div class="col w-50 wrapper">
             {{-- タイトル・編集ボタン --}}
@@ -158,3 +158,4 @@
 @push('scripts')
 <script src="{{ asset('js/create_itinerary_header.js')}}" defer></script>
 @endpush
+<input type="hidden" id="itinerary-id" name="itinerary_id" value="{{ $itinerary->id ?? '' }}">

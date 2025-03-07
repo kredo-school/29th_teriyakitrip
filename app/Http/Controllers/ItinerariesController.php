@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\ItineraryPrefectures;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;//Sunao
+use Illuminate\Support\Facades\DB;//Sunao
 use Carbon\Carbon; // Carbon ライブラリをインポート //Sunao
 use Illuminate\Support\Facades\Auth; // Authファサードをインポート
 
@@ -142,16 +143,7 @@ class ItinerariesController extends Controller
         return view('itineraries.create_itinerary', compact('itinerary', 'days', 'daysList','regions', 'selectedPrefectures'));
 
     }
-    
 
-    public function updateTitle(Request $request, $id)
-    {
-        $itinerary = Itineraries::findOrFail($id);
-        $itinerary->title = $request->title;
-        $itinerary->save();
-
-        return response()->json(['title' => $itinerary->title]);
-    }
 
     public function updateDates(Request $request, $id)
 {
@@ -235,20 +227,14 @@ class ItinerariesController extends Controller
         \Log::info("✅ バリデーション成功:", $validated);
 
              // **既存の旅程を更新**
-            if ($id) {
                 $itinerary = Itineraries::findOrFail($id);
-                $updateData = [
+                $itinerary->update([
+                    'user_id' => $validated['user_id'], 
                     'title' => $validated['title'],
                     'start_date' => $validated['start_date'],
                     'end_date' => $validated['end_date'],
                     'is_public' => $validated['is_public'] ?? false,
-                ];
-                
-                // ✅ `photo` をこのページでは更新しない
-                unset($updateData['photo']);
-    
-                $itinerary->update($updateData);
-            } 
+                ]);
     
                    // **都道府県データを更新**
             ItineraryPrefectures::where('itinerary_id', $itinerary->id)->delete();
@@ -277,15 +263,19 @@ class ItinerariesController extends Controller
             DB::commit();
             \Log::info("✅ 旅程更新成功！", ['itinerary_id' => $itinerary->id]);
 
-            // ✅ `home` にリダイレクト
-            return redirect()->route('home')->with('success', 'Itinerary saved successfully!');
+            // ✅ JSON 形式でレスポンスを返す&`home` にリダイレクト
+            return response()->json([
+                'success' => true,
+                'redirect' => route('home'), // ✅ フロント側でリダイレクトするためのURL
+                'message' => 'Itinerary saved successfully!'
+            ], 200);
     
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error("❌ DB 更新エラー:", ['error' => $e->getMessage()]);
-            return redirect()->route('home')->with('error', 'Error updating itinerary: ' . $e->getMessage());
-        }
+            return response()->json(['error' => 'Error updating itinerary: ' . $e->getMessage()], 500);
     }
+        }
     
     
         
