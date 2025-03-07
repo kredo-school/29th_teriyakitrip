@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Regions;//Sunao
+use App\Models\Itineraries;//Sunao
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,16 +17,14 @@ class Prefectures extends Model
     /**
     * Relationships with Regions (many-to-one)
      */
-    public function regions()
+    public function regions()//Sunao
     {
         return $this->belongsTo(Regions::class, 'region_id'); 
     }
 
-    /**
-     * Relationships (many-to-many) with Itineraries
-     */
-    public function itineraries()
+// **Many to Many(prefectures ↔ itineraries)**
+    public function itineraries()//Sunao
     {
-        return $this->belongsToMany(Itineraries::class);
+        return $this->belongsToMany(Itineraries::class, 'itinerary_prefectures', 'prefecture_id', 'itinerary_id');
     }
 }
