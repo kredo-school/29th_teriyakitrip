@@ -14,12 +14,18 @@ class RestaurantReview extends Model
     protected $fillable = [
         'user_id',
         'place_id',
+        'prefecture_id',
         'rating',
         'title',
         'body',
         'photo', // メイン画像
     ];
 
+    public function prefecture()
+    {
+        return $this->belongsTo(Prefecture::class);
+    }
+    
     /**
      * 1つのレビューには複数の写真がある
      */

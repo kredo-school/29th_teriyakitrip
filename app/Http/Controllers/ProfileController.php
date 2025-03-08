@@ -54,5 +54,11 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
-}
+    }
+
+    public function get_user($user_id){
+
+        $user = User::with('following')->with('followed')->findOrFail($user_id);
+        return response()->json($user);
+    }
 }
