@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ asset('css/restaurant_search.css') }}">
 
 
-<div class="container mt-4">
+<div class="container my-5">
 
     <!-- option (when we have time) 時間あったらする　--> 
     <!-- suggest area -->
@@ -32,8 +32,8 @@
     <div id="restaurantResults" class="restaurant-list mb-5">
         <!-- JavaScript で検索結果をここに表示 -->
     </div>
-    <!-- 🔹 More ボタンを最初から追加（初期は非表示） -->
-    <button id="moreButton" class="btn btn-sm btn-secondary text-white mt-3 d-block mx-auto">More</button>
+    <!--  More ボタン-->
+    <button id="moreButton" class="btn btn-sm btn-secondary text-white mt-2 d-block mx-auto">More</button>
 </div>
 
 <script src="{{ asset('js/restaurant_search.js') }}"></script>

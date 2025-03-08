@@ -27,4 +27,8 @@ class Prefectures extends Model
     {
         return $this->belongsToMany(Itineraries::class);
     }
+    public function reviews()
+    {
+        return $this->hasMany(RestaurantReview::class);
+    }
 }
