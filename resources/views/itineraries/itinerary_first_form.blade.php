@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Create Itinerary')
@@ -5,34 +6,35 @@
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/itinerary_first_form.css') }}">
 <div class="container border rounded-2 p-4">
-    <form action="#" method="post" enctype="multipart/form-data">
+    <form action="{{ route('itineraries.showFirstform') }}" method="post" enctype="multipart/form-data">
+
         @csrf
             {{-- Title --}}
     <div class="col-12">
         <label for="" class="form-label">Title<span class="text-danger">*</span></label>
         <input type="text" class="form-control" name="title" required>
     </div>
-        <div class="row">
-            <!-- Left Side (Destinations) -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label class="form-label">Destination <span class="text-danger">*</span></label>
-                    <div id="destination-container">
-                        <div class="destination-row mt-2">
-                            <select class="form-select select-box full-width" onchange="addDestinationSelect(this)">
-                                <option value="">Choose your destination</option>
-                                @foreach($regions as $region)
-                                    @foreach($region->prefectures as $prefecture)
-                                        <option value="{{ $region->name }}-{{ $prefecture->name }}">
-                                            {{ $region->name }} - {{ $prefecture->name }}
-                                        </option>
-                                    @endforeach
+    <div class="row">
+        <!-- Left Side (Destinations) -->
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Destination <span class="text-danger">*</span></label>
+                <div id="destination-container">
+                    <div class="destination-row mt-2">
+                        <select class="form-select select-box full-width" name="prefectures[]" multiple onchange="addDestinationSelect(this)">
+                            <option value="">Choose your destination</option>
+                            @foreach($regions as $region)
+                                @foreach($region->prefectures as $prefecture)
+                                    <option value="{{ $prefecture->id }}">
+                                        {{ $region->name }} - {{ $prefecture->name }}
+                                    </option>
                                 @endforeach
-                            </select>
-                        </div>
-                    </div>                    
-                </div>
-            </div>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>                    
+        </div>
+    </div>
 
             <!-- Right Side (Date & Photo) -->
             <div class="col-md-6">
@@ -40,10 +42,10 @@
                     <label class="form-label">Date</label>
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="date" class="form-control" required>
+                            <input type="date" class="form-control" name="start_date" required>
                         </div>
                         <div class="col-md-6">
-                            <input type="date" class="form-control" required>
+                            <input type="date" class="form-control" name="end_date" required>
                         </div>
                     </div>
                 </div>
@@ -116,6 +118,7 @@
 
 @section('scripts')
 <script>
+
 /**
  * 📌 Photo モーダルを開く関数
  */
@@ -187,11 +190,13 @@ function addDestinationSelect(selectElement) {
 
         let newSelect = document.createElement("select");
         newSelect.classList.add("form-select", "select-box", "with-button");
-
+        newSelect.setAttribute("multiple", "multiple");
+        newSelect.setAttribute("name", "prefectures[]");
+        
         let selectOptions = `<option value="">Choose your destination</option>`;
         destinations.forEach(region => {
             region.prefectures.forEach(prefecture => {
-                selectOptions += `<option value="${region.name}-${prefecture.name}">${region.name} - ${prefecture.name}</option>`;
+                selectOptions += `<option value="${prefecture.id}">${region.name} - ${prefecture.name}</option>`;
             });
         });
 

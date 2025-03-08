@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Prefectures;
+use App\Models\Prefecture;
 use Illuminate\Http\Request;
 
 class PrefecturesController extends Controller
@@ -34,7 +34,7 @@ class PrefecturesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Prefectures $prefectures)
+    public function show(Prefecture $prefectures)
     {
         //
     }
@@ -42,7 +42,7 @@ class PrefecturesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Prefectures $prefectures)
+    public function edit(Prefecture $prefectures)
     {
         //
     }
@@ -50,7 +50,7 @@ class PrefecturesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Prefectures $prefectures)
+    public function update(Request $request, Prefecture $prefectures)
     {
         //
     }
@@ -58,8 +58,10 @@ class PrefecturesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Prefectures $prefectures)
+    public function destroy(Prefecture $prefectures)
     {
         //
     }
 }
+
+

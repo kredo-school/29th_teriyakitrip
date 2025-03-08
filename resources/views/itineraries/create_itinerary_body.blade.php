@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="{{ asset('css/itinerary_body.css') }}">
 
 <div class="mt-4 wrapper">
     <div class="row">
