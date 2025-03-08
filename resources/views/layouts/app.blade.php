@@ -141,7 +141,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link custom-btn" href="#">
+                                <a class="nav-link custom-btn" href="{{ route('restaurants.search') }}">
                                     <span>Create</span>
                                     <span>Review</span>
                                 </a>

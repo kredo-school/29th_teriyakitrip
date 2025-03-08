@@ -67,26 +67,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function handleFileSelection(event) {
       const files = Array.from(event.target.files);
+      let newFiles = [];
 
-      // 🔹 すでにアップロードされているファイルの数を確認
-      if (selectedFiles.length + files.length > 6) {
-        alert("You can only upload up to 6 images.");
-        return;
-    }
 
       files.forEach(file => {
           if (selectedFiles.length < 6) {
               selectedFiles.push(file);
+              newFiles.push(file); // 新しく追加するファイルだけリストに入れる
           }
       });
 
-      if (selectedFiles.length > 6) {
-          alert("You can only upload up to 6 images.");
-          selectedFiles = selectedFiles.slice(0, 6);
-      }
-
       displayPreviews();
-  }
+      updateFileInput();
+
+    }
 
   function displayPreviews() {
       previewContainer.innerHTML = "";
@@ -120,9 +114,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const img = document.createElement("img");
         img.src = src;
-        img.classList.add("rounded", "me-2", "preview-thumbnail");
-        img.style.width = "100px";
-        img.style.height = "100px";
+        img.classList.add("rounded", "me-1", "preview-thumbnail");
+        img.style.width = "90px";
+        img.style.height = "90px";
         img.style.objectFit = "cover";
         img.style.cursor = "pointer";
 
@@ -138,13 +132,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function updateFileInput() {
+    const dataTransfer = new DataTransfer();
+
+    selectedFiles.forEach(file => {
+        dataTransfer.items.add(file);
+    });
+
+    fileInput.files = dataTransfer.files;
+
+    // **6枚以上なら、ファイル選択ボタンを `disabled` にせず、hidden の input にデータを入れる**
+    if (selectedFiles.length >= 6) {
+        fileInput.style.display = "none"; // 🔥 `display: none` にして、ボタンを非表示
+        createHiddenFileInputs();
+    } else {
+        fileInput.style.display = "block"; // 🔥 6枚未満ならボタンを表示
+        removeHiddenFileInputs(); // 🔥 不要な hidden input を削除
+    }
+}
+
+// **hidden の input を作成**
+function createHiddenFileInputs() {
+    removeHiddenFileInputs(); // **既存の hidden input を削除**
+
+    const form = fileInput.closest("form"); // **フォームを取得**
+    selectedFiles.forEach((file, index) => {
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = `photos_hidden[]`; // **名前をつける**
+        hiddenInput.value = file.name; // **ファイル名を入れる (実際のデータは送れないが識別用)**
+        hiddenInput.setAttribute("data-hidden-photo", index); // **識別用データ属性**
+        form.appendChild(hiddenInput);
+    });
+}
+
+// **hidden の input を削除**
+function removeHiddenFileInputs() {
+    document.querySelectorAll("input[data-hidden-photo]").forEach(input => input.remove());
+}
 
     // **delete image**
     deletePreviewButton.addEventListener("click", function () {
       if (currentDeleteIndex !== null) {
           console.log("Deleted index:", currentDeleteIndex);
           selectedFiles.splice(currentDeleteIndex, 1);  // **配列から削除**
+
           displayPreviews();  // **プレビューを更新**
+          updateFileInput(); 
           photoPreviewModal.hide(); // **モーダルを閉じる**
           currentDeleteIndex = null; // **削除インデックスをリセット**
       }
@@ -159,19 +193,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // 仮のデータ（Google API のデータ取得前）
-  const restaurantName = document.getElementById("restaurantName");
-  const restaurantPhoto = document.getElementById("restaurantPhoto");
-
-  if (restaurantName) {
-      restaurantName.innerText = "ABC Cafe"; // 仮の店名
-  }
-
-  if (restaurantPhoto) {
-      restaurantPhoto.src = "/images/restaurants/default-restaurant.jpg"; // 仮の画像
-  }
-});
 
 document.addEventListener("DOMContentLoaded", function () {
   if (!itineraries || itineraries.length === 0) return;
