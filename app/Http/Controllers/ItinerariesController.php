@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Region;
-use App\Models\Itinerary;
+use App\Models\Regions;
+use App\Models\Itineraries;
 use Illuminate\Http\Request;
-use App\Models\Prefecture; 
-use App\Models\ItineraryPrefecture;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth; // Authファサードをインポート
 
