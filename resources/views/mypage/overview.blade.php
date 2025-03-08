@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'My Page')
+@section('title', 'My Page_Overview')
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/nozomi.css') }}">
@@ -20,7 +20,7 @@
                                 <p class="text-center" style="color: #777; font-size: 0.8em; width: 100%; margin: 0 auto; white-space: pre-wrap; word-wrap: break-word;">{!! nl2br(e($user->introduction)) !!}</p>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
 
                         <!-- Map Image -->
                         <div class="col-md-6">
@@ -35,74 +35,31 @@
                 <div class="tabs-container">
                     <ul class="nav nav-tabs-mypage" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage active fs-2" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+                            <button class="nav-link-mypage @if($tab == 'overview') active @endif fs-2" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview-content" type="button" role="tab" aria-controls="overview-content" aria-selected="true">Overview</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage fs-2" id="itineraries-tab" data-bs-toggle="tab" data-bs-target="#itineraries" type="button" role="tab" aria-controls="itineraries" aria-selected="false">Itineraries</button>
+                            <button class="nav-link-mypage @if($tab == 'itineraries') active @endif fs-2" id="itineraries-tab" data-bs-toggle="tab" data-bs-target="#itineraries-content" type="button" role="tab" aria-controls="itineraries-content" aria-selected="false">Itineraries</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage fs-2" id="restaurant-reviews-tab" data-bs-toggle="tab" data-bs-target="#restaurant-reviews" type="button" role="tab" aria-controls="restaurant-reviews" aria-selected="false">Restaurant Reviews</button>
+                            <button class="nav-link-mypage @if($tab == 'restaurant-reviews') active @endif fs-2" id="restaurant-reviews-tab" data-bs-toggle="tab" data-bs-target="#restaurant-reviews-content" type="button" role="tab" aria-controls="restaurant-reviews-content" aria-selected="false">Restaurant Reviews</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage fs-2" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers" type="button" role="tab" aria-controls="followers" aria-selected="false">
-                                {{-- {{ $follower._count }} --}}
-                                Follower
-                            </button>
+                            <button class="nav-link-mypage @if($tab == 'followers') active @endif fs-2" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers-content" type="button" role="tab" aria-controls="followers-content" aria-selected="false">Follower</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage fs-2" id="followed-tab" data-bs-toggle="tab" data-bs-target="#followed" type="button" role="tab" aria-controls="followed" aria-selected="false">
-                                {{-- {{ $follow_count }} --}}
-                                Following
-                            </button>
+                            <button class="nav-link-mypage @if($tab == 'following') active @endif fs-2" id="followed-tab" data-bs-toggle="tab" data-bs-target="#followed-content" type="button" role="tab" aria-controls="followed-content" aria-selected="false">Following</button>
                         </li>
-                        
-                        </ul>
+                    </ul>
                 </div>
             </div>
 
-                <div class="tab-content" id="myTabContent">
-                    <!-- Itineraries Section -->
-                    <div class="container">
+            <div class="tab-content" id="myTabContent">
+
+                <!-- Itinerary Section -->
+                <div class="tab-pane fade @if($tab == 'overview') show active @endif" id="overview-content" role="tabpanel" aria-labelledby="overview-tab">
                     <div class="mt-4 text-center">
                         <p style="color: #E97911; font-size: 3rem; font-weight: bold">Itinerary</p>
-                        @if($itineraries->isNotEmpty())
-                        <div class="row justify-content-center">
-                            @foreach ($itineraries as $itinerary)
-                                <div class="col-md-4 mb-4">
-                                    <div class="card" style="border: none; border-radius: 10px;">
-                                        @if($itinerary->photo)
-                                            <img src="{{ Storage::url($itinerary->photo) }}" alt="Itinerary Image" class="card-img-top" style="border-radius: 10px 10px 0 0; object-fit: cover; height: 150px;">
-                                        @else
-                                            <div class="card-img-top bg-secondary" style="border-radius: 10px 10px 0 0; height: 150px;"></div>
-                                        @endif
-                                        <div class="card-body">
-                                            <h5 class="card-title" style="font-size: 1em;">{{ $itinerary->title }}</h5>
-                                            @php
-                                                $startDate = $itinerary->start_date;
-                                                $endDate = $itinerary->end_date;
-                                                $dayCount = $startDate && $endDate ? $startDate->diffInDays($endDate) + 1 : 0;
-                                            @endphp
 
-                                            <p class="card-text" style="font-size: 0.8em; color: #555;">
-                                                @if($dayCount > 0)
-                                                    @for($i = 1; $i <= $dayCount; $i++)
-                                                        Day{{ $i }}{{ $i < $dayCount ? ' > ' : '' }}
-                                                    @endfor
-                                                @else
-                                                    日程未定
-                                                @endif
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        @else
-                            <p>まだ旅程がありません。No Itineraries yet.</p>
-                        @endif
-
-                        <br>
-                        <!-- デザイン -->
                         <div class="container toppage mt-5"> <!-- RECOMMENDED ITINERALIES SECTION -->
                             
                             <div class="row mt-3">
@@ -176,7 +133,7 @@
                             @endforeach
                         </div>
                         @else
-                            <p>まだレビューがありません。No Restaurant's review yet.</p>
+                            <p>まだ実際のレビューがありません。No realistic Restaurant's review yet.</p>
                         @endif
 
                         <div class="container toppage mt-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
@@ -256,4 +213,13 @@
 </div>
     
 </div>
-@endsection
+
+
+                    </div><br><br>
+
+
+
+
+
+
+                    @endsection

@@ -15,7 +15,8 @@ class RestaurantReviewController extends Controller
      */
     public function index()
     {
-        //
+        $restaurantReviews = RestaurantReview::latest()->paginate(10);
+        return view('restaurant_reviews.index', compact('restaurantReviews'));
     }
 
     /**
