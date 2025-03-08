@@ -58,7 +58,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
 
-    Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
+    
         Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
         Route::get('/create', [ItinerariesController::class, 'create'])->name('create');
         // 画面を表示するための GET ルート
@@ -71,7 +71,7 @@ Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
         Route::get('/{id}/edit-destination', [ItinerariesController::class, 'editDestination'])->name('editDestination');
         Route::put('/{id}/update/', [ItinerariesController::class, 'updateDestination'])->name('itinerary.updateDestination');
     });
-});
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
