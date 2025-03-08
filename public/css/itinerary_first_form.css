@@ -33,21 +33,6 @@
     border-color: #e97911; /* オレンジ色 */
 }
 
-/* orange button */
-.btn-orange {
-    background-color: #e97911; /* オレンジの背景色 */
-    color: white; /* 白文字 */
-    border: 1px solid #e97911; /* オレンジのボーダー */
-    text-decoration: none;
-    padding: 4px 8px;
-    border-radius: 5px;
-}
-
-.btn-orange:hover {
-    background-color: #e66100; /* 濃いオレンジ色 */
-    border: 1px solid #e66100; /* 濃いオレンジのボーダー */
-}
-
 /* white button with orange border */
 .btn-white-orange {
     background-color: white; /* 白の背景色 */
@@ -62,4 +47,40 @@
     background-color: #e97911; /* オレンジの背景色 */
     color: white; /* 白文字 */
     border: 1px solid #e97911; /* オレンジのボーダー */
+}
+
+.destination-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.select-box {
+    width: 100%;
+    min-width: 250px;
+}
+
+.select-box.with-button {
+    width: calc(100% - 50px);
+}
+
+.select-box.full-width {
+    width: 100%;
+}
+
+.remove-btn {
+    width: 40px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: transparent;
+    color: black;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background-color: #e9ecef;
 }

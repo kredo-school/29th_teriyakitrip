@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('itineraries', function (Blueprint $table) {
             $table->id(); // PK, INT, auto-increment
-            $table->foreignId('user_id')->constrained('users'); // FK, INT, usersテーブルのidカラムを参照
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
+// FK, INT, usersテーブルのidカラムを参照//Edited by Sunao->nullable&onDelete//
             $table->string('title'); // VARCHAR
             $table->date('start_date')->nullable(); // DATE
             $table->date('end_date')->nullable(); // DATE

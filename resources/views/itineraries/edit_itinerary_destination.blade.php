@@ -1,8 +1,3 @@
-@extends('layouts.app')
-
-@section('title', 'Edit Destination')
-
-@section('content')
 <link rel="stylesheet" href="{{ asset('css/edit_itinerary_destination.css') }}">
 
 <div class="container border rounded-2">
@@ -54,4 +49,3 @@
         </div>
     </form>
 </div>
-@endsection
