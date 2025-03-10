@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Prefectures;//Sunao
+use App\Models\Prefecture;//Sunao
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Regions extends Model
+class Region extends Model
 {
     use HasFactory;
     
@@ -18,7 +18,7 @@ class Regions extends Model
      */
     public function prefectures()//Sunao
     {
-        return $this->hasMany(Prefectures::class, 'region_id');
+        return $this->hasMany(Prefecture::class, 'region_id');
     }
 
     #Display color from prefecutures

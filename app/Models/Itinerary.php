@@ -7,10 +7,9 @@ use App\Models\Prefectures;//Sunao
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;//sunao
 
-class Itineraries extends Model
+class Itinerary extends Model
 {
     use HasFactory;
-    protected $table = 'itineraries'; // 明示的にテーブル名を指定
     
     protected $fillable = [
         'user_id',//sunao
@@ -28,7 +27,7 @@ class Itineraries extends Model
     // **Many to Many(itineraries ↔ prefectures)**
     public function prefectures()//sunao
     {
-        return $this->belongsToMany(Prefectures::class, 'itinerary_prefectures', 'itinerary_id', 'prefecture_id');
+        return $this->belongsToMany(Prefecture::class, 'itinerary_prefectures', 'itinerary_id', 'prefecture_id');
     }
 }
 

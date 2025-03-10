@@ -43,9 +43,9 @@
                     <div class="row">
                         <div class="col-12">
                             <p class="text-center float-start">
-                                <input type="date" id="start_date" value="{{ $itinerary->start_date }}" class="date-input">
+                                <input type="date" name="start_date" id="start_date" value="{{ $itinerary->start_date }}" class="date-input">
                                 <strong>-</strong> 
-                                <input type="date" id="end_date" value="{{ $itinerary->end_date }}" class="date-input">
+                                <input type="date" name="end_date" id="end_date" value="{{ $itinerary->end_date }}" class="date-input">
                                 <br>
                                 <span id="trip_days">{{ $days }} days</span>
                             </p>
@@ -75,10 +75,6 @@
                         </div>
                         <div class="modal-body">
                             <div class="container border rounded-2">
-                                <!-- 注意書き -->
-                                <div class="m-0 p-0 d-flex justify-content-end">
-                                    <span class="small text-danger">*Up to 5 prefectures can be selected</span>
-                                </div>
             
                                 <!-- Listing of prefectures by region group -->            
                                 <div class="regions-container">
@@ -93,7 +89,7 @@
                                                 @foreach($region->prefectures as $prefecture)
                                                     <div class="region-options"> 
                                                         <label class="form-check-label d-flex align-items-center pe-3">
-                                                            <input type="checkbox" name="prefectures[]" value="{{ $prefecture->id }}" data-color="{{ $prefecture->color }}" class="form-check-input me-1" {{ in_array($prefecture->id, old('prefectures', $selectedPrefectures) ?? []) ? 'checked' : '' }}>
+                                                            <input type="checkbox" name="selected_prefectures[]" value="{{ $prefecture->id }}" data-color="{{ $prefecture->color }}" class="form-check-input me-1" {{ in_array($prefecture->id, old('prefectures', $selectedPrefectures) ?? []) ? 'checked' : '' }}>
                                                             <span class="flex-grow-1">{{ $prefecture->name }}</span>
                                                         </label>
                                                     </div>

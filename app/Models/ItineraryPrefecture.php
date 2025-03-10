@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;//Sunao
 use Illuminate\Database\Eloquent\Model;
 
-class ItineraryPrefectures extends Model
+class ItineraryPrefecture extends Model
 {
     use HasFactory;
 
-    protected $table = 'itinerary_prefectures'; // ✅ テーブル名を明示的に指定//sunao
 
     protected $fillable = [
         'itinerary_id',
@@ -21,7 +20,7 @@ class ItineraryPrefectures extends Model
     // ✅ Itineraries（旅程）とのリレーション
     public function itinerary()//sunao
     {
-        return $this->belongsTo(Itineraries::class, 'itinerary_id');
+        return $this->belongsTo(Itinerary::class, 'itinerary_id');
     }
 
     // ✅ Prefectures（都道府県）とのリレーション
