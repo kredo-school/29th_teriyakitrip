@@ -43,7 +43,7 @@
                                     <div class="dropdown position-absolute" style="top: 8px; right: 8px;">
                                         <button class="btn btn-more-options dropdown-toggle" type="button"
                                             id="dropdownMenuButtonOkinawa" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis" >action</i>
+                                            <i class="fa-solid fa-ellipsis" ></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonOkinawa">
                                             <!-- Privacyをクリックするとプライバシーモーダルを表示 -->
