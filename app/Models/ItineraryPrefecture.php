@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;//Sunao
+use App\Models\Prefecture;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;//Sunao
 
 class ItineraryPrefecture extends Model
 {
@@ -26,6 +27,6 @@ class ItineraryPrefecture extends Model
     // ✅ Prefectures（都道府県）とのリレーション
     public function prefecture()//sunao
     {
-        return $this->belongsTo(Prefectures::class, 'prefecture_id');
+        return $this->belongsTo(Prefecture::class, 'prefecture_id');
     }
 }

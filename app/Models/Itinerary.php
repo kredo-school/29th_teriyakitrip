@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;//Sunao
-use App\Models\Prefectures;//Sunao
+use App\Models\Prefecture;//Sunao
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;//sunao
 
@@ -30,4 +30,3 @@ class Itinerary extends Model
         return $this->belongsToMany(Prefecture::class, 'itinerary_prefectures', 'itinerary_id', 'prefecture_id');
     }
 }
-

@@ -1,10 +1,12 @@
 <form action="{{ route('restaurant-reviews.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
+
+    <input type="hidden" name="place_id" value="{{ $restaurant['place_id'] }}">
     
     <label class="mt-4 mb-2 fw-bold">Rate this restaurant</label>
     <div class="rating mb-4">
       @for ($i = 1; $i <= 5; $i++)
-          <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" class="d-none">
+          <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" class="d-none" required>
           <label for="star{{ $i }}" class="rating-label">
               <i class="fa-regular fa-circle" data-value="{{ $i }}"></i>
           </label>
@@ -13,12 +15,12 @@
   
     <div class="mb-4">
         <label for="title" class="form-label fw-bold">Title your review</label>
-        <input type="text" name="title" id="title" class="form-control">
+        <input type="text" name="title" id="title" class="form-control" required>
     </div>
   
     <div class="mb-4">
         <label for="body" class="form-label fw-bold">Your review</label>
-        <textarea name="body" id="body" class="form-control" rows="5"></textarea>
+        <textarea name="body" id="body" class="form-control" rows="5" required></textarea>
     </div>
   
     <div class="mb-4">

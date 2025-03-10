@@ -15,7 +15,7 @@
                       @endif
                   </div>
                   <div class="d-flex mt-1">
-                    <h5 class="mb-0 me-4">{{ $review->user->name }}</h5>
+                    <h5 class="mb-0 me-4">{{ $review->user->user_name }}</h5>
                     <span class="text-muted me-3">{{ $review->rating }}/5</span>
                     <div class="text-warning">
                       @for ($i = 1; $i <= 5; $i++)
@@ -45,7 +45,7 @@
                 <div class="photos d-flex mt-3">
                   @if ($review->photos)
                     @foreach ($review->photos as $photo)
-                      <img src="{{ asset($photo->photo) }}" class="rounded me-2" style="width: 100px; height: 100px; object-fit: cover;">
+                        <img src="{{ Storage::url($photo->photo) }}" class="rounded me-2" style="width: 100px; height: 100px; object-fit: cover;">
                     @endforeach
                   @endif
                   

@@ -15,3 +15,9 @@
 .other-icons{
   margin-top: 13px;
 }
+
+.google-map-wrapper {
+  width: 100%;
+  height: 100%;  /* 高さを100%に設定して、親要素に合わせる */
+}
+

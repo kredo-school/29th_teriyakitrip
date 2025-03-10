@@ -17,6 +17,7 @@
     </div> 
 </div>
 <div class="col-6">
-    {{-- map here--}}
+    <!-- 右側にGoogle Map -->
+    <div id="map" class="google-map-wrapper"></div>
 </div>
 @endsection

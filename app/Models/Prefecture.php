@@ -23,7 +23,7 @@ class Prefecture extends Model
     }
 
 // **Many to Many(prefectures ↔ itineraries)**
-    public function itinerarie()//Sunao
+    public function itineraries()//Sunao
     {
         return $this->belongsToMany(Itinerary::class, 'itinerary_prefectures', 'prefecture_id', 'itinerary_id');
     }

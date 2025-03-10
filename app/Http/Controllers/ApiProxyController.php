@@ -11,7 +11,7 @@ class ApiProxyController extends Controller
     {
         $query = $request->query('query'); // 検索キーワード
         $page = $request->query('page', 1); // デフォルトは1ページ目
-        $perPage = 10; // 1ページあたりの表示件数
+        $perPage = 10; // 1ページあたりの表示件数　数字を変更しても20件ずつでるようになっている。
 
 
         if (!$query) {

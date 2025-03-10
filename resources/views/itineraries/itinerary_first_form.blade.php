@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Create Itinerary')
@@ -6,6 +7,8 @@
 <link rel="stylesheet" href="{{ asset('css/itinerary_first_form.css') }}">
 <div class="container border rounded-2 p-4">
     <form action="{{ route('itineraries.store') }}" method="POST">
+    {{-- <form action="{{ route('itineraries.showFirstform') }}" method="post" enctype="multipart/form-data"> //Just in case//Sunao  --}}
+
         @csrf
 
             <!-- Stores the path of the selected `photo`. -->
@@ -32,12 +35,12 @@
                                             {{ $region->name }} - {{ $prefecture->name }}
                                         </option>
                                     @endforeach
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>                    
-                </div>
-            </div>
+                                @endforeach                          
+                        </select>
+                    </div>
+                </div>                    
+        </div>
+    </div>
 
             <!-- Right Side (Date & Photo) -->
             <div class="col-md-6">
@@ -45,10 +48,10 @@
                     <label class="form-label">Date</label>
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="date" class="form-control"  name="start_date">
+                            <input type="date" class="form-control" name="start_date" required>
                         </div>
                         <div class="col-md-6">
-                            <input type="date" class="form-control" name="end_date">
+                            <input type="date" class="form-control" name="end_date" required>
                         </div>
                     </div>
                 </div>
@@ -123,6 +126,7 @@
 <script src="{{ asset('js/create_itinerary_first_form.js')}}" defer></script>
 <script>
     window.destinations = @json($regions);
+    // let destinations = @json($regions);// Just in case //Sunao
+    // document.addEventListener("DOMContentLoaded", updateRemoveButtons); // Just in case //Sunao
 </script>
-
 @endpush

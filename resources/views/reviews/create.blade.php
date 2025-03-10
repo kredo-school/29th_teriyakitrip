@@ -8,8 +8,8 @@
     <div class="row">
         <!-- left side（restautant info & Itineraries） -->
         <div class="col-md-5">
-            @include('reviews.partials.restaurant_header')  <!-- upper left：restaurant info -->
-            @include('reviews.partials.restaurant_itineraries')  <!-- lower left：Itineraries -->
+            @include('reviews.partials.restaurant_header', ['restaurant' => $restaurant])  <!-- upper left：restaurant info -->
+            {{-- @include('reviews.partials.restaurant_itineraries')  <!-- lower left：Itineraries --> --}}
         </div>
 
         <!-- right side（review form） -->
