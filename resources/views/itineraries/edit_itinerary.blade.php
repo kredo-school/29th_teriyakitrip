@@ -60,6 +60,14 @@
               </div>
 
           </div>
+
+          <div class="d-flex flex-wrap gap-1 mb-2">
+                <div class="prefecture-box text-center text-dark px-2 round">Okinawa</div>
+                <div class="prefecture-box text-center text-dark px-2 round">aichi</div>
+                <div class="prefecture-box text-center text-dark px-2 round">aichi</div>
+                <div class="prefecture-box text-center text-dark px-2 round">aichi</div>
+                <div class="prefecture-box text-center text-dark px-2 round">aichi</div>
+          </div>
             
           {{-- overview, day --}}
           <div class="swiper-container">
@@ -213,7 +221,14 @@
                 
                 </div>
             </div>
+
         </div>
+
+        <!-- 右側にGoogle Map -->
+        <div class="col-6">
+            <div id="map" class="google-map-wrapper"></div>
+        </div>
+
     </div>
 </div>
 @endsection

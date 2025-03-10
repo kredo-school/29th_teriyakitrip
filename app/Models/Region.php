@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Regions extends Model
+class Region extends Model
 {
     use HasFactory;
     
@@ -17,7 +17,7 @@ class Regions extends Model
      */
     public function prefectures()
     {
-        return $this->hasMany(Prefectures::class, 'region_id');
+        return $this->hasMany(Prefecture::class, 'region_id');
     }
 
     #Display color from prefecutures

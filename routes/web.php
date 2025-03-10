@@ -18,8 +18,14 @@ use App\Http\Controllers\FavoritesController; //Toshimi
 use App\Http\Controllers\ItineraryController;
 
 Auth::routes();
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/show', [ItinerariesController::class, 'showItinerary'])->name('itineraries.show_itinerary');
+Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])->name('restaurants.search'); //naho
+
+
+
+Route::get('/itinerary/show', [ItinerariesController::class, 'showItinerary'])->name('itineraries.show_itinerary');
 
 Route::get('/my-itineraries', [MyItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
 Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
@@ -62,23 +68,32 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('/restaurant-reviews/create', [RestaurantReviewController::class, 'create'])->name('restaurant-reviews.create'); //naho
     Route::post('/restaurant-reviews', [RestaurantReviewController::class, 'store'])->name('restaurant-reviews.store'); //naho
-
-    // Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+    Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
+   
+    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 });
 
 Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
 
-    Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
+    
         Route::get('/create_add', [ItinerariesController::class, 'show'])->name('show');
         Route::get('/create', [ItinerariesController::class, 'create'])->name('create');
-        Route::get('/create_itinerary', [ItinerariesController::class, 'addList'])->name('create_itinerary_header');
+        // 画面を表示するための GET ルート
+        Route::get('/itinerary_first_form', [ItinerariesController::class, 'create'])->name('itineraries.create'); // フォーム表示
+        Route::post('/itinerary_first_form', [ItinerariesController::class, 'showFirstform'])->name('showFirstform'); // フォーム送信処理
+
+        Route::get('/create_itinerary/{id}', [ItinerariesController::class, 'addList'])->name('itineraries.create_itinerary'); // しおり表示
         // Edit itinerary P33
         Route::get('/edit', [ItinerariesController::class, 'edit'])->name('edit_itinerary'); // SAKI
         Route::get('/{id}/edit-destination', [ItinerariesController::class, 'editDestination'])->name('editDestination');
         Route::put('/{id}/update/', [ItinerariesController::class, 'updateDestination'])->name('itinerary.updateDestination');
     });
-});
 
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/api/photo', [ApiProxyController::class, 'fetchPhoto']); //naho
+Route::get('/api/places', [ApiProxyController::class, 'fetchPlaces']); //naho
 
 Route::get('/profile', function () {
     return view('profile', ['user' => Auth::user()]);
