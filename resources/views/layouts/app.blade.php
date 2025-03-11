@@ -245,10 +245,10 @@
                                             </div>
 
                                             <ul class="list-unstyled slightly-right-aligned">
-                                                <li><a class="dropdown-item" href="#">My Itineraries</a></li>
-                                                <li><a class="dropdown-item" href="#">My Restaurant's Reviews</a>
+                                                <li><a class="dropdown-item" href="{{ route('my-itineraries.list') }}">My Itineraries</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('my-reviews.list') }}">My Restaurant's Reviews</a>
                                                 </li>
-                                                <li><a class="dropdown-item" href="#">My Favorites</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('favorites.list') }}">My Favorites</a></li>
                                                 <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Edit
                                                         Profile</a></li>
                                                 <li>

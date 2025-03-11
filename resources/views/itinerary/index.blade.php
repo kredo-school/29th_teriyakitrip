@@ -39,13 +39,13 @@
                                 <div class="position-relative">
                                     <img src="images/sample8.jpg" alt="Itinerary 1"
                                         class="element-style rounded-top-4 w-100">
-                                    <!-- ドロップダウン付きの3点ボタン -->
+                                    <!-- Three dots button -->
                                     <div class="dropdown position-absolute" style="top: 8px; right: 8px;">
                                         <button class="btn btn-more-options dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis"></i>
+                                            id="dropdownMenuButtonOkinawa" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis" ></i>
                                         </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonOkinawa">
                                             <!-- Privacyをクリックするとプライバシーモーダルを表示 -->
                                             <li>
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal"
@@ -87,7 +87,7 @@
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <!-- Membersをクリックするとモーダルを表示 -->
                                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#membersModal">Privacy</a></li>
+                                                    data-bs-target="#privacyModal">Privacy</a></li>
                                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                     data-bs-target="#membersModal">Members</a></li>
                                             <li>
