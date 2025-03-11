@@ -1,11 +1,11 @@
 <link rel="stylesheet" href="{{ asset('css/itinerary_body.css') }}">
-{{-- Bladeのループの最小値を1にする --}}
 
-<<div class="mt-4 wrapper" id="day-container">
+{{-- Bladeのループの最小値を1にする --}}
+<div class="mt-4 wrapper" id="day-container">
     @foreach($daysList as $day)
-    @php
-$dayIndex = max(1, $loop->index + 1);
-@endphp
+        @php
+            $dayIndex = max(1, $loop->index + 1);
+        @endphp
         <div class="row mt-2 day-body" id="day-body-{{ $loop->index + 1 }}" data-day="{{ $loop->index + 1 }}">
             <div class="col-2">
                 <div class="day-box text-center text-light">Day {{ $loop->index + 1 }}</div>
@@ -17,6 +17,11 @@ $dayIndex = max(1, $loop->index + 1);
             </div>
         </div>
     @endforeach
+</div>
+
+<!-- 🔹 `create_add.blade.php` を正しく読み込めるか確認 -->
+<div id="add-spot-container" style="display: none;">
+    @include('itineraries.create_add')
 </div>
 
 @push('scripts')

@@ -1,10 +1,6 @@
-@extends('layouts.app')
-
-@section('title', 'Create Branch')
-
-@section('content')
   {{-- Select tab: Go back to Previous page, Search or Favorite --}}
 <link rel="stylesheet" href="{{ asset('css/itinerary_search.css') }}">
+
 <div class="container">
     <ul class="nav px-auto text-center fw-bold">
         <li class="nav-item border py-0">
@@ -25,7 +21,13 @@
         </li> 
     </ul>
 
-    <div id="search-content">
+    <!-- 🔹 閉じるボタン -->
+    <div class="d-flex justify-content-end mt-2">
+        <button id="close-add-spot" class="btn btn-danger btn-sm">× 閉じる</button>
+    </div>
+
+    <!-- 🔹 タブコンテンツ -->
+    <div id="search-content" style="display: block;">
         @include('itineraries.search_spot')
     </div>
 
@@ -33,7 +35,6 @@
         @include('itineraries.favorite_spot')
     </div>
 </div> 
-
 
 <script>
     document.getElementById('search-button').addEventListener('click', function() {
@@ -45,5 +46,9 @@
         document.getElementById('search-content').style.display = 'none';
         document.getElementById('favorite-content').style.display = 'block';
     });
+
+    // ✅ 閉じるボタンの動作を追加
+    document.getElementById('close-add-spot').addEventListener('click', function() {
+        document.getElementById('add-spot-container').style.display = 'none';
+    });
 </script>
-@endsection

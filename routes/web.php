@@ -64,7 +64,6 @@ Route::group(['middleware' => 'auth'], function() {
 });
 Route::group(['middleware' => 'auth'], function() {    
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
-        Route::get('/create_add', [ItineraryController::class, 'show'])->name('show');
         Route::get('/create', [ItineraryController::class, 'create'])->name('create');// Sunao
         // Route::get('/itinerary_first_form', [ItineraryController::class, 'create'])->name('itineraries.create'); // フォーム表示
         Route::post('/store', [ItineraryController::class, 'store'])->name('store');// Sunao

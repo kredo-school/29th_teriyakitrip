@@ -8,3 +8,15 @@
 .plus-icon {
   font-size: 2.5rem;
 }
+
+#add-spot-container {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 9999 !important;
+  position: relative !important;
+  background: white !important;
+  width: 100% !important;
+  height: auto !important;
+  border: 2px solid red; /* デバッグ用に枠をつける */
+}
