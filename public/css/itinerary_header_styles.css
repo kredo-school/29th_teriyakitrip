@@ -112,6 +112,17 @@
     text-align: center;
 } 
 
+.prefecture-box {
+    background: #ff0000;  
+    /* border: 2px solid #e91e63; ピンクの枠線 */
+    border-radius: 16px;  /* 角を丸める */
+    padding: 5px;  /* 内側の余白 */
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: lighter;
+  }
+  
+
 .itinerary-header {
     float: left;
     width: 89%;
@@ -129,3 +140,33 @@ main {
     margin-top: 10px;
    
 }
+.region-title {
+    font-weight: bold;
+    text-align: center;
+    height: 40px;
+}
+
+.form-check-input {
+    width: 18px;
+    height: 18px;
+}
+
+/* white button with orange border */
+.btn-white-orange {
+    background-color: white; /* 白の背景色 */
+    color: #e97911; /* オレンジのテキスト */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.btn-white-orange:hover {
+    background-color: #e97911; /* オレンジの背景色 */
+    color: white; /* 白文字 */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+}
+
+.region-options {
+    width: 120px;
+ } 

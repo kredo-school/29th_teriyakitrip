@@ -65,7 +65,9 @@
 
     <!-- Bootstrap JS -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 
 
@@ -175,7 +177,7 @@
 
                             <li class="nav-item">
 
-                                <a class="nav-link custom-btn" href="#">
+                                <a class="nav-link custom-btn" href="{{route('itineraries.create')}}">
 
                                     <span>Create</span>
 
@@ -245,10 +247,10 @@
                                             </div>
 
                                             <ul class="list-unstyled slightly-right-aligned">
-                                                <li><a class="dropdown-item" href="#">My Itineraries</a></li>
-                                                <li><a class="dropdown-item" href="#">My Restaurant's Reviews</a>
+                                                <li><a class="dropdown-item" href="{{ route('my-itineraries.list') }}">My Itineraries</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('my-reviews.list') }}">My Restaurant's Reviews</a>
                                                 </li>
-                                                <li><a class="dropdown-item" href="#">My Favorites</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('favorites.list') }}">My Favorites</a></li>
                                                 <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Edit
                                                         Profile</a></li>
                                                 <li>
@@ -298,12 +300,19 @@ document.getElementById('logout-form').submit();">
 
     </div>
 
-    @yield('scripts')
+    {{-- @yield('scripts')  --}} {{--  親ファイルと子ファイル（＠includeファイル）のJavascriptの干渉を避けるのには @yield('scripts') より @stack('scripts') が良いらしい by chat GPT //Sunao--}}
+    @stack('scripts')
+    {{-- ↑ただし、Javascriptをblade.phpファイルに適用するには@section('scripts') <script src="{{ asset('js/ファイル名.js')}}" ></script> @endsection 
+    ではなく、
+    @push('scripts')
+    <script src="{{ asset('js/ファイル名.js')}}" ></script>
+    @endpush 
+    でs指定していただくようお願いします。 もし、不具合あれば調整しましょう。 // Sunao --}}
 
-
-
-
-
+@push('scripts')
+<script src="{{ asset('js/ファイル名.js')}}" ></script>
+@endpush
+ 
 
 
     <!-- ここにBootstrapのJavaScriptを追加 -->

@@ -51,6 +51,7 @@ public function create(Request $request)
     // 必要な情報を取得
     $restaurant = [
         'place_id' => $place_id,
+        // 'place_id' => $review->place_id, // レビューに紐づいたplace_idを使う
         'name' => $data['result']['name'] ?? 'Unknown Restaurant',
         'photo' => $photo
     ];
@@ -209,6 +210,53 @@ public function create(Request $request)
         return view('reviews.show', compact('restaurant', 'reviews', 'averageRating', 'reviewCount'));
 
     }
+
+    // SAKI - show my restaurant review page
+    public function viewMyreview($id) {
+        // 現在のユーザーのレビューを取得（間違ったIDのレビューを取得しないようにする）
+        $review = RestaurantReview::where('id', $id)
+            ->where('user_id', auth()->id()) // ログインユーザーのレビューのみ
+            ->with('photos') // 関連する写真を取得
+            ->firstOrFail();
+
+        // Google API からレストランの詳細情報を取得
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $placeId = $review->place_id; // レビューに紐づくレストランのplace_id
+        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$placeId}&key={$apiKey}";
+
+        // APIリクエストを送信
+        $response = Http::get($apiUrl);
+        $data = $response->json();
+
+        // デバッグ用: APIレスポンスを確認
+        if (!isset($data['result'])) {
+            return back()->with('error', 'レストラン情報を取得できませんでした。');
+        }
+
+        // レストラン画像の取得
+        if (isset($data['result']['photos'][0]['photo_reference'])) {
+            $photoReference = $data['result']['photos'][0]['photo_reference'];
+            $photo = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
+        } else {
+            $photo = asset('/images/restaurants/default-restaurant.jpg'); // デフォルト画像
+        }
+
+        // レストラン情報を格納
+        $restaurant = [
+            'place_id' => $placeId,
+            'name' => $data['result']['name'] ?? 'Unknown Restaurant',
+            'photo' => $photo,
+            'address' => $data['result']['formatted_address'] ?? 'No address available',
+        ];
+
+        // レビューに紐づく写真を取得
+        $photos = $review->photos;
+
+        // `view_myreview` にデータを渡して表示
+        return view('reviews.view_myreview', compact('restaurant', 'review', 'photos'));
+    }
+    
+    
 
     /**
      * Show the form for editing the specified resource.
