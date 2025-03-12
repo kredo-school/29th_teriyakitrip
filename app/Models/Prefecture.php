@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Prefectures extends Model
+class Prefecture extends Model
 {
     use HasFactory;
     
@@ -17,7 +17,7 @@ class Prefectures extends Model
      */
     public function regions()
     {
-        return $this->belongsTo(Regions::class, 'region_id'); 
+        return $this->belongsTo(Region::class, 'region_id'); 
     }
 
     /**
@@ -25,7 +25,7 @@ class Prefectures extends Model
      */
     public function itineraries()
     {
-        return $this->belongsToMany(Itineraries::class);
+        return $this->belongsToMany(Itinerary::class);
     }
     public function reviews()
     {

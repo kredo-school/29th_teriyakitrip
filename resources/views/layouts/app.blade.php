@@ -147,10 +147,10 @@
 
 
 
-                            @if (Route::has('create_review'))
+                            @if (Route::has('restaurants.search'))
                                 <li class="nav-item">
 
-                                    <a class="nav-link custom-btn" href="{{ route('create_review') }}">
+                                    <a class="nav-link custom-btn" href="{{ route('restaurants.search') }}">
 
                                         <span>Create</span>
 

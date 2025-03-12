@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Prefectures;
+use App\Models\Prefecture;
 use Illuminate\Http\Request;
 use App\Models\RestaurantReview;
 use Illuminate\Support\Facades\Http;
@@ -100,7 +100,7 @@ public function create(Request $request)
         }
 
         // 🔥 `prefectures` テーブルから `prefecture_id` を取得
-        $prefecture = Prefectures::where('name', $prefectureName)->first();
+        $prefecture = Prefecture::where('name', $prefectureName)->first();
         $prefectureId = $prefecture ? $prefecture->id : null;
 
 

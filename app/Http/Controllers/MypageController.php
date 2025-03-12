@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Itineraries;
+use App\Models\Itinerary;
 use App\Models\RestaurantReview;
 use App\Models\User;
 
@@ -13,7 +13,7 @@ class MypageController extends Controller
     public function show($tab = 'overview')
 {
     $user = Auth::user();
-    $itineraries = Itineraries::where('user_id', $user->id)->get();
+    $itineraries = Itinerary::where('user_id', $user->id)->get();
     $restaurantReviews = RestaurantReview::where('user_id', $user->id)->get();
     // $followers = $user->followers()->paginate(20);
     // $following = $user->following()->paginate(20);

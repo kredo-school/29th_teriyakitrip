@@ -15,7 +15,7 @@ class ItineraryController extends Controller
     public function index()
     {
         $activeTab = 'overview'; // デフォルトのアクティブタブを設定
-        $itineraries = Itineraries::latest()->paginate(10);
+        $itineraries = Itinerary::latest()->paginate(10);
         $user = auth()->user(); // ログインユーザーを取得
         return view('.index', compact('activeTab','itineraries'));
     }

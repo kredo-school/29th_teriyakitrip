@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Itineraries extends Model
+class Itinerary_prefecture extends Model
 {
     //
 }
-
