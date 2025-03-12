@@ -148,11 +148,11 @@ Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 
 
 
-Route::get('/regions/{prefecture_id}/overview', [RegionsController::class, 'overview'])
+Route::get('/regions/{prefecture_id}/overview', [RegionController::class, 'overview'])
     ->name('regions.overview'); //naho
 
-Route::get('/regions/{prefecture_id}/restaurant-review', [RegionsController::class, 'restaurantReview'])
+Route::get('/regions/{prefecture_id}/restaurant-review', [RegionController::class, 'restaurantReview'])
     ->name('regions.restaurant-review'); //naho
 
-Route::get('/regions/{prefecture_id}/itinerary', [RegionsController::class, 'itinerary'])
+Route::get('/regions/{prefecture_id}/itinerary', [RegionController::class, 'itinerary'])
     ->name('regions.itinerary'); //naho

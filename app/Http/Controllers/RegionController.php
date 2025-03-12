@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 
-class RegionsController extends Controller
+class RegionController extends Controller
 {
     // 📌 Overviewページのデータ
     public function overview($prefecture_id)
