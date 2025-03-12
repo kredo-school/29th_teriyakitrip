@@ -18,12 +18,14 @@ use App\Http\Controllers\FavoritesController; //Toshimi
 
 
 Auth::routes();
+
+
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])->name('restaurants.search'); //naho
 
-
+Route::get('/itinerary/show', [ItineraryController::class, 'showItinerary'])->name('itineraries.show_itinerary');
 
 Route::get('/itinerary/show', [ItineraryController::class, 'showItinerary'])->name('itineraries.show_itinerary');
 
@@ -59,8 +61,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/restaurant-reviews/create', [RestaurantReviewController::class, 'create'])->name('restaurant-reviews.create'); //naho
     Route::post('/restaurant-reviews', [RestaurantReviewController::class, 'store'])->name('restaurant-reviews.store'); //naho
     Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
-
     // Route::get('/logout', 'Auth\LoginController@logout')->name('logout'); // エラー原因となったため一旦コメントアウト　支障あれば相談//Sunao
+    Route::get('/restaurants/my_review/{id}', [RestaurantReviewController::class, 'viewMyreview'])->name('reviews.view_myreview'); //saki
+    
+    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 });
 Route::group(['middleware' => 'auth'], function() {    
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {

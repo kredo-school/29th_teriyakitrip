@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("Script loaded!"); // JSが正しく読み込まれたか確認
+
   let reviews = document.querySelectorAll(".review-item-show.d-none");
   let loadMoreButton = document.getElementById("loadMore");
   let itemsPerClick = 5; // クリックごとに表示する件数
@@ -43,6 +45,25 @@ document.addEventListener("DOMContentLoaded", function () {
             reviewBody.querySelector(".full-text").classList.add("d-none");
             this.classList.add("d-none"); // Read less を隠す
             reviewBody.querySelector(".read-more").classList.remove("d-none"); // Read more を再表示
+        });
+    });
+
+    // ⭐ モーダル（画像プレビュー）処理 ⭐
+    let previewModalElement = document.getElementById("photoPreviewModal");
+    if (!previewModalElement) {
+        console.error("photoPreviewModal が見つかりません！");
+        return;
+    }
+
+    let previewModal = new bootstrap.Modal(previewModalElement);
+    let previewImage = document.getElementById("previewImage");
+
+    // 画像クリックでモーダルを開く
+    document.querySelectorAll(".review-photo").forEach(photo => {
+        photo.addEventListener("click", function () {
+            console.log("Image clicked:", this.src); // イベントが発火するか確認
+            previewImage.src = this.src; // クリックした画像のURLをセット
+            previewModal.show();
         });
     });
 });
