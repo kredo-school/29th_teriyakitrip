@@ -5,8 +5,7 @@
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/nozomi.css') }}">
 
-<div class="container">
-    <div class="row">
+<div class="container">    <div class="row">
         <!-- Profile Header -->
         <div class="col-md-12">
             <div class="card mb-4" style="border: none; border-radius: 10px;">

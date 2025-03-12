@@ -2,9 +2,10 @@
 
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/my_reviews_list.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/my_favorites.css') }}">
 
     <div class="container mt-4">
-        <!-- ヘッダー部分 -->
+        <!-- Header -->
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="fw-bold">Restaurant Reviews</h1>
             <a href="#" class="btn create-review-btn">+ Create Review</a>
@@ -16,7 +17,9 @@
                 <div class="col-md-12 position-relative"> <!-- 横長にするため、1行1件表示 -->
                     <div class="card review-card mb-3 d-flex flex-row align-items-center p-2">
                         <!-- 画像 -->
-                        <img src="{{ asset('images/Sample7.jpg') }}" class="review-image" alt="Restaurant Image">
+                        <div class="myreview-image-container">
+                            <img src="{{ asset($review['image']) }}" class="favorite-image" alt="Restaurant Image">
+                        </div>
 
                         <!-- カードの本文 -->
                         <div class="card-body d-flex flex-column justify-content-between">
