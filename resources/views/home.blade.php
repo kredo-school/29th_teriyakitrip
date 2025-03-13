@@ -146,5 +146,5 @@
     </div>
 
      <!-- 🔥 モーダルを読み込む -->
-     @include('regions.modal')
+     @include('regions.modal', ['regions' => $regions])
 @endsection

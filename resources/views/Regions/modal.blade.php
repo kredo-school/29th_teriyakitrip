@@ -1,13 +1,4 @@
-@foreach ([
-    2 => 'Tohoku',
-    3 => 'Kanto',
-    4 => 'Tokai',
-    5 => 'Hokuriku',
-    6 => 'Kinki',
-    7 => 'Chugoku',
-    8 => 'Shikoku',
-    9 => 'Kyushu'
-] as $regionId => $regionName)
+@foreach ($regions as $regionId => $regionName)
 
 <!-- {{ $regionName }} のモーダル -->
 <div class="modal fade" id="regionModal{{ $regionName }}" tabindex="-1" aria-labelledby="regionModalLabel{{ $regionName }}" aria-hidden="true">

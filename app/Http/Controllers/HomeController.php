@@ -10,6 +10,17 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $regions = [
+            2 => 'Tohoku',
+            3 => 'Kanto',
+            4 => 'Tokai',
+            5 => 'Hokuriku',
+            6 => 'Kinki',
+            7 => 'Chugoku',
+            8 => 'Shikoku',
+            9 => 'Kyushu'
+        ];
+    
         // 🔥 全エリアの口コミ件数が多いレストランを取得（place_idごとにカウント）
         $popularRestaurants = RestaurantReview::select(
             'place_id',
@@ -39,7 +50,7 @@ class HomeController extends Controller
         }
         
 
-        return view('home', compact('restaurantReviews', 'popularRestaurants'));
+        return view('home', compact('restaurantReviews', 'popularRestaurants', 'regions'));
     }
 
     private function getRestaurantNameFromGoogleAPI($place_id)
