@@ -2,19 +2,20 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\TabController;
 // use App\Http\Controllers\FollowController; //一時的にコメントアウト（後で戻す）
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItineraryController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RegionController;//moko
 use App\Http\Controllers\ApiProxyController; //naho
+use App\Http\Controllers\FavoritesController; //Toshimi
 use App\Http\Controllers\MyItineraryController;//Toshimi
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
-use App\Http\Controllers\FavoritesController; //Toshimi
 
 
 Auth::routes();
@@ -192,14 +193,15 @@ Route::get('/regions/restaurant-review', function () {
     ]);
 });
     
-// Route::get('/itineraries', [ItineraryController::class, 'index'])->name('itineraries.index'); //NozomiさんがFix中
+
 Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])->name('restaurant_reviews.index');
 
 // マイページ関連のルートを単一のルートにまとめる
 Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
     ->name('mypage.show')
-    ->where('tab', 'overview|itineraries|restaurant_reviews');
+    ->where('tab', 'overview|itineraries|restaurant_reviews|followings|follower');
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 });
+// Route::get('/itineraries', [MypageController::class, 'index'])->name('itineraries.index'); //NozomiさんがFix中

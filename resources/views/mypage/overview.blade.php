@@ -38,10 +38,18 @@
                             <button class="nav-link-mypage @if($tab == 'overview') active @endif fs-2" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview-content" type="button" role="tab" aria-controls="overview-content" aria-selected="true">Overview</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage @if($tab == 'itineraries') active @endif fs-2" id="itineraries-tab" data-bs-toggle="tab" data-bs-target="#itineraries-content" type="button" role="tab" aria-controls="itineraries-content" aria-selected="false">Itineraries</button>
+                            <a href="{{ route('mypage.show', ['tab' => 'itineraries']) }}" 
+                                class="nav-link-mypage @if($tab == 'itineraries') active @endif fs-2">
+                                 Itineraries
+                             </a>
+                            {{-- <button class="nav-link-mypage @if($tab == 'itineraries') active @endif fs-2" id="itineraries-tab" data-bs-toggle="tab" data-bs-target="#itineraries-content" type="button" role="tab" aria-controls="itineraries-content" aria-selected="false">Itineraries</button> --}}
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage @if($tab == 'restaurant-reviews') active @endif fs-2" id="restaurant-reviews-tab" data-bs-toggle="tab" data-bs-target="#restaurant-reviews-content" type="button" role="tab" aria-controls="restaurant-reviews-content" aria-selected="false">Restaurant Reviews</button>
+                            <a href="{{ route('mypage.show', ['tab' => 'restaurant_reviews']) }}" 
+                                class="nav-link-mypage @if($tab == 'restaurant_reviews') active @endif fs-2">
+                                 Restaurant Reviews
+                            </a>
+                            {{-- <button class="nav-link-mypage @if($tab == 'restaurant-reviews') active @endif fs-2" id="restaurant-reviews-tab" data-bs-toggle="tab" data-bs-target="#restaurant-reviews-content" type="button" role="tab" aria-controls="restaurant-reviews-content" aria-selected="false">Restaurant Reviews</button> --}}
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link-mypage @if($tab == 'followers') active @endif fs-2" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers-content" type="button" role="tab" aria-controls="followers-content" aria-selected="false">Follower</button>
@@ -106,17 +114,17 @@
                         </div><br>
                         
                         <div class="text-center mt-2">
-                            <a href="{{ route('itineraries.index') }}" class="btn btn-outline-secondary" 
-                            style="color: rgb(104,102,102); border-color: rgb(104,102,102); font-size: 1em; padding: 0.25rem 0.5rem; margin-bottom: 0.5cm;">
-                             More
-                         </a>
+                            <a href="{{ route('mypage.show', ['tab' => 'itineraries']) }}" class="btn btn-outline-secondary" 
+                                style="color: rgb(104,102,102); border-color: rgb(104,102,102); font-size: 1em; padding: 0.25rem 0.5rem; margin-bottom: 0.5cm;">
+                                More
+                            </a>
                         </div>
                     </div>
 
                     <!-- Restaurant Reviews Section -->
                     <div class="mt-4 text-center">
                         <p style="color: #E97911; font-size: 3rem; font-weight: bold">Restaurant's Review</p>
-                        @if($restaurantReviews->isNotEmpty())
+                        {{-- @if($restaurantReviews->isNotEmpty())
                         <div class="row justify-content-center">
                             @foreach ($restaurantReviews as $review)
                                 <div class="col-md-4 mb-4">
@@ -134,7 +142,7 @@
                         </div>
                         @else
                             <p>まだ実際のレビューがありません。No realistic Restaurant's review yet.</p>
-                        @endif
+                        @endif --}}
 
                         <div class="container toppage mt-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
                             <div class="row mt-3">
@@ -143,7 +151,7 @@
                                         <img src="/images/sample5.jpeg" alt="Itinerary 1" class="element-style rounded-top-4">
                                         <div class="card-body p-2">
                                             <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">  ABC Cafe
-                                                <i class="fa-solid fa-circle ms-4" style="color: #E97911;""></i> <i class="fa-solid fa-circle" style="color: #E97911;></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-regular fa-circle text-warning"></i> (3 reviews)</h6>
+                                                <i class="fa-solid fa-circle ms-4" style="color: #E97911;"></i> <i class="fa-solid fa-circle" style="color: #E97911;></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-solid fa-circle text-warning"></i> <i class="fa-regular fa-circle text-warning"></i> (3 reviews)</h6>
                                             <div class="d-flex align-items-center">
                                                 <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
                                                 <span class="ms-2">Fantastic!!!</span>
@@ -153,7 +161,7 @@
                                                 <span class="ms-2">Amazing place</span>
                                             </div>
                                             <div class="text-center">
-                                                <a href="reviews.html" class="btn btn-link" style="color: #E97911;"">View more review</a>
+                                                <a href="reviews.html" class="btn btn-link" style="color: #E97911;">View more review</a>
                                             </div>
                                         </div>
                                     </div>
@@ -203,7 +211,10 @@
 
                         <br>
                         <div class="text-center mt-2">
-                            <button class="btn btn-outline-secondary" style="color: #000000; border-color: #000000; font-size: 1em; padding: 0.25rem 0.5rem; margin-bottom: 0.5cm;">More</button>
+                            <a href="{{ route('mypage.show', ['tab' => 'restaurant_reviews']) }}" class="btn btn-outline-secondary" 
+                                style="color: rgb(104,102,102); border-color: rgb(104,102,102); font-size: 1em; padding: 0.25rem 0.5rem; margin-bottom: 0.5cm;">
+                                More
+                            </a>
                         </div>
                     </div>
                 </div> <!-- End of tab content -->

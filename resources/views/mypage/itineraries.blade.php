@@ -13,14 +13,14 @@
                     <div class="row align-items-center">
                        <!-- User Info -->
                        <div class="col-md-6 text-center">
-                        <div style="position: relative; display: inline-block; width: 100%; max-width: 300px;">
-                            <img src="{{ $user->avatar ? Storage::url($user->avatar) : asset('images/default-avatar.jpeg') }}" alt="User Avatar" class="rounded-circle avatar-image" width="100" height="100" style="border: 3px solid #fff; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2;">
-                            <div style="background-color: #d3d0d0; padding: 70px 20px 20px; border-radius: 10px; margin-top: 50px; position: relative; min-height: 200px;">
-                                <h5 class="mb-3">{{ $user->user_name }}</h5>
-                                <p class="text-center" style="color: #777; font-size: 0.8em; width: 100%; margin: 0 auto; white-space: pre-wrap; word-wrap: break-word;">{!! nl2br(e($user->introduction)) !!}</p>
+                            <div style="position: relative; display: inline-block; width: 100%; max-width: 300px;">
+                                <img src="{{ $user->avatar ? Storage::url($user->avatar) : asset('images/default-avatar.jpeg') }}" alt="User Avatar" class="rounded-circle avatar-image" width="100" height="100" style="border: 3px solid #fff; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2;">
+                                <div style="background-color: #d3d0d0; padding: 70px 20px 20px; border-radius: 10px; margin-top: 50px; position: relative; min-height: 200px;">
+                                    <h5 class="mb-3">{{ $user->user_name }}</h5>
+                                    <p class="text-center" style="color: #777; font-size: 0.8em; width: 100%; margin: 0 auto; white-space: pre-wrap; word-wrap: break-word;">{!! nl2br(e($user->introduction)) !!}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
                         <!-- Map Image -->
                         <div class="col-md-6">
@@ -35,13 +35,25 @@
                 <div class="tabs-container">
                     <ul class="nav nav-tabs-mypage" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage @if($tab == 'overview') active @endif fs-2" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview-content" type="button" role="tab" aria-controls="overview-content" aria-selected="true">Overview</button>
+                            <a href="{{ route('mypage.show', ['tab' => 'overview']) }}" 
+                                class="nav-link-mypage @if($tab == 'overview') active @endif fs-2">
+                                 Overview
+                             </a>
+                            {{-- <button class="nav-link-mypage @if($tab == 'overview') active @endif fs-2" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview-content" type="button" role="tab" aria-controls="overview-content" aria-selected="true">Overview</button> --}}
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage @if($tab == 'itineraries') active @endif fs-2" id="itineraries-tab" data-bs-toggle="tab" data-bs-target="#itineraries-content" type="button" role="tab" aria-controls="itineraries-content" aria-selected="false">Itineraries</button>
+                            <a href="{{ route('mypage.show', ['tab' => 'itineraries']) }}" 
+                                class="nav-link-mypage @if($tab == 'itineraries') active @endif fs-2">
+                                 Itineraries
+                            </a>
+                            {{-- <button class="nav-link-mypage @if($tab == 'itineraries') active @endif fs-2" id="itineraries-tab" data-bs-toggle="tab" data-bs-target="#itineraries-content" type="button" role="tab" aria-controls="itineraries-content" aria-selected="false">Itineraries</button> --}}
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage @if($tab == 'restaurant-reviews') active @endif fs-2" id="restaurant-reviews-tab" data-bs-toggle="tab" data-bs-target="#restaurant-reviews-content" type="button" role="tab" aria-controls="restaurant-reviews-content" aria-selected="false">Restaurant Reviews</button>
+                            <a href="{{ route('mypage.show', ['tab' => 'restaurant_reviews']) }}" 
+                                class="nav-link-mypage @if($tab == 'restaurant_reviews') active @endif fs-2">
+                                 Restaurant Reviews
+                             </a>
+                            {{-- <button class="nav-link-mypage @if($tab == 'restaurant-reviews') active @endif fs-2" id="restaurant-reviews-tab" data-bs-toggle="tab" data-bs-target="#restaurant-reviews-content" type="button" role="tab" aria-controls="restaurant-reviews-content" aria-selected="false">Restaurant Reviews</button> --}}
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link-mypage @if($tab == 'followers') active @endif fs-2" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers-content" type="button" role="tab" aria-controls="followers-content" aria-selected="false">Follower</button>
