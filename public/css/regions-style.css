@@ -82,12 +82,11 @@ body {
 }
 
 /* Itinerary & Restaurant Review の画像サイズ調整 */
-.card-image img {
-    width: 180px; /* 画像の幅を広げる */
-    height: 120px; /* 高さも調整 */
+.card-image img{
     border-radius: 10px;
+    width: 100%; 
+    height: auto; 
     object-fit: cover;
-    margin-right: 15px;
 }
 
 .card-content {
@@ -213,7 +212,6 @@ body {
 
 .star {
     font-size: 18px;
-    margin-right: 3px;
 }
 
 .orange {

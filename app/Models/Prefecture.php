@@ -11,6 +11,7 @@ class Prefecture extends Model
 {
     use HasFactory;
     
+    protected $table = 'prefectures'; // specify the table name if it's different from the default
     
     protected $fillable = ['name', 'region_id']; 
 
@@ -22,6 +23,14 @@ class Prefecture extends Model
         return $this->belongsTo(Region::class, 'region_id'); 
     }
 
+    /**
+     * Relationships (many-to-many) with Itineraries
+     */
+    public function reviews()
+    {
+        return $this->hasMany(RestaurantReview::class);
+    }
+    
 // **Many to Many(prefectures ↔ itineraries)**
     public function itineraries()//Sunao
     {

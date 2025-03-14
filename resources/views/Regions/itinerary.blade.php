@@ -9,17 +9,19 @@
 <br>
 <!-- 📌 ヘッダー -->
 <header>
-    <h1 class="page-title">Hokkaido</h1>
+    <h1 class="page-title">{{ $prefecture->name }}</h1>
     <br>
     <nav class="nav-tabs">
-        <a href="{{ url('/regions/overview') }}" class="{{ request()->is('regions/overview') ? 'active' : '' }}">Overview</a>
-        <a href="{{ url('/regions/itinerary') }}" class="{{ request()->is('regions/itinerary') ? 'active' : '' }}">Itinerary</a>
-        <a href="{{ url('/regions/restaurant-review') }}" class="{{ request()->is('regions/restaurant-review') ? 'active' : '' }}">Restaurant Review</a>
+        <a href="{{ route('regions.overview', ['prefecture_id' => $prefecture->id]) }}"
+            class="{{ request()->is('regions/'.$prefecture->id.'/overview') ? 'active' : '' }}">Overview</a>
+        <a href="{{ route('regions.itinerary', ['prefecture_id' => $prefecture->id]) }}" 
+            class="{{ request()->is('regions/'.$prefecture->id.'/itinerary') ? 'active' : '' }}">Itinerary</a>
+        <a href="{{ route('regions.restaurant-review', ['prefecture_id' => $prefecture->id]) }}"
+            class="{{ request()->is('regions/'.$prefecture->id.'/restaurant-review') ? 'active' : '' }}">Restaurant Review</a>
     </nav>
 </header>
 
 <div class="container mt-4">
-    <h2 class="fw-bold">Itinerary</h2>
     <div class="row" id="itinerary-list">
         @foreach ($allItineraries as $index => $trip)
             <div class="col-md-12 itinerary-item" style="{{ $index >= 4 ? 'display: none;' : '' }}">
@@ -43,21 +45,8 @@
     </div>
 </div>
 
-<script>
-    let itineraryIndex = 4;
-    document.getElementById('load-more-itinerary').addEventListener('click', function() {
-        let items = document.querySelectorAll('.itinerary-item');
-        for (let i = itineraryIndex; i < itineraryIndex + 4; i++) {
-            if (items[i]) {
-                items[i].style.display = 'block';
-            }
-        }
-        itineraryIndex += 4;
-        if (itineraryIndex >= items.length) {
-            this.style.display = 'none';
-        }
-    });
-</script>
 <br>
+
+<script src="{{ asset('js/region_itinerary.js') }}"></script>
 @endsection
 
