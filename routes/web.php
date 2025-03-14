@@ -7,15 +7,16 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItineraryController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RegionController;//moko
 use App\Http\Controllers\ApiProxyController; //naho
+use App\Http\Controllers\FavoritesController; //Toshimi
 use App\Http\Controllers\MyItineraryController;//Toshimi
+use App\Http\Controllers\RestaurantReviewPhotoController;
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
-use App\Http\Controllers\FavoritesController; //Toshimi
-
+use App\Models\RestaurantReview;
 
 Auth::routes();
 
@@ -24,8 +25,6 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])->name('restaurants.search'); //naho
-
-Route::get('/itinerary/show', [ItineraryController::class, 'showItinerary'])->name('itineraries.show_itinerary');
 
 Route::get('/itinerary/show', [ItineraryController::class, 'showItinerary'])->name('itineraries.show_itinerary');
 
@@ -63,8 +62,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
     // Route::get('/logout', 'Auth\LoginController@logout')->name('logout'); // エラー原因となったため一旦コメントアウト　支障あれば相談//Sunao
     Route::get('/restaurants/my_review/{id}', [RestaurantReviewController::class, 'viewMyreview'])->name('reviews.view_myreview'); //saki
-    
-    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+     // Edit review form
+     Route::get('/reviews/edit/{review}', [RestaurantReviewController::class, 'edit'])->name('reviews.edit_myreview'); //SAKI
+     Route::put('/reviews/{id}', [RestaurantReviewController::class, 'update'])->name('reviews.update'); //SAKI
+     // 画像削除のルート設定
+     Route::delete('/reviews/photo/delete/{photoId}', [RestaurantReviewController::class, 'deletePhoto'])->name('review.photo.delete');
+
+
+
+
 });
 Route::group(['middleware' => 'auth'], function() {    
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {

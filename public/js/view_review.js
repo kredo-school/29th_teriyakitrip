@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Script loaded!"); // JSが正しく読み込まれたか確認
 
   let reviews = document.querySelectorAll(".review-item-show.d-none");
   let loadMoreButton = document.getElementById("loadMore");
