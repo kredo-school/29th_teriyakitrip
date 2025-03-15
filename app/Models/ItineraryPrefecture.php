@@ -25,7 +25,7 @@ class ItineraryPrefecture extends Model
     }
 
     // ✅ Prefectures（都道府県）とのリレーション
-    public function prefecture()//sunao
+    public function prefectures()//sunao
     {
         return $this->belongsTo(Prefecture::class, 'prefecture_id');
     }

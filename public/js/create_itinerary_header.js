@@ -101,6 +101,45 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 200);
     });
     
+      // 🔹 Doneボタン（旅程の保存処理）
+      let doneButton = document.getElementById("save-itinerary");
+      if (!doneButton) {
+          console.error("❌ Doneボタン (#save-itinerary) が見つかりません！");
+          return;
+      }
+  
+      doneButton.addEventListener("click", function () {
+          console.log("✅ Doneボタンがクリックされました");
+  
+          let itineraryId = document.getElementById("itinerary-data").dataset.itineraryId;
+          let storedSpots = JSON.parse(localStorage.getItem(`itinerary_spots_${itineraryId}`)) || [];
+  
+        // 🔥 ここでデータ確認
+        console.log("📤 itineraryId:", itineraryId);
+        console.log("📤 送信データ (最終確認):", JSON.stringify({ spots: storedSpots }, null, 2));
+
+        if (!storedSpots || storedSpots.length === 0) {
+            console.warn("⚠️ 送信データが空です！送信をスキップ");
+            return;
+        }        
+
+        fetch(`/itineraries/${itineraryId}/spots/save`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ spots: storedSpots })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("✅ サーバーからのレスポンス:", data);
+        })
+        .catch(error => {
+            console.error("❌ エラー:", error);
+          });
+      });
+  
 
     function updateDestinationList() {
         console.log("🔄 updateDestinationList() を実行");
@@ -150,17 +189,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("✅ JavaScript が読み込まれました");
-
-    var swiper = new Swiper(".swiper-container", {
-        slidesPerView: "auto",
-        spaceBetween: 10,
-        freeMode: true,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-    });
+   
+   
 
     let itineraryIdElem = document.getElementById("itinerary-data");
     if (!itineraryIdElem) {

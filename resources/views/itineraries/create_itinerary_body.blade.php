@@ -19,9 +19,17 @@
     @endforeach
 </div>
 
-<!-- 🔹 `create_add.blade.php` を正しく読み込めるか確認 -->
-<div id="add-spot-container" style="display: none;">
-    @include('itineraries.create_add')
+<div id="day-container">
+        <!-- JavaScript でスポット情報を追加 -->
+    <div id="itinerary-data" data-itinerary-id="{{ $itinerary->id }}"></div>
+</div>
+
+
+
+<div class="col-auto" style="position: relative;">
+    <div id="add-spot-container" style="display: none;">
+        @include('itineraries.create_add')
+    </div>
 </div>
 
 @push('scripts')

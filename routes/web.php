@@ -15,6 +15,8 @@ use App\Http\Controllers\MyItineraryController;//Toshimi
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
 use App\Http\Controllers\FavoritesController; //Toshimi
+use App\Http\Controllers\GooglePlaceController;
+use App\Http\Controllers\ItinerarySpotController;
 
 
 Auth::routes();
@@ -65,19 +67,28 @@ Route::group(['middleware' => 'auth'], function() {
 Route::group(['middleware' => 'auth'], function() {    
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
         Route::get('/create', [ItineraryController::class, 'create'])->name('create');// Sunao
-        // Route::get('/itinerary_first_form', [ItineraryController::class, 'create'])->name('itineraries.create'); // フォーム表示
         Route::post('/store', [ItineraryController::class, 'store'])->name('store');// Sunao
         Route::post('/{id}/update-dates', [ItineraryController::class, 'updateDates']) ->name('update-dates'); // Sunao
         Route::get('/{id}/addList/create_itinerary', [ItineraryController::class, 'addList'])->name('addList'); // Sunao
         Route::post('/save/{id}', [ItineraryController::class, 'saveItineraryData'])
     ->name('save'); //Sunao
-        // Route::get('/create_itinerary', [ItineraryController::class, 'addList'])->name('create_itinerary_header');
-        // Route::post('/itinerary_first_form', [ItineraryController::class, 'showFirstform'])->name('showFirstform'); // フォーム送信処理
-        // Edit itinerary P33
         Route::get('/edit', [ItineraryController::class, 'edit'])->name('edit_itinerary'); // SAKI
         Route::get('/{id}/edit-destination', [ItineraryController::class, 'editDestination'])->name('editDestination');
         Route::put('/{id}/update/', [ItineraryController::class, 'updateDestination'])->name('itinerary.updateDestination');
     });
+
+//Itinerary の spot 検索
+Route::get('/search-spot', [GooglePlaceController::class, 'search'])->name('search.spot');
+Route::get('/spots/details/{place_id}', [GooglePlaceController::class, 'getSpotDetails'])->name('spots.details');
+
+//Spot 情報をitinerary 保存など
+// Route::get('/itinerary/spots/favorites', [ItinerarySpotController::class, 'getFavoriteSpots'])->name('itinerary.spots.favorites');
+Route::post('/itinerary/spots/save', [ItinerarySpotController::class, 'saveItinerarySpot'])->name('itinerary.spots.save');
+// Route::delete('/itinerary/spots/{spot_id}/delete', [ItinerarySpotController::class, 'deleteItinerarySpot'])->name('itinerary.spots.delete');
+// Route::get('/itinerary/spots/{spot_id}/reviews', [ItinerarySpotController::class, 'getUserReviews'])->name('itinerary.spots.reviews');
+// Route::post('/itinerary/spots/reviews/save', [ItinerarySpotController::class, 'saveUserReview'])->name('itinerary.spots.reviews.save');
+// Route::delete('/itinerary/spots/reviews/{review_id}/delete', [ItinerarySpotController::class, 'deleteUserReview'])->name('itinerary.spots.reviews.delete');
+
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

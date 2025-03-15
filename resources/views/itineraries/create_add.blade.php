@@ -4,7 +4,7 @@
 <div class="container">
     <ul class="nav px-auto text-center fw-bold">
         <li class="nav-item border py-0">
-            <a class="nav-link text-black py-0 pt-2" href="#"><i class="fa-solid fa-arrow-left fa-sm"></i></a>
+            <button class="nav-link text-black py-0 pt-2" id="back-button"><i class="fa-solid fa-arrow-left fa-sm"></i></button>
         </li>        
         <li class="nav-item border px-2 py-0">            
             <a id="search-button" class="nav-link text-black py-0" href="javascript:void(0);">
@@ -20,11 +20,6 @@
             </a>
         </li> 
     </ul>
-
-    <!-- 🔹 閉じるボタン -->
-    <div class="d-flex justify-content-end mt-2">
-        <button id="close-add-spot" class="btn btn-danger btn-sm">× 閉じる</button>
-    </div>
 
     <!-- 🔹 タブコンテンツ -->
     <div id="search-content" style="display: block;">

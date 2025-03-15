@@ -49,7 +49,7 @@ class ItineraryController extends Controller
             return redirect()->back()->withErrors(['error' => 'ユーザーIDが必要です']);
         }
     
-    
+        // dd($request);
         // 2️⃣ **バリデーション**
         $validatedData = $request->validate([
             'title' => 'required|max:255',
@@ -223,9 +223,13 @@ class ItineraryController extends Controller
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'is_public' => 'boolean',
                 'selected_prefectures' => 'required|string', // 🔥 string で受け取る
+                'spots' => 'required|array|min:1', // 🔥 `spots` のバリデーション追加
+                'spots.*.place_id' => 'required|string',
+                'spots.*.order' => 'required|integer',
+                'spots.*.visit_time' => 'required|string',
+                'spots.*.visit_day' => 'required|integer',
             ]);
     
-            Log::info("✅ バリデーション成功:", $validated);
     
             Log::info("✅ バリデーション成功:", $validated);
 
