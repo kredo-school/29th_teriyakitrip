@@ -50,22 +50,33 @@
               
                 <!-- ★ 追加された写真 -->
                 @if ($photos->count() > 0)
-                    <div class="review-images mt-3">
-                        @foreach ($photos as $photo)
-                            @php
-                                $image = storage_path('public/reviews/' . $photo->$photo)
-                            @endphp
-                            <div class="position-relative d-inline-block">
-                                @if(file_exists($image))
-                                    <img src="{{ asset('storage/reviews/' . $photo->photo) }}" 
-                                        class="img-fluid rounded review-photo" 
-                                        alt="Review Image">
-                                @else
-                                    <p>Image not found<p>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
+                <div class="review-images mt-3">
+                    @foreach ($photos as $photo)
+                        @php
+                            // ログに画像パスを出力
+                            Log::info('Image path: ' . $photo->photo);
+                            
+                            $image = asset('storage/' . $photo->photo);  // 修正: ストレージの実際のパス
+                            Log::info('Generated URL:' . $image);
+                        @endphp
+                        <div class="position-relative d-inline-block">
+                            @if(Storage::exists('public/' . $photo->$photo))  <!-- 修正: 確認するパス -->
+                                <img src="{{ asset('storage/' . $photo->photo) }}" 
+                                    class="img-fluid rounded review-photo" 
+                                    alt="Review Image">
+
+                                @php
+                                Log::info('Storage exists check: ' . Storage::exists('public/' . $photo->photo));
+                                @endphp
+                            @else
+                                <p>Image not found</p>
+                                @php
+                                Log::info('Storage exists check: ' . Storage::exists('public/' . $photo->photo));
+                                @endphp
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
                 @endif
 
                 <!-- モーダル（画像プレビュー用） -->

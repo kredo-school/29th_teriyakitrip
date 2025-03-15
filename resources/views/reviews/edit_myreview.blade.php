@@ -55,7 +55,7 @@
                         @foreach ($photos as $photo)
                             <div class="position-relative d-inline-block image-container">
                                 
-                                <img src="{{ asset('storage/reviews/' . $photo->photo) }}" alt="Review Image">
+                                <img src="{{ asset('storage/' . $photo->photo) }}" alt="Review Image">
 
                                 <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 delete-photo" 
                                         data-photo-id="{{ $photo->id }}">
