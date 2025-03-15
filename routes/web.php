@@ -56,7 +56,7 @@ Route::group(['middleware' => 'auth'], function() { //Toshimi
 
 
 
-// Route::get('/create-itinerary', [ItineraryController::class, 'create'])->name('create_itinerary');
+// Route::get('/create-itinerary', [ItineraryController::cla show me some sure are you going tos, 'create'])->name('create_itinerary');
 Route::get('/create-review', [ReviewController::class, 'create'])->name('create_review');
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 

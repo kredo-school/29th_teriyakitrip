@@ -36,6 +36,7 @@
     </div>
   
     <button type="submit" class="btn btn-submit px-5 me-3">Submit</button>
-    <button type="submit" class="btn btn-cancel px-5">Cancel</button>
+    <button type="button" class="btn btn-cancel px-5" onclick="history.back();">Cancel</button>
+
   </form>
   
