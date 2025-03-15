@@ -57,8 +57,9 @@ document.addEventListener("DOMContentLoaded", function () {
         handleSearch();
     });
 
-    searchInput.addEventListener("keypress", function (e) {
+    searchInput.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
+            e.preventDefault(); // ← 🔥 フォーム送信を防ぐ（必要なら追加）
             handleSearch();
         }
     });
