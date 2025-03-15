@@ -5,7 +5,7 @@
         <div class="banner" id="banner">
             <div class="banner-text">
                 <h2>Welcome to <span>Teriyaki Trip</span></h2>
-                <p>Try our tasty coffee bean, produced with unique taste</p>
+                <p>Turn every trip into a delicious adventure with Our Teriyaki Trip.</p>
             </div>
         </div>
     </div>

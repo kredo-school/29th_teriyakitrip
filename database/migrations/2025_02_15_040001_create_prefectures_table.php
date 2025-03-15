@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('color')->nullable(); // カラーコード (NULL許容)
 
             // 外部キー制約
-            $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
+            // $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
         });
     }
 
