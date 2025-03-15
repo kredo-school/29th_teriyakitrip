@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\RestaurantReview;
 use Illuminate\Support\Facades\Http;
 use App\Models\RestaurantReviewPhoto;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class RestaurantReviewController extends Controller
 {
@@ -218,22 +220,110 @@ class RestaurantReviewController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RestaurantReview $restaurantReview)
+    public function edit(RestaurantReview $review)
     {
-        //
+        // 現在のレビューに関連するレストラン情報を取得
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $placeId = $review->place_id;
+        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$placeId}&key={$apiKey}";
+        $response = Http::get($apiUrl);
+        $data = $response->json();
+
+        if (!isset($data['result'])) {
+            return back()->with('error', 'レストラン情報を取得できませんでした。');
+        }
+
+        // レストランの情報を格納
+        $restaurant = [
+            'place_id' => $placeId,
+            'name' => $data['result']['name'] ?? 'Unknown Restaurant',
+            'photo' => isset($data['result']['photos'][0]['photo_reference']) ?
+                    "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$data['result']['photos'][0]['photo_reference']}&key={$apiKey}" : 
+                    '/images/restaurants/default-restaurant.jpg',
+        ];
+
+        // レビューに関連する写真を取得
+        $photos = $review->photos;
+
+        return view('reviews.edit_myreview', compact('review', 'restaurant', 'photos'));
     }
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, RestaurantReview $restaurantReview)
+
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $review = RestaurantReview::findOrFail($id);
+
+            // レビューの更新
+            $review->update([
+                'rating' => $request->input('rating'),
+                'title' => $request->input('title'),
+                'body' => $request->input('body'),
+            ]);
+
+            // 既存の写真のカウント
+            $existingPhotoCount = $review->photos()->count();
+
+            // 新しい写真がアップロードされた場合の処理
+            if ($request->hasFile('photos')) {
+                $newPhotos = $request->file('photos');
+                $totalPhotos = $existingPhotoCount + count($newPhotos);
+
+                // 既存の写真と新しい写真の合計が6枚を超えた場合、アップロードを制限
+                if ($totalPhotos > 6) {
+                    return redirect()->back()->with('error', 'You can upload up to 6 images only.');
+                }
+
+                foreach ($newPhotos as $photo) {
+                    // 画像を storage に保存
+                    $path = $photo->storeAs('reviews', $photo->getClientOriginalName(), 'public');
+
+                    Log::info('Photo saved to: ' . $path);
+
+                    // データベースに保存
+                    RestaurantReviewPhoto::create([
+                        'restaurant_review_id' => $review->id,
+                        'photo' => str_replace('public/', '', $path) // `public/` を削除して保存
+                    ]);
+                }
+            }
+
+            return redirect()->route('reviews.view_myreview', $review->id);
+        } catch (\Exception $e) {
+            Log::error('Error starts here');
+            Log::error($e->getMessage());
+            Log::error('Error ends here');
+            return redirect()->back()->with('error', 'An error occurred while updating the review.');
+        }
+    }
+
+
+
+    public function deletePhoto($photoId)
+    {
+        try {
+            // restaurant_review_photos テーブルを扱うモデルを使う
+            $photo = RestaurantReviewPhoto::findOrFail($photoId);
+            
+            // ストレージから削除
+            Storage::delete('public/' . $photo->photo);
+            
+            // データベースから削除
+            $photo->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RestaurantReview $restaurantReview)
+    public function destroy($id)
     {
-        //
+        $review = RestaurantReview::findOrFail($id);
+        $review->delete();
+
+        return back()->with('success', 'レビューを削除しました。');
     }
+
 }

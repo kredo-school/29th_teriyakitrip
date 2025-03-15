@@ -1,0 +1,34 @@
+/* 選択された星にオレンジ色を適用 */
+.rating-label i.selected {
+  color: #E97911; /* オレンジ色 */
+}
+
+/* 未選択の星にグレー色を適用 */
+.rating-label i.unselected {
+  color: #ccc; /* グレー */
+}
+
+/* 星がホバーされたときにオレンジ色 */
+.rating-label i:hover {
+  color: #E97911; /* オレンジ */
+}
+
+/* 追加された写真 */
+.review-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.review-photo {
+  width: 90px !important; /* 画像のサイズを統一 */
+  height: 90px !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: transform 0.2s ease-in-out !important;
+}
+
+.review-photo:hover {
+  transform: scale(1.1) !important;
+}
