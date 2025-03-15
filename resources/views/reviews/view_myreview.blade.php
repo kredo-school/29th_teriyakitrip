@@ -50,34 +50,15 @@
               
                 <!-- ★ 追加された写真 -->
                 @if ($photos->count() > 0)
-                <div class="review-images mt-3">
-                    @foreach ($photos as $photo)
-                        @php
-                            // ログに画像パスを出力
-                            Log::info('Image path: ' . $photo->photo);
-                            
-                            $image = asset('storage/' . $photo->photo);  // 修正: ストレージの実際のパス
-                            Log::info('Generated URL:' . $image);
-                        @endphp
-                        <div class="position-relative d-inline-block">
-                            @if(Storage::exists('public/' . $photo->$photo))  <!-- 修正: 確認するパス -->
-                                <img src="{{ asset('storage/' . $photo->photo) }}" 
-                                    class="img-fluid rounded review-photo" 
-                                    alt="Review Image">
-
-                                @php
-                                Log::info('Storage exists check: ' . Storage::exists('public/' . $photo->photo));
-                                @endphp
-                            @else
-                                <p>Image not found</p>
-                                @php
-                                Log::info('Storage exists check: ' . Storage::exists('public/' . $photo->photo));
-                                @endphp
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
+                    <div class="review-images mt-3" style="display: flex; flex-wrap: wrap;">
+                        @foreach ($photos as $photo)
+                            <div class="position-relative d-inline-block image-container">
+                                <img src="{{ asset('storage/' . $photo->photo) }}" class="review-photo" alt="Review Image">
+                            </div>
+                        @endforeach
+                    </div>
                 @endif
+
 
                 <!-- モーダル（画像プレビュー用） -->
                 <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewLabel" aria-hidden="true">

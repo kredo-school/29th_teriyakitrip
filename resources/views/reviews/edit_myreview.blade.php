@@ -55,7 +55,7 @@
                         @foreach ($photos as $photo)
                             <div class="position-relative d-inline-block image-container">
                                 
-                                <img src="{{ asset('storage/' . $photo->photo) }}" alt="Review Image">
+                                <img src="{{ asset('storage/' . $photo->photo) }}" class="review-photo" alt="Review Image">
 
                                 <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 delete-photo" 
                                         data-photo-id="{{ $photo->id }}">
@@ -65,6 +65,9 @@
                         @endforeach
                     </div>
                     @endif
+
+                    <!-- モーダルを読み込む -->
+                    @include('reviews.partials.modal_photo_delete') 
 
                     <!-- Add new photos -->
                     <div class="mb-4">

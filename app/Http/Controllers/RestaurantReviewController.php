@@ -292,42 +292,53 @@ public function create(Request $request)
     }
 
     public function update(Request $request, $id)
-{
-    try {
-        $review = RestaurantReview::findOrFail($id);
+    {
+        try {
+            $review = RestaurantReview::findOrFail($id);
 
-        // レビューの更新
-        $review->update([
-            'rating' => $request->input('rating'),
-            'title' => $request->input('title'),
-            'body' => $request->input('body'),
-        ]);
+            // レビューの更新
+            $review->update([
+                'rating' => $request->input('rating'),
+                'title' => $request->input('title'),
+                'body' => $request->input('body'),
+            ]);
 
-        // 新しい写真がアップロードされた場合の処理
-        if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
-                //Log::info('Image path: ' . storage_path('app/public/reviews/' . $photo->photo));
+            // 既存の写真のカウント
+            $existingPhotoCount = $review->photos()->count();
 
-                // 画像を storage に保存
-                $path = $photo->storeAs('reviews', $photo->getClientOriginalName(), 'public');
+            // 新しい写真がアップロードされた場合の処理
+            if ($request->hasFile('photos')) {
+                $newPhotos = $request->file('photos');
+                $totalPhotos = $existingPhotoCount + count($newPhotos);
 
-                Log::info('Photo saved to: ' . $path);  // ログ出力確認
+                // 既存の写真と新しい写真の合計が6枚を超えた場合、アップロードを制限
+                if ($totalPhotos > 6) {
+                    return redirect()->back()->with('error', 'You can upload up to 6 images only.');
+                }
 
-                // データベースに保存
-                RestaurantReviewPhoto::create([
-                    'restaurant_review_id' => $review->id,
-                    'photo' => str_replace('public/', '', $path) // `public/` を削除して保存
-                ]);
+                foreach ($newPhotos as $photo) {
+                    // 画像を storage に保存
+                    $path = $photo->storeAs('reviews', $photo->getClientOriginalName(), 'public');
+
+                    Log::info('Photo saved to: ' . $path);
+
+                    // データベースに保存
+                    RestaurantReviewPhoto::create([
+                        'restaurant_review_id' => $review->id,
+                        'photo' => str_replace('public/', '', $path) // `public/` を削除して保存
+                    ]);
+                }
             }
-        }
 
-        return redirect()->route('reviews.view_myreview', $review->id);
-    } catch (\Exception $e) {
-        Log::error('Error starts here');
-        Log::error($e->getMessage());
-        Log::error('Error ends here');
+            return redirect()->route('reviews.view_myreview', $review->id);
+        } catch (\Exception $e) {
+            Log::error('Error starts here');
+            Log::error($e->getMessage());
+            Log::error('Error ends here');
+            return redirect()->back()->with('error', 'An error occurred while updating the review.');
+        }
     }
-}
+
 
 
     public function deletePhoto($photoId)
