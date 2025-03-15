@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <link rel="stylesheet" href="{{ asset('css/top_page.css') }}">
-
+<link rel="stylesheet" href="{{ asset('css/top_page.css') }}">
     <div> <!-- BANNER SECTION -->
         <div class="banner" id="banner">
             <div class="banner-text">
@@ -14,8 +13,7 @@
     <div class="region-list-width container-md"> <!-- REGION LIST SECTION -->
         <div class="text-center">
             <div class="h3 mt-3 d-flex flex-wrap justify-content-center text-lg font-semibold fw-bold">
-                <span class="mx-2 region-1 region-clickable" data-bs-toggle="modal"
-                    data-bs-target="#regionModalHokkaido">Hokkaido</span>
+                <a href="{{ route('regions.overview', ['prefecture_id' => 1]) }}" class="mx-2 region-1 region-clickable">Hokkaido</a>
                 <span class="mx-2 region-2 region-clickable" data-bs-toggle="modal"
                     data-bs-target="#regionModalTohoku">Tohoku</span>
                 <span class="mx-2 region-3 region-clickable" data-bs-toggle="modal"
@@ -32,8 +30,7 @@
                     data-bs-target="#regionModalShikoku">Shikoku</span>
                 <span class="mx-2 region-9 region-clickable" data-bs-toggle="modal"
                     data-bs-target="#regionModalKyushu">Kyushu</span>
-                <span class="mx-2 region-10 region-clickable" data-bs-toggle="modal"
-                    data-bs-target="#regionModalOkinawa">Okinawa</span>
+                <a href="{{ route('regions.overview', ['prefecture_id' => 47]) }}" class="mx-2 region-10 region-clickable">Okinawa</a>
             </div>
         </div>
     </div>
@@ -95,90 +92,59 @@
         </div>
     </div>
 
-    <div class="container toppage mt-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
+    <div class="container toppage my-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
         <h2 class="display-5 text-center fw-bold">Restaurant Reviews</h2>
         <div class="row mt-3">
-            <div class="col-4"> <!-- Restaurant Review 1 -->
-                <div class="card shadow-sm border-0 w-100 rounded-4">
-                    <img src="images/sample5.jpeg" alt="Itinerary 1" class="element-style rounded-top-4">
-                    <div class="card-body p-2">
-                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px;"> ABC Cafe
-                            <i class="fa-solid fa-circle ms-4 text-warning"></i> <i
-                                class="fa-solid fa-circle text-warning"></i> <i
-                                class="fa-solid fa-circle text-warning"></i> <i
-                                class="fa-solid fa-circle text-warning"></i> <i
-                                class="fa-regular fa-circle text-warning"></i> (3 reviews)
+            @foreach ($popularRestaurants as $restaurant)
+                <div class="col-4">
+                    <div class="card shadow-sm border-0 w-100 rounded-4">
+                        <img src="{{ $restaurant->photo }}" alt="{{ $restaurant->name }}" class="rounded-top-4 img-fluid" style="height: 200px; object-fit: cover;">
+                        <div class="card-body p-2">
+                            <h6 class="card-title mb-1 fw-bold" style="font-size: 14px;"> 
+                                {{ $restaurant->name }}
+                            </h6>
+                            <h6>
+                            <span class="restaurant-rating">{{ number_format($restaurant->average_rate, 1) }}</span>
+                            <span class="ms-2 text-warning">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= round($restaurant->average_rate))
+                                        <i class="fa-solid fa-circle text-warning"></i>
+                                    @else
+                                        <i class="fa-regular fa-circle text-warning"></i>
+                                    @endif
+                                @endfor
+                            </span>
+                            ({{ $restaurant->review_count }} reviews)
                         </h6>
-                        <div class="d-flex align-items-center">
-                            <img src="images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle"
-                                style="width: 40px; height: 40px;">
-                            <span class="ms-2">Fantastic!!!</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <img src="images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle"
-                                style="width: 40px; height: 40px;">
-                            <span class="ms-2">Amazing place</span>
-                        </div>
-                        <div class="text-center">
-                            <a href="reviews.html" class="btn btn-link text-warning">View more review</a>
+                            @if (isset($restaurantReviews[$restaurant->place_id]))
+                                @foreach ($restaurantReviews[$restaurant->place_id] as $review)
+                                    <div class="d-flex align-items-center mb-1">
+                                        <div class="me-3">
+                                            @if ($review->user->avatar)
+                                                <img src="{{ Storage::url($review->user->avatar) }}" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                            @else
+                                                <div class="rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 40px; height: 40px;">
+                                                    <i class="fa-solid fa-user" style="font-size: 24px; color: #666;"></i>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <span class="ms-2">{{ $review->title }}</span>
+                                    </div>
+                                @endforeach
+                            @endif
+
+                            <div class="text-center">
+                                <a href="{{ route('reviews.show', ['place_id' => $restaurant->place_id, 'photo' => urlencode($restaurant->photo)]) }}" class="btn btn-link text-warning">
+                                    View more review
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-4"> <!-- Restaurant Review 2 -->
-                <div class="card shadow-sm border-0 w-100 rounded-4">
-                    <img src="images/sample6.jpeg" alt="Itinerary 1" class="element-style rounded-top-4">
-                    <div class="card-body p-2">
-                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px;"> ABC Cafe
-                            <i class="fa-solid fa-circle ms-4 text-warning"></i> <i
-                                class="fa-solid fa-circle text-warning"></i> <i
-                                class="fa-solid fa-circle text-warning"></i> <i
-                                class="fa-solid fa-circle text-warning"></i> <i
-                                class="fa-regular fa-circle text-warning"></i> (3 reviews)
-                        </h6>
-                        <div class="d-flex align-items-center">
-                            <img src="images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle"
-                                style="width: 40px; height: 40px;">
-                            <span class="ms-2">Fantastic!!!</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <img src="images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle"
-                                style="width: 40px; height: 40px;">
-                            <span class="ms-2">Amazing place</span>
-                        </div>
-                        <div class="text-center">
-                            <a href="reviews.html" class="btn btn-link text-warning">View more review</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4"> <!-- Restaurant Review 3 -->
-                <div class="card shadow-sm border-0 w-100 rounded-4">
-                    <img src="images/sample7.jpg" alt="Itinerary 1" class="rounded-top-4">
-                    <div class="card-body p-2">
-                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px;"> ABC Cafe
-                            <i class="fa-solid fa-circle ms-4 text-warning"></i> <i
-                                class="fa-solid fa-circle text-warning"></i> <i
-                                class="fa-solid fa-circle text-warning"></i> <i
-                                class="fa-solid fa-circle text-warning"></i> <i
-                                class="fa-regular fa-circle text-warning"></i> (3 reviews)
-                        </h6>
-                        <div class="d-flex align-items-center">
-                            <img src="images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle"
-                                style="width: 40px; height: 40px;">
-                            <span class="ms-2">Fantastic!!!</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <img src="images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle"
-                                style="width: 40px; height: 40px;">
-                            <span class="ms-2">Amazing place</span>
-                        </div>
-                        <div class="text-center">
-                            <a href="reviews.html" class="btn btn-link text-warning">View more review</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
+
+     <!-- 🔥 モーダルを読み込む -->
+     @include('regions.modal', ['regions' => $regions])
 @endsection

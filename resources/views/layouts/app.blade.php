@@ -65,7 +65,9 @@
 
     <!-- Bootstrap JS -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 
 
@@ -147,10 +149,10 @@
 
 
 
-                            @if (Route::has('create_review'))
+                            @if (Route::has('restaurants.search'))
                                 <li class="nav-item">
 
-                                    <a class="nav-link custom-btn" href="{{ route('create_review') }}">
+                                    <a class="nav-link custom-btn" href="{{ route('restaurants.search') }}">
 
                                         <span>Create</span>
 
@@ -175,7 +177,7 @@
 
                             <li class="nav-item">
 
-                                <a class="nav-link custom-btn" href="#">
+                                <a class="nav-link custom-btn" href="{{route('itineraries.create')}}">
 
                                     <span>Create</span>
 
@@ -298,7 +300,24 @@ document.getElementById('logout-form').submit();">
 
     </div>
 
-    @yield('scripts')
+    {{-- @yield('scripts')  --}} {{--  親ファイルと子ファイル（＠includeファイル）のJavascriptの干渉を避けるのには @yield('scripts') より @stack('scripts') が良いらしい by chat GPT //Sunao--}}
+    @stack('scripts')
+    {{-- ↑ただし、Javascriptをblade.phpファイルに適用するには@section('scripts') <script src="{{ asset('js/ファイル名.js')}}" ></script> @endsection 
+    ではなく、
+    @push('scripts')
+    <script src="{{ asset('js/ファイル名.js')}}" ></script>
+    @endpush 
+    でs指定していただくようお願いします。 もし、不具合あれば調整しましょう。 // Sunao --}}
+
+@push('scripts')
+<script src="{{ asset('js/ファイル名.js')}}" ></script>
+@endpush
+ 
+
+
+    <!-- ここにBootstrapのJavaScriptを追加 -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

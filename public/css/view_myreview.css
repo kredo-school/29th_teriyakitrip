@@ -1,0 +1,29 @@
+.rating {
+  display: flex;
+  gap: 10px;
+}
+
+.review-circle {
+  font-size: 24px; /* 星のサイズを統一 */
+  color: #E97911; /* オレンジ色 */
+}
+
+/* 追加された写真 */
+.review-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.review-photo {
+  width: 90px; /* 画像のサイズを統一 */
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.review-photo:hover {
+  transform: scale(1.1);
+}

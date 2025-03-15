@@ -2,30 +2,30 @@
 
 namespace App\Models;
 
+use App\Models\Prefecture;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;//Sunao
 
 class ItineraryPrefecture extends Model
 {
     use HasFactory;
 
-    protected $table = 'itinerary_prefectures'; 
 
     protected $fillable = [
         'itinerary_id',
-        'prefecture_name',
-    ];
+        'prefecture_id',
+    ];//sunao
 
-    public $timestamps = false; // `timestamps` を無効化（必要に応じて）
+    public $timestamps = false; // ✅ `timestamps` を無効にする（必要に応じて）//sunao
 
-    // **Itinerary（旅程）とのリレーション**
-    public function itinerary()
+    // ✅ Itineraries（旅程）とのリレーション
+    public function itinerary()//sunao
     {
-        return $this->belongsTo(Itinerary::class);
+        return $this->belongsTo(Itinerary::class, 'itinerary_id');
     }
 
-    // **Prefecture（都道府県）とのリレーション**
-    public function prefecture()
+    // ✅ Prefectures（都道府県）とのリレーション
+    public function prefecture()//sunao
     {
         return $this->belongsTo(Prefecture::class, 'prefecture_id');
     }
