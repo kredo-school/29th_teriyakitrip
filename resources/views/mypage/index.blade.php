@@ -124,10 +124,16 @@
                                 @foreach ($topRestaurantReviews->take(3) as $review) <!-- 最新の3件を取得 -->
                                     <div class="col-md-4"> <!-- 3カラムのレイアウト -->
                                         <div class="card shadow-sm border-0 w-100 rounded-4">
-                                            <img src="{{ $review->photo ? Storage::url($review->photo) : '/images/sample.jpg' }}" 
+                                            @if ($review->photo)
+                                            <img src="{{ Storage::url($review->photo) }}" 
                                                 alt="Restaurant Image" 
                                                 class="element-style rounded-top-4"
                                                 style="width: 100%; height: 200px; object-fit: cover;">
+                                            @else
+                                            <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 200px; background-color: #f0f0f0; border-radius: 10px 10px 0 0;">
+                                                <i class="fa-solid fa-image fa-3x display-1" style="color: #ccc;"></i>
+                                            </div>
+                                            @endif
                                             <div class="card-body top-review-item p-2">
                                                 <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">
                                                     {{ $review->restaurant_name ?? 'Unknown Restaurant' }} <!-- レストラン名 -->
@@ -147,9 +153,9 @@
                         
                                                 <!-- 詳細ページへのリンク -->
                                                 <div class="text-center">
-                                                    <a href="{{ route('reviews.show', ['place_id' => $review->place_id]) }}" 
+                                                    <a href="#" class="btn more-tab-button" data-target="#restaurant-reviews"
                                                         class="btn btn-link" style="color: #E97911;">
-                                                        View more reviews
+                                                        View this review
                                                     </a>
                                                 </div>
                                             </div>
