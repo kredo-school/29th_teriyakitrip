@@ -6,13 +6,13 @@
               <div class="col-9">
                 <div class="d-flex align-items-center mb-3">
                   <div class="me-3">
-                      @if ($review->user->photo)
-                          <img src="{{ asset($review->user->photo) }}" alt="Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                      @else
-                          <div class="rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 50px; height: 50px;">
-                              <i class="fa-solid fa-user" style="font-size: 24px; color: #666;"></i>
-                          </div>
-                      @endif
+                    @if ($review->user->avatar)
+                        <img src="{{ Storage::url($review->user->avatar) }}" alt="Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                    @else
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 50px; height: 50px;">
+                            <i class="fa-solid fa-user" style="font-size: 24px; color: #666;"></i>
+                        </div>
+                    @endif
                   </div>
                   <div class="d-flex mt-1">
                     <h5 class="mb-0 me-4">{{ $review->user->user_name }}</h5>
