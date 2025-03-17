@@ -196,12 +196,13 @@ Route::get('/regions/restaurant-review', function () {
 
 Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])->name('restaurant_reviews.index');
 
+//以下のルートはbladeのファイルごと読み込むが、タブで切り替えるようにしたので以下のルートは必要なしの予定　naho
 // マイページ関連のルートを単一のルートにまとめる
-Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
-    ->name('mypage.show')
-    ->where('tab', 'overview|itineraries|restaurant_reviews|followings|follower');
+// Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
+//     ->name('mypage.show')
+//     ->where('tab', 'overview|itineraries|restaurant_reviews|followings|follower');
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 });
-// Route::get('/itineraries', [MypageController::class, 'index'])->name('itineraries.index'); //NozomiさんがFix中
+Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);

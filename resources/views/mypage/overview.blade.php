@@ -1,3 +1,5 @@
+{{-- This contents moved to views/maypage/index.blade.php 
+I will keep this file just in case by naho--}}
 @extends('layouts.app')
 @section('title', 'My Page_Overview')
 

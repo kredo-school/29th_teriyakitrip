@@ -1,3 +1,5 @@
+{{-- This contents moved to views/maypage/index.blade.php 
+I will keep this file just in case by naho--}}
 @extends('layouts.app')
 @section('title', 'My Page')
 
@@ -196,7 +198,7 @@
                                                 <span class="ms-2">Amazing place</span>
                                             </div>
                                             <div class="text-center">
-                                                <a href="reviews.html" class="btn btn-link" style="color: #E97911;"">View more review</a>
+                                                <a href="reviews.html" class="btn btn-link" style="color: #E97911;">View more review</a>
                                             </div>
                                         </div>
                                     </div>

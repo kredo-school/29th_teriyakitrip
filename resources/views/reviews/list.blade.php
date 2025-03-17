@@ -35,8 +35,8 @@
                     <p class="short-text">{{ Str::limit($review->body, 200) }}</p>
                     <p class="full-text d-none">{{ $review->body }}</p>
                     @if (strlen($review->body) > 100)
-                      <a href="#" class="read-more text-primary">Read more...</a>
-                      <a href="#" class="read-less text-primary d-none">Read less</a>
+                      <a href="#" class="read-more">Read more...</a>
+                      <a href="#" class="read-less d-none">Read less</a>
                     @endif
                   </div>
                 </div>
