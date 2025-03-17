@@ -89,3 +89,10 @@
   color: #e97911 !important; 
   border: 2px solid #e97911 !important; 
 }
+
+.read-more, .read-less{
+  display: block;
+  cursor: pointer;
+  color: #E97911;
+  font-size: 0.8rem;
+}
