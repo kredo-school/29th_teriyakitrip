@@ -14,6 +14,7 @@ use App\Http\Controllers\RegionController;//moko
 use App\Http\Controllers\ApiProxyController; //naho
 use App\Http\Controllers\FavoritesController; //Toshimi
 use App\Http\Controllers\MyItineraryController;//Toshimi
+use App\Http\Controllers\RestaurantReviewPhotoController;
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
 
@@ -24,8 +25,6 @@ Auth::routes();
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-Route::get('/itinerary/show', [ItineraryController::class, 'showItinerary'])->name('itineraries.show_itinerary');
 
 Route::get('/my-itineraries', [MyItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
 Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
@@ -61,8 +60,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
     // Route::get('/logout', 'Auth\LoginController@logout')->name('logout'); // エラー原因となったため一旦コメントアウト 支障あれば相談//Sunao
     Route::get('/restaurants/my_review/{id}', [RestaurantReviewController::class, 'viewMyreview'])->name('reviews.view_myreview'); //saki
-    
-    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+     // Edit review form
+     Route::get('/reviews/edit/{review}', [RestaurantReviewController::class, 'edit'])->name('reviews.edit_myreview'); //SAKI
+     Route::put('/reviews/{id}', [RestaurantReviewController::class, 'update'])->name('reviews.update'); //SAKI
+     // 画像削除のルート設定
+     Route::delete('/reviews/photo/delete/{photoId}', [RestaurantReviewController::class, 'deletePhoto'])->name('review.photo.delete');
+
+
+
+
 });
 Route::group(['middleware' => 'auth'], function() {    
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
