@@ -125,11 +125,11 @@
                                     <div class="col-md-4"> <!-- 3カラムのレイアウト -->
                                         <div class="card shadow-sm border-0 w-100 rounded-4">
                                             @if ($review->photo)
-                                            <img src="{{ Storage::url($review->photo) }}" 
-                                                alt="Restaurant Image" 
-                                                class="element-style rounded-top-4"
-                                                style="width: 100%; height: 200px; object-fit: cover;">
-                                            @else
+                                                <img src="{{ Storage::url($review->photo) }}" 
+                                                    alt="Restaurant Image" 
+                                                    class="element-style rounded-top-4"
+                                                    style="width: 100%; height: 200px; object-fit: cover;">
+                                                @else
                                             <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 200px; background-color: #f0f0f0; border-radius: 10px 10px 0 0;">
                                                 <i class="fa-solid fa-image fa-3x display-1" style="color: #ccc;"></i>
                                             </div>
