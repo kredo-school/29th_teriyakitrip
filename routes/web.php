@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\TabController;
 // use App\Http\Controllers\FollowController; //一時的にコメントアウト（後で戻す）
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
@@ -16,7 +17,7 @@ use App\Http\Controllers\MyItineraryController;//Toshimi
 use App\Http\Controllers\RestaurantReviewPhotoController;
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
-use App\Models\RestaurantReview;
+
 
 Auth::routes();
 
@@ -139,19 +140,19 @@ Route::group(['middleware' => 'auth'], function() {
 
 
     
-// Route::get('/itineraries', [ItineraryController::class, 'index'])->name('itineraries.index'); //NozomiさんがFix中
+
 Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])->name('restaurant_reviews.index');
 
+//以下のルートはbladeのファイルごと読み込むが、タブで切り替えるようにしたので以下のルートは必要なしの予定　naho
 // マイページ関連のルートを単一のルートにまとめる
-Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
-    ->name('mypage.show')
-    ->where('tab', 'overview|itineraries|restaurant_reviews');
+// Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
+//     ->name('mypage.show')
+//     ->where('tab', 'overview|itineraries|restaurant_reviews|followings|follower');
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 
-
-
+Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);
 
 
 Route::get('/regions/{prefecture_id}/overview', [RegionController::class, 'overview'])

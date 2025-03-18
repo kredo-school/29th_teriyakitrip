@@ -42,8 +42,7 @@
     {{-- CSS --}}
 
     <link rel="stylesheet" href="{{ asset('css/nozomi.css') }}">
-
-
+    <link rel="stylesheet" href="{{ asset('css/top_page.css') }}">
 
 
 
@@ -227,7 +226,7 @@
                                         <div class="modal-body">
                                             <div class="card border-0" style="background-color: #f0f0f0;">
                                                 <div class="card-body">
-                                                    <a href="{{ route('profile.show', Auth::user()) }}"
+                                                    <a href="{{ route('mypage.index', Auth::user()) }}"
                                                         class="text-reset text-decoration-none">
                                                         <div class="user-info-container d-flex align-items-center">
                                                             <div class="me-3">

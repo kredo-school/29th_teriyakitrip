@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Models\Itineraries;//Sunao
+use App\Models\Itinerary;//Sunao
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -64,7 +64,7 @@ class User extends Authenticatable
     // Itineraries リレーション
     public function itineraries()
     {
-        return $this->hasMany(Itineraries::class);
+        return $this->hasMany(Itinerary::class);
     }
 
     // RestaurantReviews リレーション
