@@ -70,10 +70,19 @@
                     @include('reviews.partials.modal_photo_delete') 
 
                     <!-- Add new photos -->
-                    <div class="mb-4">
+                    <div class="mb-4 mt-3">
                         <label class="form-label fw-bold">Add new photos</label>
-                        <input type="file" name="photos[]" multiple id="photo-input" class="form-control">
+                        <input type="file" name="photos[]" id="photo-input" class="form-control" multiple>
+                        <small class="text-muted">Use 'Command' (Mac) or 'Ctrl' (Windows) to select multiple photos.</small>
                     </div>
+
+                    <!-- Add additional photos (if needed) -->
+                    <div class="mb-4 mt-3">
+                        <label class="form-label fw-bold">Add more photos (Optional)</label>
+                        <input type="file" name="additional_photos[]" id="additional-photo-input" class="form-control" multiple>
+                        <small class="text-muted">You can upload more photos here.</small>
+                    </div>
+
 
                     <!-- Submit button -->
                     <div class="mt-4">
