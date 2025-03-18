@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
 
-      let apiKey = "{{ config('services.google.maps_api_key') }}"; // Google APIキー
+    let apiKey = "{{ config('services.google.maps_api_key') }}"; // Google APIキー
     let reviews = document.querySelectorAll(".review-item");
     let topReviews = document.querySelectorAll(".top-review-item");
     let loadMoreButton = document.getElementById("loadMore");
