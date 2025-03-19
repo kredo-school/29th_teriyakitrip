@@ -20,14 +20,24 @@
   gap: 8px;
 }
 
+/* 画像のサイズを調整（画像の親要素に影響を与えないようにする） */
 .review-photo {
-  width: 90px !important; /* 画像のサイズを統一 */
+  width: 90px !important;  /* サイズ調整 */
   height: 90px !important;
   object-fit: cover !important;
   border-radius: 8px !important;
   cursor: pointer !important;
   transition: transform 0.2s ease-in-out !important;
+  display: block;  /* 画像の表示方法を変更 */
+  position: relative; /* これを追加して、親要素が位置調整できるようにする */
 }
+
+/* 画像の親要素にrelativeを追加して、削除ボタンの位置を調整 */
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
 
 .review-photo:hover {
   transform: scale(1.1) !important;

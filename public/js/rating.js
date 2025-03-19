@@ -1,36 +1,35 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const stars = document.querySelectorAll(".rating-label i");
+    const stars = document.querySelectorAll(".rating-label i");
 
-  // 星の選択状態を更新する関数
-  function updateStars(value) {
-      stars.forEach(star => {
-          const starValue = parseInt(star.getAttribute("data-value"), 10);
-          // クリックした星より前の星はオレンジ、それ以降の星はグレーにする
-          if (starValue <= value) {
-              star.classList.add("selected");
-              star.classList.remove("unselected");
-          } else {
-              star.classList.remove("selected");
-              star.classList.add("unselected");
-          }
-      });
-  }
+    // 星の選択状態を更新する関数
+    function updateStars(value) {
+        stars.forEach(star => {
+            const starValue = parseInt(star.getAttribute("data-value"), 10);
+            if (starValue <= value) {
+                star.classList.add("selected");
+                star.classList.remove("unselected");
+            } else {
+                star.classList.remove("selected");
+                star.classList.add("unselected");
+            }
+        });
+    }
 
-  // 初期状態で選択された評価を反映
-  const initialRating = document.querySelector(".rating input:checked");
-  if (initialRating) {
-      updateStars(parseInt(initialRating.value, 10));
-  }
+    // 初期状態で選択された評価を反映
+    const initialRating = document.querySelector(".rating input:checked");
+    if (initialRating) {
+        updateStars(parseInt(initialRating.value, 10));
+    }
 
-  // クリック時に評価を更新
-  stars.forEach(star => {
-      star.addEventListener("click", function () {
-          const value = parseInt(this.getAttribute("data-value"), 10);
-          updateStars(value);
-          // ラジオボタンを更新
-          document.getElementById("star" + value).checked = true;
-      });
-  });
+    // クリック時に評価を更新
+    stars.forEach(star => {
+        star.addEventListener("click", function () {
+            const value = parseInt(this.getAttribute("data-value"), 10);
+            updateStars(value);
+            // ラジオボタンを更新
+            document.getElementById("star" + value).checked = true;
+        });
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -67,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!deletePhotoId) return;
         
         fetch(`/reviews/photo/delete/${deletePhotoId}`, {
-            method: 'POST', // LaravelのDELETEを許可するためにPOSTを使用
+            method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'Content-Type': 'application/json'
@@ -89,27 +88,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     const photoInput = document.getElementById('photo-input');
+    const additionalPhotoInput = document.getElementById('additional-photo-input');
     const existingPhotosContainer = document.getElementById('existing-photos');
 
-    photoInput.addEventListener('change', function (event) {
+    // ファイル選択時に実行する共通の関数
+    function handleFileInputChange(event) {
         const files = event.target.files;
+        const existingPhotosCount = existingPhotosContainer.querySelectorAll('.review-photo').length;
+        const newFilesCount = files.length;
+        const totalFiles = existingPhotosCount + newFilesCount;
+
+        // 最大6枚制限
+        if (totalFiles > 6) {
+            alert("You can only upload up to 6 photos.");
+            event.target.value = ''; // アップロードをキャンセル
+            return;
+        }
 
         // 選択された画像をプレビュー表示
         Array.from(files).forEach(function (file) {
             const reader = new FileReader();
 
             reader.onload = function (e) {
-                // 新しい画像のコンテナ作成
                 const newImageContainer = document.createElement('div');
                 newImageContainer.classList.add('position-relative', 'd-inline-block', 'image-container');
 
-                // 画像タグ作成
                 const img = document.createElement('img');
                 img.src = e.target.result;
                 img.classList.add('img-fluid', 'rounded', 'review-photo', 'me-2');
                 img.style.maxWidth = '150px'; // 画像サイズ調整
 
-                // 削除ボタン
                 const deleteButton = document.createElement('button');
                 deleteButton.type = 'button';
                 deleteButton.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute', 'top-0', 'end-0');
@@ -128,20 +136,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 existingPhotosContainer.appendChild(newImageContainer);
             };
 
-            // ファイルを読み込んでプレビューを表示
             reader.readAsDataURL(file);
         });
-    });
+    }
+
+    // 画像入力の変更イベントに共通の処理を追加
+    photoInput.addEventListener('change', handleFileInputChange);
+    additionalPhotoInput.addEventListener('change', handleFileInputChange);
 });
 
-document.getElementById('photo-input').addEventListener('change', function(event) {
-    let fileInput = event.target;
-    let existingPhotos = document.querySelectorAll('.review-photo').length;
-    let newFiles = fileInput.files.length;
-    let total = existingPhotos + newFiles;
+document.querySelector('form').addEventListener('submit', function (e) {
+    e.preventDefault(); // フォームの送信を防止
 
-    if (total > 6) {
-        alert("You can only upload up to 6 photos.");
-        fileInput.value = ""; // アップロードをキャンセル
+    const formData = new FormData(this); // フォームのデータを取得
+    const files = document.getElementById('photo-input').files; // 選択されたファイルを取得
+
+    // 複数のファイルを追加
+    for (let i = 0; i < files.length; i++) {
+        formData.append('photos[]', files[i]);
     }
+
+    fetch('/reviews/update', { // 適切なURLに変更
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => console.error('Error:', error));
 });
