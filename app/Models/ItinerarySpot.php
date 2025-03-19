@@ -14,7 +14,7 @@ class ItinerarySpot extends Model
     protected $fillable = [
         'itinerary_id',
         'place_id',
-        'order',
+        'spot_order',
         'visit_time',
         'visit_day'
     ];

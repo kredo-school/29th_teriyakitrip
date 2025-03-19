@@ -6,6 +6,7 @@ use App\Models\Prefecture;
 use Illuminate\Http\Request;
 use App\Models\ItinerarySpot;
 use App\Models\Itinerary; // 旅程モデル
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
  // 都道府県モデル
 
@@ -51,10 +52,12 @@ class ItinerarySpotController extends Controller {
         ]);
     }
 
-    public function saveSpots(Request $request, $itineraryId)
+    public function saveItinerarySpots(Request $request, $itineraryId)
     {
-        \Log::info("🔍 受信データ:", $request->all()); // 🔍 デバッグログ追加
-        $request->validate([
+        dd($request->all()); // デバッグ用: 送信データを確認する
+        Log::info("🔍 受信データ(raw):", $request->all()); // 🔍 デバッグログ追加
+
+        $validatedData =  $request->validate([
             'spots' => 'required|array|min:1',
             'spots.*.place_id' => 'required|string',
             'spots.*.spot_order' => 'required|integer',
@@ -62,35 +65,41 @@ class ItinerarySpotController extends Controller {
             'spots.*.visit_day' => 'required|integer',
         ]);
 
+        Log::info("✅ バリデーション通過データ:", $validatedData);
+
+
         foreach ($validatedData['spots'] as $spot) {
+    
+                
             ItinerarySpot::create([
                 'itinerary_id' => $itineraryId,
                 'place_id' => $spot['place_id'],
-                'order' => $spot['order'],
+                'order' => $spot['spot_order'],
                 'visit_time' => $spot['visit_time'] ?? null,
                 'visit_day' => $spot['visit_day'],
             ]);
         }
     
-        return response()->json(['message' => 'Spots saved successfully']);
-    }
-
-    private function fetchPlaceDetails($placeId)
-    {
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
-        $response = Http::get("https://maps.googleapis.com/maps/api/place/details/json", [
-            'place_id' => $placeId,
-            'key' => $apiKey,
-            'fields' => 'name,formatted_address'
+        return response()->json([
+            'message' => 'Spots saved successfully',
+            'redirect_url' => route('home') 
         ]);
-
-        if ($response->successful() && isset($response['result'])) {
-            return [
-                'name' => $response['result']['name'] ?? 'Unknown Place',
-                'address' => $response['result']['formatted_address'] ?? 'Unknown Address'
-            ];
-        }
-
-        return null;
     }
+
+    // private function fetchPlaceDetails($placeId)
+    // {
+    //     $apiKey = env('GOOGLE_MAPS_API_KEY');
+    //     $url = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$placeId}&fields=name,formatted_address&key={$apiKey}";
+    //     $response = Http::get($url);
+    //     $data = $response->json();
+
+    //     if ($response->successful() && isset($data['result'])) {
+    //         return [
+    //             'name' => $data['result']['name'] ?? 'Unknown Place',
+    //             'address' => $data['result']['formatted_address'] ?? 'Unknown Address'
+    //         ];
+    //     }
+
+    //     return null;
+    // }
 }

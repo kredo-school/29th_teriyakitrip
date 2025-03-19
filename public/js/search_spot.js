@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        console.log("🚀 APIリクエストURL:", url);
+        console.log("🚀 APIリクエストURL:", query);
 
         fetch(`/search-spot?query=${encodeURIComponent(query)}`)
             .then((response) => {
@@ -69,18 +69,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     placeElement.innerHTML = `
                         <div class="search-result-img-container">
-                            <img src="${
-                                place.photo ||
-                                "https://via.placeholder.com/100x100?text=No+Image"
-                            }" 
-                                 alt="Place Image" 
-                                 class="search-result-image">
+                                                 <img src="https://via.placeholder.com/100x100?text=Loading" 
+                                 alt="Loading Image" 
+                                 class="search-result-image" 
+                                 data-place-id="${place.place_id}">
                         </div>
                         <div class="search-result-info">
                             <p class="search-result-name">${place.name}</p>
-                            <p class="search-result-address">${
-                                place.address
-                            }</p>
+                            <p class="search-result-address">${place.address}</p>
                         </div>
                         <div class="search-result-btn-container">
                             <button class="btn-white-orange add-to-itinerary">Add to Itinerary</button>
@@ -88,10 +84,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     `;
 
                     searchResultsContainer.appendChild(placeElement);
+                    // 🔹 画像を非同期で取得
+                    fetch(`/searchPhoto/${place.place_id}`)
+                        .then((response) => response.json())
+                        .then((photoData) => {
+                            const imageElement = placeElement.querySelector(
+                                ".search-result-image"
+                            );
+                            imageElement.src =
+                                photoData.photos.length > 0
+                                    ? photoData.photos[0]
+                                    : "https://via.placeholder.com/100x100?text=No+Image";
+                        })
+                        .catch((error) => {
+                            console.error("❌ 画像取得エラー:", error);
+                        });
                 });
 
-                // ✅ `Add to Itinerary` ボタンのイベントを適用
+                // 重要な処理：詳細エリアを表示
                 attachAddToItineraryEvents();
+
             })
             .catch((error) => {
                 console.error("❌ fetch() エラー:", error);
@@ -109,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function showSpotDetail(place) {
         // ✅ `detailContainer` を関数内で取得
         setTimeout(() => {
-            const detailContainer = document.getElementById("spotDetail");
+            const detailContainer = document.getElementById("spot-detail-container");
             console.log("🔍 detailContainer:", detailContainer);
 
             if (!detailContainer) {
@@ -134,11 +146,15 @@ document.addEventListener("DOMContentLoaded", function () {
             detailContainer.style.display = "block";
 
             // ✅ 閉じるボタンの動作
-            document
-                .querySelector(".close-detail")
-                .addEventListener("click", function () {
+            const closeButton = detailContainer.querySelector(".close-detail");
+            if (closeButton) {
+                closeButton.addEventListener("click", function () {
                     detailContainer.style.display = "none";
                 });
+            } else {
+                console.error("❌ `.close-detail` ボタンが作成されていません！");
+            }
+
         }, 100); // ✅ 100ms 遅延して `spotDetail` を確実に取得
     }
 
@@ -155,54 +171,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Spot added to itinerary:", spotData);
         addSpotToBody(spotData);
-    }
 
-    console.log("✅ `search_spot.js` 読み込み完了");
+      console.log("✅ Spot added to itinerary:", spotData);
+    addSpotToBody(spotData);
+
+    // 🔄 予定画面に切り替える
+    switchToItineraryView();
+}
 
     function addSpotToBody(spotData) {
         console.log("✅ `addSpotToBody()` 実行", spotData);
 
-        let selectedDay = sessionStorage.getItem("selectedDay");
-        if (!selectedDay) {
-            console.warn(
-                "⚠️ `selectedDay` が取得できません！デフォルト `1` を使用"
-            );
-            selectedDay = "1";
-        }
+        let selectedDay = sessionStorage.getItem("selectedDay") || "1";
+        let itineraryId = document.getElementById("itinerary-data").dataset.itineraryId;
+        let storedSpots = JSON.parse(localStorage.getItem(`itinerary_spots_${itineraryId}`)) || [];
 
-        console.log(`✅ 選択された Day: ${selectedDay}`);
+        let photoUrl = spotData.photo || "no-image";
 
-        let itineraryId =
-            document.getElementById("itinerary-data").dataset.itineraryId;
-        let storedSpots =
-            JSON.parse(
-                localStorage.getItem(`itinerary_spots_${itineraryId}`)
-            ) || [];
-
-        // 🔹 `photo` データを取得
-        let photoUrl = null;
-        if (spotData.photos && spotData.photos.length > 0) {
-            try {
-                photoUrl = spotData.photos[0].getUrl({
-                    maxWidth: 400,
-                    maxHeight: 400,
-                });
-            } catch (error) {
-                console.error("❌ `photoUrl` の取得に失敗:", error);
-            }
-        }
-
-        if (!photoUrl || photoUrl === "undefined") {
-            console.warn(
-                "⚠️ `photoUrl` が取得できなかったため、`No Image` を設定"
-            );
-            photoUrl = "no-image";
-        }
-
-        let newOrder =
-            storedSpots.length > 0
-                ? Math.max(...storedSpots.map((s) => s.order)) + 1
-                : 1;
+        let newOrder = storedSpots.length > 0
+            ? Math.max(...storedSpots.map((s) => s.order)) + 1
+            : 1;
 
         let newSpot = {
             place_id: spotData.place_id,
@@ -214,10 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         storedSpots.push(newSpot);
-        localStorage.setItem(
-            `itinerary_spots_${itineraryId}`,
-            JSON.stringify(storedSpots)
-        );
+        localStorage.setItem(`itinerary_spots_${itineraryId}`, JSON.stringify(storedSpots));
 
         console.log("✅ スポットが追加されました:", newSpot);
 
@@ -225,9 +210,45 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("🔄 `renderItineraryBody()` を実行して UI を更新");
             window.renderItineraryBody();
         } else {
-            console.error(
-                "❌ `renderItineraryBody` が未定義！スクリプトの読み込み順を確認してください"
-            );
+            console.error("❌ `renderItineraryBody` が未定義！スクリプトの読み込み順を確認してください");
         }
     }
+
+    // **🔄 MutationObserverで新しいボタンにイベントを適用**
+    const observer = new MutationObserver(() => {
+        attachAddToItineraryEvents();
+    });
+
+    observer.observe(searchResultsContainer, { childList: true, subtree: true });
+
+    console.log("✅ `search_spot.js` 修正適用完了");
+
+    function switchToItineraryView() {
+        console.log("🔄 予定表示へ切り替え");
+    
+        const searchForm = document.getElementById("add-spot-container");
+        const itineraryContainer = document.getElementById("add-spot-container");
+    
+        if (!searchForm || !itineraryContainer) {
+            console.error("❌ `add-spot-container` または `day-container` が見つかりません！");
+            return;
+        }
+    
+        // 🔹 検索画面を非表示
+        searchForm.style.display = "block";
+    
+        // 🔹 予定画面を表示
+        itineraryContainer.style.display = "none";
+    
+        // ✅ 予定一覧を更新
+        if (typeof window.renderItineraryBody === "function") {
+            console.log("🔄 `renderItineraryBody()` を実行して UI を更新");
+            window.renderItineraryBody();
+        } else {
+            console.error("❌ `renderItineraryBody` が未定義！");
+        }
+    }
+    
 });
+
+

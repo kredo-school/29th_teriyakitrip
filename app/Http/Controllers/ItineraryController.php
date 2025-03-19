@@ -7,6 +7,7 @@ use App\Models\Region;
 
 use App\Models\Itinerary;
 use Illuminate\Http\Request;
+use App\Models\ItinerarySpot;
 use App\Models\ItineraryPrefecture;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;//Sunao
@@ -210,6 +211,7 @@ class ItineraryController extends Controller
     
     public function saveItineraryData(Request $request, $id)
     {
+        // dd($request);
         Log::info("🚀 saveItineraryData() called with ID: " . $id);
         Log::info("📝 受信データ:", $request->all());
     
@@ -222,12 +224,14 @@ class ItineraryController extends Controller
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'is_public' => 'boolean',
-                'selected_prefectures' => 'required|string', // 🔥 string で受け取る
-                'spots' => 'required|array|min:1', // 🔥 `spots` のバリデーション追加
-                'spots.*.place_id' => 'required|string',
-                'spots.*.order' => 'required|integer',
-                'spots.*.visit_time' => 'required|string',
-                'spots.*.visit_day' => 'required|integer',
+                // 'selected_prefectures' => 'required|string', // 🔥 string で受け取る
+                'spots' => 'required|string',
+                'spot_order' => 'required|integer'
+                // 'spots' => 'required|array|min:1', // 🔥 `spots` のバリデーション追加
+                // 'spots.*.place_id' => 'required|string',
+                // 'spots.*.order' => 'required|integer',
+                // 'spots.*.visit_time' => 'required|string',
+                // 'spots.*.visit_day' => 'required|integer',
             ]);
     
     
@@ -261,11 +265,29 @@ class ItineraryController extends Controller
                     'prefecture_id' => $prefectureId,
                 ]);
             }
+
+                    // ✅ **スポット情報を保存**
+        ItinerarySpot::where('itinerary_id', $itinerary->id)->delete(); // 既存のスポットを削除
+        foreach ($validated['spots'] as $spot) {
+            ItinerarySpot::create([
+                'itinerary_id' => $itinerary->id,
+                'place_id' => $spot['place_id'],
+                'spot_order' => $spot['spot_order'],
+                'visit_time' => $spot['visit_time'] ?? null,
+                'visit_day' => $spot['visit_day'],
+            ]);
+        }
+        Log::info("✅ Spots saved");
+
     
             DB::commit();
-            Log::info("✅ 旅程更新成功！", ['itinerary_id' => $itinerary->id]);
-        
-            return redirect()->route('home')->with('success', 'Itinerary saved successfully!');
+            Log::info("✅ 旅程＆スポット保存成功！", ['itinerary_id' => $itinerary->id]);
+        // ✅ **localStorage をクリア & リダイレクト**
+        return response()->json([
+            'message' => 'Itinerary and spots saved successfully',
+            'redirect_url' => route('home'),
+        ]);
+
         
         } catch (\Exception $e) {
             DB::rollBack();

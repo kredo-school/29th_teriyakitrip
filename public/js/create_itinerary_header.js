@@ -12,10 +12,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // タブのアクティブ表示を切り替える
-    document.querySelectorAll('.swiper-slide').forEach(tab => {
-        tab.addEventListener('click', function () {
-            document.querySelectorAll('.swiper-slide').forEach(t => t.classList.remove('active-tab'));
-            this.classList.add('active-tab');
+    document.querySelectorAll(".swiper-slide").forEach((tab) => {
+        tab.addEventListener("click", function () {
+            document
+                .querySelectorAll(".swiper-slide")
+                .forEach((t) => t.classList.remove("active-tab"));
+            this.classList.add("active-tab");
         });
     });
 
@@ -50,32 +52,40 @@ document.addEventListener("DOMContentLoaded", function () {
     // 🔹 Saveボタンが押されたときの処理
     saveDestinationBtn.addEventListener("click", function () {
         console.log("✅ Save ボタンがクリックされました！");
-    
+
         let selectedPrefectures = [];
         let selectedPrefectureIds = [];
-    
-        document.querySelectorAll('input[name="selected_prefectures[]"]:checked').forEach((checkbox) => {
-            let name = checkbox.closest("label").querySelector("span").textContent.trim();
-            let color = checkbox.getAttribute("data-color");
-    
-            selectedPrefectures.push({
-                id: parseInt(checkbox.value, 10), // ✅ integer に変換
-                name: name,
-                color: color
+
+        document
+            .querySelectorAll('input[name="selected_prefectures[]"]:checked')
+            .forEach((checkbox) => {
+                let name = checkbox
+                    .closest("label")
+                    .querySelector("span")
+                    .textContent.trim();
+                let color = checkbox.getAttribute("data-color");
+
+                selectedPrefectures.push({
+                    id: parseInt(checkbox.value, 10), // ✅ integer に変換
+                    name: name,
+                    color: color,
+                });
+                selectedPrefectureIds.push(parseInt(checkbox.value, 10)); // 🔥 IDのみ格納
             });
-            selectedPrefectureIds.push(parseInt(checkbox.value, 10)); // 🔥 IDのみ格納
-        });
-    
+
         console.log("🟢 保存するデータ:", selectedPrefectures);
         console.log("🟢 送信する都道府県IDリスト:", selectedPrefectureIds);
-    
+
         if (selectedPrefectureIds.length === 0) {
             alert("⚠️ 少なくとも1つの都道府県を選択してください！");
             return;
         }
 
         // ✅ `localStorage` に選択した都道府県を保存（🔥 これが即時表示に必要）
-        localStorage.setItem(`selectedDestinations_itinerary_${itineraryId}`, JSON.stringify(selectedPrefectures));
+        localStorage.setItem(
+            `selectedDestinations_itinerary_${itineraryId}`,
+            JSON.stringify(selectedPrefectures)
+        );
 
         // ✅ hidden input に値をセットする（空にならないように対策）
         let hiddenInput = document.getElementById("selected-prefectures");
@@ -86,99 +96,216 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("❌ hidden input が見つかりません！");
         }
 
-            // ✅ 選択リストを即時更新
-            updateDestinationList();
+        // ✅ 選択リストを即時更新
+        updateDestinationList();
 
-    console.log("✅ 選択リストを即時更新しました！");
-    
+        console.log("✅ 選択リストを即時更新しました！");
+
         // ✅ モーダルを閉じる（変更なし）
         setTimeout(() => {
             modalElem.classList.remove("show");
             document.body.classList.remove("modal-open");
-            document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
+            document
+                .querySelectorAll(".modal-backdrop")
+                .forEach((el) => el.remove());
             modalInstance.hide();
             console.log("✅ モーダルを閉じました！");
         }, 200);
     });
+
+    //  Doneボタン押下後の保存処理
+    doneButton.addEventListener("click", function () {
+        console.log("✅ Doneボタンがクリックされました");
     
-      // 🔹 Doneボタン（旅程の保存処理）
-      let doneButton = document.getElementById("save-itinerary");
-      if (!doneButton) {
-          console.error("❌ Doneボタン (#save-itinerary) が見つかりません！");
-          return;
-      }
-  
-      doneButton.addEventListener("click", function () {
-          console.log("✅ Doneボタンがクリックされました");
-  
-          let itineraryId = document.getElementById("itinerary-data").dataset.itineraryId;
-          let storedSpots = JSON.parse(localStorage.getItem(`itinerary_spots_${itineraryId}`)) || [];
-  
-        // 🔥 ここでデータ確認
-        console.log("📤 itineraryId:", itineraryId);
-        console.log("📤 送信データ (最終確認):", JSON.stringify({ spots: storedSpots }, null, 2));
-
-        if (!storedSpots || storedSpots.length === 0) {
-            console.warn("⚠️ 送信データが空です！送信をスキップ");
+        let itineraryId = document.getElementById("itinerary-data").dataset.itineraryId;
+        let storedSpotsRaw = localStorage.getItem(`itinerary_spots_${itineraryId}`);
+    
+        let itineraryTitle = document.getElementById("itinerary-title").value.trim();
+        let startDate = document.getElementById("start_date").value;
+        let endDate = document.getElementById("end_date").value;
+        let selectedPrefecturesRaw = document.getElementById("selected-prefectures").value;
+        
+        let selectedPrefectures = selectedPrefecturesRaw ? JSON.parse(selectedPrefecturesRaw) : [];
+    
+        console.log("📤 送信前の旅行情報:", {
+            itinerary_id: itineraryId,
+            title: itineraryTitle,
+            start_date: startDate,
+            end_date: endDate,
+            selected_prefectures: selectedPrefectures,
+            spots: storedSpots
+        });
+    
+        if (!itineraryTitle || !startDate || !endDate) {
+            alert("⚠️ 旅行タイトルと日程を入力してください！");
             return;
-        }        
+        }
 
-        fetch(`/itineraries/${itineraryId}/spots/save`, {
+            // 🔹 型を DB に揃える
+    storedSpots = storedSpots.map(spot => ({
+        place_id: String(spot.place_id),
+        order: parseInt(spot.order, 10) || 1,
+        visit_time: spot.visit_time ? String(spot.visit_time) : null,
+        visit_day: parseInt(spot.visit_day, 10) || 1
+    }));
+
+    
+        console.log("📤 修正後のスポットデータ:", JSON.stringify({
+            itinerary_id: itineraryId,
+            title: itineraryTitle,
+            start_date: startDate,
+            end_date: endDate,
+            selected_prefectures: selectedPrefectures,
+            spots: storedSpots
+        }, null, 2));
+        // ✅ **1. 旅行の基本情報を `ItineraryController` に送る**
+        fetch(`/itineraries/save/${itineraryId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
             },
-            body: JSON.stringify({ spots: storedSpots })
+            body: JSON.stringify({
+                itinerary_id: itineraryId,
+                title: itineraryTitle,
+                start_date: startDate,
+                end_date: endDate,
+                selected_prefectures: selectedPrefectures,
+                spots: storedSpots
+            })
         })
         .then(response => response.json())
         .then(data => {
-            console.log("✅ サーバーからのレスポンス:", data);
+            console.log("✅ 旅行情報保存のレスポンス:", data);
+            if (data.error) {
+                console.error("❌ 旅行情報保存エラー:", data.error);
+                alert("❌ 旅行情報の保存に失敗しました。");
+                return;
+            }
         })
         .catch(error => {
-            console.error("❌ エラー:", error);
-          });
-      });
-  
+            console.error("❌ 旅行情報の保存エラー:", error);
+            alert("❌ 旅行情報の保存に失敗しました。");
+        });
+    
+        // ✅ **2. スポット情報を `ItinerarySpotController` に送る**
+        // if (!storedSpotsRaw) {
+        //     console.warn("⚠️ スポットデータがありません。");
+        //     return;
+        // }
+    
+        // let storedSpots = JSON.parse(storedSpotsRaw);
+        
+        // if (!Array.isArray(storedSpots) || storedSpots.length === 0) {
+        //     console.warn("⚠️ 送信するスポットがありません！");
+        //     return;
+        // }
+    
+        // // 🔹 型を DB に揃える
+        // storedSpots = storedSpots.map(spot => ({
+        //     place_id: String(spot.place_id),
+        //     name: String(spot.name),
+        //     address: String(spot.address),
+        //     order: parseInt(spot.order, 10) || 1,
+        //     visit_time: spot.visit_time ? String(spot.visit_time) : null,
+        //     visit_day: parseInt(spot.visit_day, 10) || 1
+        // }));
+    
+        // console.log("📤 修正後のスポットデータ:", JSON.stringify({
+        //     itinerary_id: itineraryId,
+        //     spots: storedSpots
+        // }, null, 2));
+    
+        // fetch(`/itinerary/save/${itineraryId}`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+        //     },
+        //     body: JSON.stringify({
+        //         itinerary_id: itineraryId,
+        //         spots: storedSpots
+        //     })
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     console.log("✅ スポット保存のレスポンス:", data);
+        //     if (data.message === "Spots saved successfully") {
+        //         localStorage.removeItem        // ✅ localStorage をクリア
+        //         localStorage.removeItem(`itinerary_spots_${itineraryId}`);
+        //         localStorage.removeItem(`selectedDestinations_itinerary_${itineraryId}`);
+        
+        //         alert("✅ 旅程が保存されました！");
+        
+        //         // ✅ Home にリダイレクト
+        //         if (data.redirect_url) {
+        //             window.location.href = data.redirect_url;
+        //         }
+
+        //     } else {
+        //         console.error("❌ スポット保存エラー:", data.error);
+        //         alert("❌ 旅程の保存に失敗しました。");
+        //     }
+        // })
+        // .catch(error => {
+        //     console.error("❌ スポット保存エラー:", error);
+        //     alert("❌ 旅程の保存に失敗しました。");
+        // });
+    });
+    
 
     function updateDestinationList() {
         console.log("🔄 updateDestinationList() を実行");
 
-        let selectedDestinations = localStorage.getItem(`selectedDestinations_itinerary_${itineraryId}`);
+        let selectedDestinations = localStorage.getItem(
+            `selectedDestinations_itinerary_${itineraryId}`
+        );
 
         if (!selectedDestinations || selectedDestinations === "[]") {
-            console.warn("⚠️ localStorage に保存された選択情報が見つかりません");
+            console.warn(
+                "⚠️ localStorage に保存された選択情報が見つかりません"
+            );
             return;
         }
-    
+
         selectedDestinations = JSON.parse(selectedDestinations);
-        console.log("🟢 localStorage から読み取ったデータ:", selectedDestinations);
-    
-        let destinationContainer = document.getElementById("selected-destination-list");
-    
+        console.log(
+            "🟢 localStorage から読み取ったデータ:",
+            selectedDestinations
+        );
+
+        let destinationContainer = document.getElementById(
+            "selected-destination-list"
+        );
+
         if (!destinationContainer) {
             console.error("Error: #selected-destination-list が見つかりません");
             return;
         }
 
-            destinationContainer.innerHTML = "";
+        destinationContainer.innerHTML = "";
 
-            selectedDestinations.forEach((destination) => {
-                console.log("🟢 UI に追加するデータ:", destination);
+        selectedDestinations.forEach((destination) => {
+            console.log("🟢 UI に追加するデータ:", destination);
 
-                let badge = document.createElement("span");
-                badge.className = "badge rounded-pill px-3 py-2 text-white me-2 fs-6";
-                badge.style.backgroundColor = destination.color;
-                badge.textContent = destination.name;
-                destinationContainer.appendChild(badge);
-            });
+            let badge = document.createElement("span");
+            badge.className =
+                "badge rounded-pill px-3 py-2 text-white me-2 fs-6";
+            badge.style.backgroundColor = destination.color;
+            badge.textContent = destination.name;
+            destinationContainer.appendChild(badge);
+        });
 
-            console.log("✅ Updated UI with selected destinations");
-        }
+        console.log("✅ Updated UI with selected destinations");
+    }
 
     // 🔹 ページロード時に Prefecture 選択を復元
-    console.log("🔄 Prefecture 選択の適用開始（itineraryId: " + itineraryId + "）");
-    let restoredPrefectures = localStorage.getItem(`selectedDestinations_itinerary_${itineraryId}`);
+    console.log(
+        "🔄 Prefecture 選択の適用開始（itineraryId: " + itineraryId + "）"
+    );
+    let restoredPrefectures = localStorage.getItem(
+        `selectedDestinations_itinerary_${itineraryId}`
+    );
     if (restoredPrefectures) {
         localStorage.setItem("selectedDestinations", restoredPrefectures);
         console.log("🔄 Prefecture 選択を復元しました:", restoredPrefectures);
@@ -189,9 +316,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-   
-   
-
     let itineraryIdElem = document.getElementById("itinerary-data");
     if (!itineraryIdElem) {
         console.error("❌ itinerary-data が見つかりません");
@@ -209,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateDates() {
         console.log("✅ updateDates() が実行された");
-        
+
         let startDate = new Date(startDateInput.value);
         let endDate = new Date(endDateInput.value);
 
@@ -221,43 +345,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
         fetch(`/itineraries/${itineraryId}/update-dates`, {
             method: "POST",
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                "X-CSRF-TOKEN": document.querySelector(
+                    'meta[name="csrf-token"]'
+                ).content,
             },
             body: JSON.stringify({
                 start_date: startDateInput.value,
-                end_date: endDateInput.value
-            })
+                end_date: endDateInput.value,
+            }),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log("✅ fetch response:", data);
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("✅ fetch response:", data);
 
-            document.getElementById("trip_days").innerText = data.days + " days";
-            
-            let daysContainer = document.querySelector(".swiper-wrapper");
-            daysContainer.innerHTML = `<div class="swiper-slide active-tab overview-margin">Overview</div>`;
+                document.getElementById("trip_days").innerText =
+                    data.days + " days";
 
-            data.daysList.forEach((day, index) => {
-                let newDayElement = document.createElement("div");
-                newDayElement.classList.add("swiper-slide", "day-tab");
-                newDayElement.dataset.day = index + 1;
-                newDayElement.innerHTML = `
+                let daysContainer = document.querySelector(".swiper-wrapper");
+                daysContainer.innerHTML = `<div class="swiper-slide active-tab overview-margin">Overview</div>`;
+
+                data.daysList.forEach((day, index) => {
+                    let newDayElement = document.createElement("div");
+                    newDayElement.classList.add("swiper-slide", "day-tab");
+                    newDayElement.dataset.day = index + 1;
+                    newDayElement.innerHTML = `
                     <i class="fa-solid fa-arrow-right-arrow-left float-start mt-1"></i> 
                     ${day}
                     <i class="fa-solid fa-trash-can float-end mt-1 remove-day"></i>
                 `;
-                daysContainer.appendChild(newDayElement);
-            });
+                    daysContainer.appendChild(newDayElement);
+                });
 
-            let addDayElement = document.createElement("div");
-            addDayElement.classList.add("swiper-slide");
-            addDayElement.id = "add-day";
-            addDayElement.innerHTML = `<i class="fa-solid fa-plus"></i>`;
-            daysContainer.appendChild(addDayElement);
-        })
-        .catch(error => console.error("❌ Error:", error));
+                let addDayElement = document.createElement("div");
+                addDayElement.classList.add("swiper-slide");
+                addDayElement.id = "add-day";
+                addDayElement.innerHTML = `<i class="fa-solid fa-plus"></i>`;
+                daysContainer.appendChild(addDayElement);
+            })
+            .catch((error) => console.error("❌ Error:", error));
     }
 
     // ✅ Day の追加処理
@@ -280,9 +407,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 <i class="fa-solid fa-trash-can float-end mt-1 remove-day"></i>
             `;
 
-            daysContainer.insertBefore(newDayElement, document.getElementById("add-day"));
+            daysContainer.insertBefore(
+                newDayElement,
+                document.getElementById("add-day")
+            );
 
-            document.getElementById("trip_days").innerText = `${newDayIndex} days`;
+            document.getElementById(
+                "trip_days"
+            ).innerText = `${newDayIndex} days`;
             console.log("✅ 新しいDay追加:", newDayIndex);
             updateDates();
         }
@@ -313,7 +445,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
             });
 
-            document.getElementById("trip_days").innerText = `${allDaysElements.length} days`;
+            document.getElementById(
+                "trip_days"
+            ).innerText = `${allDaysElements.length} days`;
 
             let newEndDate = new Date(endDateInput.value);
             newEndDate.setDate(newEndDate.getDate() - 1);

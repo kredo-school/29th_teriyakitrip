@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="{{ asset('css/itinerary_header_styles.css') }}">
 <!-- Laravelの変数をJSで取得するためのhidden要素 -->
 
+<form id="itinerary-form" method="POST" action="{{ route('itineraries.save', ['id' => $itinerary->id]) }}">
+@csrf
 <div class="container">
     <div id="itinerary-data" data-itinerary-id="{{ $itinerary->id }}"></div>
-    <form id="itinerary-form" method="POST" action="{{ route('itineraries.save', ['id' => $itinerary->id]) }}">
-    @csrf
     <input type="hidden" id="user-id" name="user_id" value="{{ auth()->id() }}">
     <div class="row y-0">
         <div class="col w-50 wrapper">
@@ -147,8 +147,16 @@
                 <div class="swiper-button-next me-2"></div>     
         </div>
     </div>
-</form>
+    <div class="row">
+        <div class="col-6">     
+            @include('itineraries.create_itinerary_body', ['daysList' => $daysList])
+        </div> 
+        <!-- create_itinerary.blade.php に配置 -->
+    <div id="add-spot-container" style="display: none;">
+        @include('itineraries.create_add')
+    </div>
 </div>
+</form>
 
 
 @push('scripts')
