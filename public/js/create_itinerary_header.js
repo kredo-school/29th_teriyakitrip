@@ -118,14 +118,22 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("✅ Doneボタンがクリックされました");
     
         let itineraryId = document.getElementById("itinerary-data").dataset.itineraryId;
-        let storedSpotsRaw = localStorage.getItem(`itinerary_spots_${itineraryId}`);
-    
         let itineraryTitle = document.getElementById("itinerary-title").value.trim();
         let startDate = document.getElementById("start_date").value;
         let endDate = document.getElementById("end_date").value;
-        let selectedPrefecturesRaw = document.getElementById("selected-prefectures").value;
-        
-        let selectedPrefectures = selectedPrefecturesRaw ? JSON.parse(selectedPrefecturesRaw) : [];
+    
+        // ✅ `selected_prefectures` の値を取得し、`integer` 配列に変換
+        let selectedPrefectureElements = document.querySelectorAll(".prefecture-checkbox:checked");
+        let selectedPrefectures = Array.from(selectedPrefectureElements).map(el => parseInt(el.value, 10));
+    
+        // ✅ `hidden input` の値を更新する
+        let hiddenInput = document.getElementById("selected-prefectures");
+        if (hiddenInput) {
+            hiddenInput.value = selectedPrefectures.length > 0 ? JSON.stringify(selectedPrefectures) : JSON.stringify([]);
+            console.log("🟢 hiddenInput の値:", hiddenInput.value);
+        } else {
+            console.error("❌ hidden input が見つかりません！");
+        }
     
         console.log("📤 送信前の旅行情報:", {
             itinerary_id: itineraryId,
@@ -133,32 +141,13 @@ document.addEventListener("DOMContentLoaded", function () {
             start_date: startDate,
             end_date: endDate,
             selected_prefectures: selectedPrefectures,
-            spots: storedSpots
         });
     
         if (!itineraryTitle || !startDate || !endDate) {
             alert("⚠️ 旅行タイトルと日程を入力してください！");
             return;
         }
-
-            // 🔹 型を DB に揃える
-    storedSpots = storedSpots.map(spot => ({
-        place_id: String(spot.place_id),
-        order: parseInt(spot.order, 10) || 1,
-        visit_time: spot.visit_time ? String(spot.visit_time) : null,
-        visit_day: parseInt(spot.visit_day, 10) || 1
-    }));
-
     
-        console.log("📤 修正後のスポットデータ:", JSON.stringify({
-            itinerary_id: itineraryId,
-            title: itineraryTitle,
-            start_date: startDate,
-            end_date: endDate,
-            selected_prefectures: selectedPrefectures,
-            spots: storedSpots
-        }, null, 2));
-        // ✅ **1. 旅行の基本情報を `ItineraryController` に送る**
         fetch(`/itineraries/save/${itineraryId}`, {
             method: "POST",
             headers: {
@@ -170,8 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: itineraryTitle,
                 start_date: startDate,
                 end_date: endDate,
-                selected_prefectures: selectedPrefectures,
-                spots: storedSpots
+                selected_prefectures: JSON.parse(hiddenInput.value) || [] // 🔥 `null` を防ぐ
             })
         })
         .then(response => response.json())
@@ -182,76 +170,161 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("❌ 旅行情報の保存に失敗しました。");
                 return;
             }
+                // ✅ `localStorage` をクリア
+    console.log("🗑️ localStorage をクリア");
+    localStorage.removeItem(`selectedDestinations_itinerary_${itineraryId}`);
+    localStorage.removeItem(`itinerary_spots_${itineraryId}`);
+    localStorage.removeItem(`itinerary_data_${itineraryId}`);
+
+    alert("✅ 旅行情報が保存されました！");
+
         })
         .catch(error => {
             console.error("❌ 旅行情報の保存エラー:", error);
             alert("❌ 旅行情報の保存に失敗しました。");
         });
-    
-        // ✅ **2. スポット情報を `ItinerarySpotController` に送る**
-        // if (!storedSpotsRaw) {
-        //     console.warn("⚠️ スポットデータがありません。");
-        //     return;
-        // }
-    
-        // let storedSpots = JSON.parse(storedSpotsRaw);
-        
-        // if (!Array.isArray(storedSpots) || storedSpots.length === 0) {
-        //     console.warn("⚠️ 送信するスポットがありません！");
-        //     return;
-        // }
-    
-        // // 🔹 型を DB に揃える
-        // storedSpots = storedSpots.map(spot => ({
-        //     place_id: String(spot.place_id),
-        //     name: String(spot.name),
-        //     address: String(spot.address),
-        //     order: parseInt(spot.order, 10) || 1,
-        //     visit_time: spot.visit_time ? String(spot.visit_time) : null,
-        //     visit_day: parseInt(spot.visit_day, 10) || 1
-        // }));
-    
-        // console.log("📤 修正後のスポットデータ:", JSON.stringify({
-        //     itinerary_id: itineraryId,
-        //     spots: storedSpots
-        // }, null, 2));
-    
-        // fetch(`/itinerary/save/${itineraryId}`, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-        //     },
-        //     body: JSON.stringify({
-        //         itinerary_id: itineraryId,
-        //         spots: storedSpots
-        //     })
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     console.log("✅ スポット保存のレスポンス:", data);
-        //     if (data.message === "Spots saved successfully") {
-        //         localStorage.removeItem        // ✅ localStorage をクリア
-        //         localStorage.removeItem(`itinerary_spots_${itineraryId}`);
-        //         localStorage.removeItem(`selectedDestinations_itinerary_${itineraryId}`);
-        
-        //         alert("✅ 旅程が保存されました！");
-        
-        //         // ✅ Home にリダイレクト
-        //         if (data.redirect_url) {
-        //             window.location.href = data.redirect_url;
-        //         }
-
-        //     } else {
-        //         console.error("❌ スポット保存エラー:", data.error);
-        //         alert("❌ 旅程の保存に失敗しました。");
-        //     }
-        // })
-        // .catch(error => {
-        //     console.error("❌ スポット保存エラー:", error);
-        //     alert("❌ 旅程の保存に失敗しました。");
-        // });
     });
+    
+    
+
+    // doneButton.addEventListener("click", function () {
+    //     console.log("✅ Doneボタンがクリックされました");
+    
+    //     let itineraryId = document.getElementById("itinerary-data").dataset.itineraryId;
+    //     let storedSpotsRaw = localStorage.getItem(`itinerary_spots_${itineraryId}`);
+    
+    //     let itineraryTitle = document.getElementById("itinerary-title").value.trim();
+    //     let startDate = document.getElementById("start_date").value;
+    //     let endDate = document.getElementById("end_date").value;
+    //     let selectedPrefecturesRaw = document.getElementById("selected-prefectures").value;
+        
+    //     let selectedPrefectures = selectedPrefecturesRaw ? JSON.parse(selectedPrefecturesRaw) : [];
+    
+    //     console.log("📤 送信前の旅行情報:", {
+    //         itinerary_id: itineraryId,
+    //         title: itineraryTitle,
+    //         start_date: startDate,
+    //         end_date: endDate,
+    //         selected_prefectures: selectedPrefectures,
+    //         spots: storedSpots
+    //     });
+    
+    //     if (!itineraryTitle || !startDate || !endDate) {
+    //         alert("⚠️ 旅行タイトルと日程を入力してください！");
+    //         return;
+    //     }
+
+    //         // 🔹 型を DB に揃える
+    // storedSpots = storedSpots.map(spot => ({
+    //     place_id: String(spot.place_id),
+    //     spot_order: parseInt(spot.order, 10) || 1,
+    //     visit_time: spot.visit_time ? String(spot.visit_time) : null,
+    //     visit_day: parseInt(spot.visit_day, 10) || 1
+    // }));
+
+    
+    //     console.log("📤 修正後のスポットデータ:", JSON.stringify({
+    //         itinerary_id: itineraryId,
+    //         title: itineraryTitle,
+    //         start_date: startDate,
+    //         end_date: endDate,
+    //         selected_prefectures: selectedPrefectures,
+    //         spots: storedSpots
+    //     }, null, 2));
+    //     // ✅ **1. 旅行の基本情報を `ItineraryController` に送る**
+    //     fetch(`/itineraries/save/${itineraryId}`, {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+    //         },
+    //         body: JSON.stringify({
+    //             itinerary_id: itineraryId,
+    //             title: itineraryTitle,
+    //             start_date: startDate,
+    //             end_date: endDate,
+    //             selected_prefectures: selectedPrefectures,
+    //             spots: storedSpots
+    //         })
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log("✅ 旅行情報保存のレスポンス:", data);
+    //         if (data.error) {
+    //             console.error("❌ 旅行情報保存エラー:", data.error);
+    //             alert("❌ 旅行情報の保存に失敗しました。");
+    //             return;
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error("❌ 旅行情報の保存エラー:", error);
+    //         alert("❌ 旅行情報の保存に失敗しました。");
+    //     });
+    
+    //     // ✅ **2. スポット情報を `ItinerarySpotController` に送る**
+    //     // if (!storedSpotsRaw) {
+    //     //     console.warn("⚠️ スポットデータがありません。");
+    //     //     return;
+    //     // }
+    
+    //     // let storedSpots = JSON.parse(storedSpotsRaw);
+        
+    //     // if (!Array.isArray(storedSpots) || storedSpots.length === 0) {
+    //     //     console.warn("⚠️ 送信するスポットがありません！");
+    //     //     return;
+    //     // }
+    
+    //     // // 🔹 型を DB に揃える
+    //     // storedSpots = storedSpots.map(spot => ({
+    //     //     place_id: String(spot.place_id),
+    //     //     name: String(spot.name),
+    //     //     address: String(spot.address),
+    //     //     spot_order: parseInt(spot.order, 10) || 1,
+    //     //     visit_time: spot.visit_time ? String(spot.visit_time) : null,
+    //     //     visit_day: parseInt(spot.visit_day, 10) || 1
+    //     // }));
+    
+    //     // console.log("📤 修正後のスポットデータ:", JSON.stringify({
+    //     //     itinerary_id: itineraryId,
+    //     //     spots: storedSpots
+    //     // }, null, 2));
+    
+    //     // fetch(`/itinerary/save/${itineraryId}`, {
+    //     //     method: "POST",
+    //     //     headers: {
+    //     //         "Content-Type": "application/json",
+    //     //         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+    //     //     },
+    //     //     body: JSON.stringify({
+    //     //         itinerary_id: itineraryId,
+    //     //         spots: storedSpots
+    //     //     })
+    //     // })
+    //     // .then(response => response.json())
+    //     // .then(data => {
+    //     //     console.log("✅ スポット保存のレスポンス:", data);
+    //     //     if (data.message === "Spots saved successfully") {
+    //     //         localStorage.removeItem        // ✅ localStorage をクリア
+    //     //         localStorage.removeItem(`itinerary_spots_${itineraryId}`);
+    //     //         localStorage.removeItem(`selectedDestinations_itinerary_${itineraryId}`);
+        
+    //     //         alert("✅ 旅程が保存されました！");
+        
+    //     //         // ✅ Home にリダイレクト
+    //     //         if (data.redirect_url) {
+    //     //             window.location.href = data.redirect_url;
+    //     //         }
+
+    //     //     } else {
+    //     //         console.error("❌ スポット保存エラー:", data.error);
+    //     //         alert("❌ 旅程の保存に失敗しました。");
+    //     //     }
+    //     // })
+    //     // .catch(error => {
+    //     //     console.error("❌ スポット保存エラー:", error);
+    //     //     alert("❌ 旅程の保存に失敗しました。");
+    //     // });
+    // });
     
 
     function updateDestinationList() {
