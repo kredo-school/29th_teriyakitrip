@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Prefecture;
 use Illuminate\Http\Request;
 use App\Models\RestaurantReview;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Models\RestaurantReviewPhoto;
@@ -316,53 +317,99 @@ class RestaurantReviewController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        try {
-            $review = RestaurantReview::findOrFail($id);
+{
+    try {
+        DB::beginTransaction(); // トランザクション開始
 
-            // レビューの更新
-            $review->update([
-                'rating' => $request->input('rating'),
-                'title' => $request->input('title'),
-                'body' => $request->input('body'),
-            ]);
+        $review = RestaurantReview::findOrFail($id);
 
-            // 既存の写真のカウント
-            $existingPhotoCount = $review->photos()->count();
+        // レビューの更新
+        $review->update([
+            'rating' => $request->input('rating'),
+            'title'  => $request->input('title'),
+            'body'   => $request->input('body'),
+        ]);
 
-            // 新しい写真がアップロードされた場合の処理
-            if ($request->hasFile('photos')) {
-                $newPhotos = $request->file('photos');
-                $totalPhotos = $existingPhotoCount + count($newPhotos);
+        // 既存の写真のカウント
+        $existingPhotoCount = $review->photos()->count();
 
-                // 既存の写真と新しい写真の合計が6枚を超えた場合、アップロードを制限
-                if ($totalPhotos > 6) {
-                    return redirect()->back()->with('error', 'You can upload up to 6 images only.');
-                }
+        // 🟢 【ここに写真処理を追加する！】
+        if ($request->hasFile('photos')) {
+            $newPhotos = $request->file('photos', []);
+            Log::info('Uploaded photos:', ['photos' => $newPhotos]);
 
-                foreach ($newPhotos as $photo) {
-                    // 画像を storage に保存
-                    $path = $photo->storeAs('reviews', $photo->getClientOriginalName(), 'public');
+            $totalPhotos = $existingPhotoCount + count($newPhotos);
 
-                    Log::info('Photo saved to: ' . $path);
-
-                    // データベースに保存
-                    RestaurantReviewPhoto::create([
-                        'restaurant_review_id' => $review->id,
-                        'photo' => str_replace('public/', '', $path) // `public/` を削除して保存
-                    ]);
-                }
+            // 6枚を超えた場合の処理
+            if ($totalPhotos > 6) {
+                return redirect()->back()->with('error', 'You can upload up to 6 images only.');
             }
 
-            return redirect()->route('reviews.view_myreview', $review->id);
-        } catch (\Exception $e) {
-            Log::error('Error starts here');
-            Log::error($e->getMessage());
-            Log::error('Error ends here');
-            return redirect()->back()->with('error', 'An error occurred while updating the review.');
-        }
-    }
+            $photoData = [];
 
+            foreach ($newPhotos as $photo) {
+                Log::info('Processing photo:', ['photo' => $photo->getClientOriginalName()]);
+
+                $path = $photo->storeAs('reviews', $photo->hashName(), 'public');
+                Log::info('Photo saved to: ' . $path);
+
+                $photoData[] = [
+                    'restaurant_review_id' => $review->id,
+                    'photo' => str_replace('public/', '', $path),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            if (!empty($photoData)) {
+                RestaurantReviewPhoto::insert($photoData);
+            }
+        }
+
+        // 新たに追加された写真があれば処理する
+        if ($request->hasFile('additional_photos')) {
+            $additionalPhotos = $request->file('additional_photos', []);
+            Log::info('Additional uploaded photos:', ['photos' => $additionalPhotos]);
+
+            $totalPhotos = $existingPhotoCount + count($additionalPhotos);
+
+            // 6枚を超えた場合の処理
+            if ($totalPhotos > 6) {
+                return redirect()->back()->with('error', 'You can upload up to 6 images only.');
+            }
+
+            $additionalPhotoData = [];
+
+            foreach ($additionalPhotos as $photo) {
+                Log::info('Processing additional photo:', ['photo' => $photo->getClientOriginalName()]);
+
+                $path = $photo->storeAs('reviews', $photo->hashName(), 'public');
+                Log::info('Additional photo saved to: ' . $path);
+
+                $additionalPhotoData[] = [
+                    'restaurant_review_id' => $review->id,
+                    'photo' => str_replace('public/', '', $path),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            if (!empty($additionalPhotoData)) {
+                RestaurantReviewPhoto::insert($additionalPhotoData);
+            }
+        }
+
+        DB::commit(); // トランザクションを確定
+
+        return redirect()->route('reviews.view_myreview', $review->id);
+    } catch (\Exception $e) {
+        DB::rollBack(); // 失敗時はロールバック
+        Log::error('Error starts here');
+        Log::error($e->getMessage());
+        Log::error('Error ends here');
+        return redirect()->back()->with('error', 'An error occurred while updating the review.');
+    }
+}
 
 
     public function deletePhoto($photoId)
