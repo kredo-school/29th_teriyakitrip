@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Itinerary;
 use Illuminate\Http\Request;
 use App\Models\RestaurantReview;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -48,9 +50,11 @@ class HomeController extends Controller
                 ->get();
             $restaurantReviews[$restaurant->place_id] = $reviews;
         }
-        
 
-        return view('home', compact('restaurantReviews', 'popularRestaurants', 'regions'));
+        // 🔥 追加: getItineraries() を呼び出して取得 - SAKI
+        $itineraries = $this->getItineraries();
+
+        return view('home', compact('restaurantReviews', 'popularRestaurants', 'regions', 'itineraries'));
     }
 
     private function getRestaurantNameFromGoogleAPI($place_id)
@@ -79,4 +83,32 @@ class HomeController extends Controller
 
         return asset('images/default-restaurant.jpg');
     }
+
+
+    public function getItineraries() // SAKI - to display lists of itineraries on toppage
+    {
+        $itineraries = Itinerary::where('is_public', true) // 公開されているものだけ
+                        ->orderBy('start_date', 'desc') // 開始日が新しい順
+                        ->get();
+
+        return $itineraries; // 🔥 ビューに渡すためのデータ
+    }
+
+    public function uploadItineraryImage(Request $request) // SAKI
+    {
+        // リクエストから画像ファイルを取得
+        $image = $request->file('image');
+
+        // ファイル名を作成（ここではユニークな名前をつけるためにタイムスタンプを使用）
+        $filename = 'itinerary_' . time() . '.' . $image->getClientOriginalExtension();
+
+        // ファイルを storage/app/public/itineraries に保存
+        $path = $image->storeAs('public/itineraries', $filename);
+
+        // 画像のパス（保存された場所）を取得
+        $imagePath = 'itineraries/images' . $filename;
+
+        return response()->json(['message' => 'Image uploaded successfully!']);
+    }
+
 }
