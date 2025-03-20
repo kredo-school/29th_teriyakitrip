@@ -18,10 +18,17 @@
                     <div class="col-md-12 position-relative review-container">
                         <div class="card review-card mb-3 d-flex flex-row align-items-center p-2">
                             <!-- 画像 -->
+                            @if ($review->photo)
                             <div class="myreview-image-container">
-                                <img src="{{ asset('storage/' . $review->photo) }}" class="favorite-image"
+                                <img src="{{ asset('storage/' . $review->photo) }}" class="favorite-image" 
                                     alt="Restaurant Image">
                             </div>
+                            @else
+                                <div class="myreview-image-container" style=" background-color: #f0f0f0; border-radius: 10px 0 0 10px;">
+                                    <i class="d-flex align-items-center justify-content-center text-center fa-solid fa-image fa-3x display-1 favorite-image" style="color: #ccc;"></i>
+                                </div>
+                            @endif
+                            
 
                             <!-- カードの本文 -->
                             <div class="card-body d-flex flex-column justify-content-between">

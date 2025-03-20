@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\RestaurantReview;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
@@ -59,29 +60,33 @@ class HomeController extends Controller
 
     private function getRestaurantNameFromGoogleAPI($place_id)
     {
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
-        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}";
+        return Cache::remember("restaurant_name_{$place_id}", now()->addHours(6), function () use ($place_id) {
+            $apiKey = env('GOOGLE_MAPS_API_KEY');
+            $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
 
-        $response = Http::get($apiUrl);
-        $data = $response->json();
+            $response = Http::get($apiUrl);
+            $data = $response->json();
 
-        return $data['result']['name'] ?? 'Unknown Restaurant';
+            return $data['result']['name'] ?? 'Unknown Restaurant';
+        });
     }
 
     private function getRestaurantPhotoFromGoogleAPI($place_id)
     {
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
-        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}";
+        return Cache::remember("restaurant_photo_{$place_id}", now()->addHours(6), function () use ($place_id) {
+            $apiKey = env('GOOGLE_MAPS_API_KEY');
+            $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
 
-        $response = Http::get($apiUrl);
-        $data = $response->json();
+            $response = Http::get($apiUrl);
+            $data = $response->json();
 
-        if (isset($data['result']['photos'][0]['photo_reference'])) {
-            $photoReference = $data['result']['photos'][0]['photo_reference'];
-            return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
-        }
+            if (isset($data['result']['photos'][0]['photo_reference'])) {
+                $photoReference = $data['result']['photos'][0]['photo_reference'];
+                return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
+            }
 
-        return asset('images/default-restaurant.jpg');
+            return asset('images/restaurants/default-restaurant.jpg');
+        });
     }
 
 
