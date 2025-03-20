@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Itinerary;
 use App\Models\RestaurantReview;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 class MypageController extends Controller
 {
@@ -43,31 +44,35 @@ public function getRestaurantName(Request $request)
 
 private function getRestaurantPhotoFromGoogleAPI($place_id)
 {
-    $apiKey = env('GOOGLE_MAPS_API_KEY');
-    $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
+    return Cache::remember("restaurant_photo_{$place_id}", now()->addHours(6), function () use ($place_id) {
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
 
-    $response = Http::get($apiUrl);
-    $data = $response->json();
+        $response = Http::get($apiUrl);
+        $data = $response->json();
 
-    // 🔥 `photo_reference` を取得
-    if (isset($data['result']['photos'][0]['photo_reference'])) {
-        $photoReference = $data['result']['photos'][0]['photo_reference'];
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
-    }
+        // 🔥 `photo_reference` を取得
+        if (isset($data['result']['photos'][0]['photo_reference'])) {
+            $photoReference = $data['result']['photos'][0]['photo_reference'];
+            return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
+        }
 
-    // 🔥 写真がない場合のデフォルト画像
-    return asset('img/default-restaurant.jpg');
+        // 🔥 写真がない場合のデフォルト画像
+        return asset('img/default-restaurant.jpg');
+    });
 }
 
 private function getRestaurantNameFromGoogleAPI($place_id)
 {
-    $apiKey = env('GOOGLE_MAPS_API_KEY');
-    $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$place_id}&fields=name&key={$apiKey}";
+    return Cache::remember("restaurant_name_{$place_id}", now()->addHours(6), function () use ($place_id) {
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$place_id}&fields=name&key={$apiKey}";
 
-    $response = Http::get($apiUrl);
-    $data = $response->json();
+        $response = Http::get($apiUrl);
+        $data = $response->json();
 
-    return $data['result']['name'] ?? 'Unknown Restaurant';
+        return $data['result']['name'] ?? 'Unknown Restaurant';
+    });
 }
 
     public function show($tab = 'overview')
