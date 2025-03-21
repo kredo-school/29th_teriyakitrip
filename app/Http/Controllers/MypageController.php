@@ -26,6 +26,18 @@ class MypageController extends Controller
         return view('mypage.index', compact('user', 'itineraries', 'restaurantReviews','topRestaurantReviews'));
     }
 
+    public function showOtheruserspage($userId)
+    {
+        // 他のユーザーのデータを取得
+        $user = User::findOrFail($userId);
+        $topRestaurantReviews = RestaurantReview::where('user_id', $userId)->latest()->take(3)->get();
+        $restaurantReviews = RestaurantReview::where('user_id', $userId)->get();
+
+        // 必要なデータをビューに渡す
+        return view('mypage.show_others', compact('user', 'topRestaurantReviews', 'restaurantReviews'));
+    }
+
+
     
 public function getRestaurantName(Request $request)
 {
@@ -75,13 +87,11 @@ private function getRestaurantNameFromGoogleAPI($place_id)
     });
 }
 
-    public function show($tab = 'overview')
+public function show($userId, $tab = 'overview')
 {
-    $user = Auth::user();
+    $user = User::findOrFail($userId); // ユーザーIDを使ってユーザーを取得
     $itineraries = Itinerary::where('user_id', $user->id)->get();
     $restaurantReviews = RestaurantReview::where('user_id', $user->id)->get();
-    // $followers = $user->followers()->paginate(20);
-    // $following = $user->following()->paginate(20);
 
     // タブに応じて適切なビューを返す
     switch($tab) {
@@ -89,15 +99,9 @@ private function getRestaurantNameFromGoogleAPI($place_id)
             return view('mypage.itineraries', compact('user', 'itineraries', 'tab'));
         case 'restaurant_reviews':
             return view('mypage.restaurant_reviews', compact('user', 'restaurantReviews', 'tab'));
-        // case 'followers':
-        //     // followers機能が実装されていない場合は、一時的にoverviewにリダイレクト
-        //     return redirect()->route('mypage.show', 'followers');
-        // case 'following':
-        //     // following機能が実装されていない場合は、一時的にoverviewにリダイレクト
-        //     return redirect()->route('mypage.show', 'following');
         default:
             return view('mypage.overview', compact('user', 'itineraries', 'restaurantReviews', 'tab'));
-    
     }
 }
+
 }

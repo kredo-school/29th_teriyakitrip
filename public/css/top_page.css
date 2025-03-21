@@ -170,5 +170,11 @@ footer nav a:hover {
     flex-grow: 1; /* カードボディが残りのスペースを埋める */
 }
 
-
+.element-style {
+    width: 100%; /* カードの幅いっぱいに広げる */
+    height: 200px; /* 高さを統一 */
+    object-fit: cover; /* 画像の比率を保ちつつ、カード内に収める */
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
 

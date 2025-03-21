@@ -58,11 +58,12 @@
                             </form>
                         @endauth
 
-                        <div class="card-body p-2">
-                            <h6 class="card-title mb-1 fw-bold">{{ $itinerary->title }}</h6>
+                        <div class="card-body p-2 mt-2">
+                            <h5 class="card-title mb-1 fw-bold">{{ $itinerary->title }}</h5>
 
                             <!-- ユーザーのアバターと名前を表示 -->
-                            <div class="d-flex align-items-center">
+                            <a href="{{ route('mypage.show_others', ['userId' => $itinerary->user_id]) }}" class="d-flex align-items-center mt-2 text-decoration-none text-dark">
+
                                 @if ($itinerary->user && $itinerary->user->avatar)
                                     <img src="{{ Storage::url($itinerary->user->avatar) }}" alt="User Avatar" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
                                 @else
@@ -71,7 +72,8 @@
                                     </div>
                                 @endif
                                 <span class="ms-2">{{ $itinerary->user->user_name }}</span>
-                            </div>
+                            </a>
+
                         </div>
                     </div>
                 </div>
