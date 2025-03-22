@@ -31,7 +31,9 @@ class RegionController extends Controller
 
     // 🔥 各 `place_id` について Google API からレストラン名を取得
     foreach ($popularRestaurants as $restaurant) {
-        $restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
+        $restaurant->restaurant_name = RestaurantReview::where('place_id', $restaurant->place_id)
+            ->first()?->restaurant_name ?? 'Unknown Restaurant';
+        //$restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
         $restaurant->photo = $this->getRestaurantPhotoFromGoogleAPI($restaurant->place_id);
         $restaurant->average_rate = round($restaurant->average_rate, 1) ?? 0; // ⭐ 平均評価を四捨五入
     }
@@ -77,7 +79,9 @@ class RegionController extends Controller
             ->get();
 
         foreach ($allRestaurants as $restaurant) {
-            $restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
+            $restaurant->restaurant_name = RestaurantReview::where('place_id', $restaurant->place_id)
+            ->first()?->restaurant_name ?? 'Unknown Restaurant';
+            //$restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
             $restaurant->photo = $this->getRestaurantPhotoFromGoogleAPI($restaurant->place_id);
             $restaurant->average_rate = round($restaurant->average_rate, 1) ?? 0; // ⭐ 平均評価を四捨五入
         }

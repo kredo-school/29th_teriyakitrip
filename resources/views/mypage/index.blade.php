@@ -263,7 +263,9 @@
                                         </div>
                                         <div class="col-md-9">
                                             <div class="card-body">
-                                                <h6 class="restaurant-name" data-place-id="{{ $review->place_id }}" style="font-weight: bold; color: #E97911;">Loading...</h6>
+                                                <h6 style="font-weight: bold; color: #E97911;">
+                                                    {{ $review->restaurant_name ?? 'Unknown' }}
+                                                </h6>
                                                 <h5 class="card-title fw-bold">{{ $review->title }}</h5>
                                                 <p class="card-text">
                                                     @for ($i = 0; $i < 5; $i++)

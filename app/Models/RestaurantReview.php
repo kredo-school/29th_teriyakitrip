@@ -19,6 +19,7 @@ class RestaurantReview extends Model
         'title',
         'body',
         'photo', // メイン画像
+        'restaurant_name', 
     ];
 
     public function prefecture()
