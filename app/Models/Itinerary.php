@@ -11,19 +11,13 @@ class Itinerary extends Model
 {
     use HasFactory;
     
-    protected $fillable = [
-        'user_id',//sunao
-        'title', //sunao
-        'start_date', //sunao
-        'end_date', //sunao
-        'photo'];//sunao
+    protected $fillable = ['user_id', 'title', 'start_date', 'end_date', 'is_public', 'photo'];
 
-        // **One to Many(users ↔ itineraries)**  
-          public function user()
+// **One to Many(users ↔ itineraries)**  
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
-
     // **Many to Many(itineraries ↔ prefectures)**
     public function prefectures()//sunao
     {

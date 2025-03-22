@@ -167,7 +167,12 @@
     border: 1px solid #e97911 !important; /* オレンジのボーダー */
 }
 
-
+/* Saki */
+.icon-private {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+}
 
 
 

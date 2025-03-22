@@ -47,7 +47,7 @@
                         <img src="{{ asset('storage/itineraries/images/' . $itinerary->photo) }}" alt="Itinerary Image" class="element-style rounded-top-4">
 
                         @auth
-                            <form method="POST" action="{{ route('itinerary.favorite', ['id' => $itinerary['id']]) }}"
+                            <form method="POST" action="#"
                                 class="position-absolute top-0 end-0 m-2">
                                 @csrf
                                 <button type="submit" class="favorite-btn border-0 bg-transparent">
