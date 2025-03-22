@@ -79,14 +79,17 @@ Route::group(['middleware' => 'auth'], function() {
 
 //Itinerary の spot 検索
 Route::get('/search-spot', [GooglePlaceController::class, 'searchSpotDetail'])->name('search.spot');
-Route::get('/search-photo/{place_id}', [GooglePlaceController::class, 'searchPhoto'])->name('search.spot');
+Route::get('/search-photo/{place_id}', [GooglePlaceController::class, 'searchPhoto'])->name('search.photo');
 Route::get('/spots/details/{place_id}', [GooglePlaceController::class, 'getSpotDetails'])->name('spots.details');
 Route::get('/spots/photo/{place_id}', [GooglePlaceController::class, 'getPhoto'])->name('spots.photo');
 
 //Spot 情報をitinerary 保存など
 // Route::get('/itinerary/spots/favorites', [ItinerarySpotController::class, 'getFavoriteSpots'])->name('itinerary.spots.favorites');
-Route::post('/itinerary/{id}/spots/save', [ItinerarySpotController::class, 'saveItinerarySpots'])->name('itinerary.spots.save');
-// Route::delete('/itinerary/spots/{spot_id}/delete', [ItinerarySpotController::class, 'deleteItinerarySpot'])->name('itinerary.spots.delete');
+Route::get('/itineraries/{id}/day/{visit_day}/search', [ItinerarySpotController::class, 'showSearchSpot'])
+    ->name('itineraries.spot.search')
+    ->whereNumber('visit_day'); // ✅ `day` は数値のみ許可！
+Route::post('/itineraries/{id}/day/{visit_day}/save/spots', [ItinerarySpotController::class, 'saveItinerarySpots'])->name('itineraries.spots.save');
+Route::delete('/itineraries/spots/{spotId}/delete', [ItinerarySpotController::class, 'deleteSpot']);
 // Route::get('/itinerary/spots/{spot_id}/reviews', [ItinerarySpotController::class, 'getUserReviews'])->name('itinerary.spots.reviews');
 // Route::post('/itinerary/spots/reviews/save', [ItinerarySpotController::class, 'saveUserReview'])->name('itinerary.spots.reviews.save');
 // Route::delete('/itinerary/spots/reviews/{review_id}/delete', [ItinerarySpotController::class, 'deleteUserReview'])->name('itinerary.spots.reviews.delete');

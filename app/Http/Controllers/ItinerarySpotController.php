@@ -12,6 +12,26 @@ use Illuminate\Support\Facades\Http;
 
 class ItinerarySpotController extends Controller {
 
+    public function showSearchSpot($itinerary_id, $visit_day)
+{
+        // `visit_day` を `integer` に変換
+        $visit_day = (int) $visit_day;
+
+            // 旅程データを取得
+    $itinerary = Itinerary::find($itinerary_id);
+    if (!$itinerary) {
+        abort(404, "Itinerary not found");
+    }
+
+        // `visit_day` に紐づくスポットを取得
+        $spots = ItinerarySpot::where('itinerary_id', $itinerary_id)
+                              ->where('visit_day', $visit_day)
+                              ->orderBy('spot_order', 'asc')
+                              ->get();
+    
+    return view('itineraries/create_add', compact('itinerary', 'visit_day'));
+}
+
     /**
      * Google Maps APIを使用して都道府県ごとのスポットを取得
      */
@@ -52,54 +72,54 @@ class ItinerarySpotController extends Controller {
         ]);
     }
 
-    public function saveItinerarySpots(Request $request, $itineraryId)
+    public function saveItinerarySpots(Request $request, $id, $day)
     {
-        dd($request->all()); // デバッグ用: 送信データを確認する
-        Log::info("🔍 受信データ(raw):", $request->all()); // 🔍 デバッグログ追加
-
-        $validatedData =  $request->validate([
-            'spots' => 'required|array|min:1',
-            'spots.*.place_id' => 'required|string',
-            'spots.*.spot_order' => 'required|integer',
-            'spots.*.visit_time' => 'nullable|date_format:H:i',
-            'spots.*.visit_day' => 'required|integer',
+        $validatedData = $request->validate([
+           'place_id' => 'required|string',
         ]);
-
-        Log::info("✅ バリデーション通過データ:", $validatedData);
-
-
-        foreach ($validatedData['spots'] as $spot) {
     
-                
-            ItinerarySpot::create([
-                'itinerary_id' => $itineraryId,
-                'place_id' => $spot['place_id'],
-                'order' => $spot['spot_order'],
-                'visit_time' => $spot['visit_time'] ?? null,
-                'visit_day' => $spot['visit_day'],
-            ]);
-        }
+        $visitDay = (int) $day;  
     
-        return response()->json([
-            'message' => 'Spots saved successfully',
-            'redirect_url' => route('home') 
+        $latestSpot = ItinerarySpot::where('itinerary_id', $id)
+            ->where('visit_day', $visitDay)
+            ->orderBy('spot_order', 'desc')
+            ->first();
+        $spotOrder = $latestSpot ? $latestSpot->spot_order + 1 : 1;
+    
+        ItinerarySpot::create([
+            'itinerary_id' => $id,
+            'place_id' => $validatedData['place_id'],
+            'spot_order' => $spotOrder,
+            'visit_time' => null,
+            'visit_day' => $visitDay,
         ]);
+    
+        return redirect()->route('itineraries.create.body', ['id' => $id])
+            ->with('success', 'Spot added successfully!');
+    }
+    
+
+    public function deleteSpot($spotId)
+{
+    $spot = ItinerarySpot::findOrFail($spotId);
+    $itineraryId = $spot->itinerary_id;
+    $visitDay = $spot->visit_day;
+
+    // ✅ スポット削除
+    $spot->delete();
+
+    // ✅ 削除後に `spot_order` を振り直す
+    $spots = ItinerarySpot::where('itinerary_id', $itineraryId)
+        ->where('visit_day', $visitDay)
+        ->orderBy('spot_order')
+        ->get();
+
+    foreach ($spots as $index => $spot) {
+        $spot->spot_order = $index + 1; // 1から順番を振り直す
+        $spot->save();
     }
 
-    // private function fetchPlaceDetails($placeId)
-    // {
-    //     $apiKey = env('GOOGLE_MAPS_API_KEY');
-    //     $url = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$placeId}&fields=name,formatted_address&key={$apiKey}";
-    //     $response = Http::get($url);
-    //     $data = $response->json();
+    return redirect("/create-itinerary/{$itineraryId}");
+}
 
-    //     if ($response->successful() && isset($data['result'])) {
-    //         return [
-    //             'name' => $data['result']['name'] ?? 'Unknown Place',
-    //             'address' => $data['result']['formatted_address'] ?? 'Unknown Address'
-    //         ];
-    //     }
-
-    //     return null;
-    // }
 }

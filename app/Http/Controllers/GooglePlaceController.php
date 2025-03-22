@@ -61,7 +61,8 @@ class GooglePlaceController extends Controller
     
     
         // // 🔹 必要な情報だけを整形
-        $places = collect($data['results'])->map(function ($place) use ($apiKey) {
+        // 🔹 必要な情報を整形 (最大10件)
+    $places = collect($data['results'])->take(10)->map(function ($place) use ($apiKey) {
             return [
                 'place_id' => $place['place_id'],
                 'name' => $place['name'],

@@ -39,23 +39,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 .querySelectorAll(".day-body")
                 .forEach((day) => day.remove());
 
-            for (let i = 1; i <= newDayCount; i++) {
-                let newDayBody = document.createElement("div");
-                newDayBody.classList.add("row", "mt-2", "day-body");
-                newDayBody.dataset.day = i;
-                newDayBody.id = `day-body-${i}`;
-                newDayBody.style.display = "flex";
+            document.querySelectorAll(".day-body").forEach((day) => day.remove());
 
-                newDayBody.innerHTML = `
-                    <div class="col-2">
-                        <div class="day-box text-center text-light">Day ${i}</div>
-                    </div>
-                    <div class="plus-icon text-center">
-                        <button type="button" class="border-0 bg-transparent plus-btn"  data-day="${i}">
-                            <i class="fa-regular fa-square-plus"></i>
-                        </button>
-                    </div>
-                `;
+for (let i = 1; i <= newDayCount; i++) {
+    let newDayBody = document.createElement("div");
+    newDayBody.classList.add("row", "mt-2", "day-body");
+    newDayBody.dataset.day = i;
+    newDayBody.id = `day-body-${i}`;
+    newDayBody.style.display = "flex";
+
+    // ✅ `href` を JavaScript で動的に生成する！
+    let plusButtonUrl = `/itineraries/${itineraryId}/day/${i}/search`;
+
+
+    newDayBody.innerHTML = `
+        <div class="col-2">
+            <div class="day-box text-center text-light">Day ${i}</div>
+        </div>
+        <div class="plus-icon text-center">
+            <a href="${plusButtonUrl}" class="border-0 bg-transparent plus-btn">
+                <i class="fa-regular fa-square-plus"></i>
+            </a>
+        </div>
+    `;
 
                 document
                     .getElementById("day-container")

@@ -3,20 +3,25 @@
 {{-- Bladeのループの最小値を1にする --}}
 <div class="mt-4 wrapper" id="day-container">
     @foreach($daysList as $day)
-        @php
-            $dayIndex = max(1, $loop->index + 1);
-        @endphp
-        <div class="row mt-2 day-body" id="day-body-{{ $loop->index + 1 }}" data-day="{{ $loop->index + 1 }}">
-            <div class="col-2">
-                <div class="day-box text-center text-light">Day {{ $loop->index + 1 }}</div>
-            </div>
-            <div class="plus-icon text-center">
-                <button type="button" class="border-0 bg-transparent">
-                    <i class="fa-regular fa-square-plus"></i>
-                </button>
-            </div>
+    @php
+        $dayNumber = (int) filter_var($day, FILTER_SANITIZE_NUMBER_INT); // 🔥 ここで定義
+        $generatedUrl = route('itineraries.spot.search', ['id' => $itinerary->id, 'visit_day' => $dayNumber]);
+    @endphp
+
+    <div class="row mt-2 day-body" id="day-body-{{ $dayNumber }}" data-day="{{ $dayNumber }}">
+        dd($daysList);
+        <div class="col-2">
+            <div class="day-box text-center text-light">Day {{ $dayNumber }}</div>
         </div>
-    @endforeach
+        <div class="plus-icon text-center">
+            <a href="{{ route('itineraries.spot.search', ['id' => $itinerary->id, 'visit_day' => $dayNumber]) }}"
+                class="border-0 bg-transparent plus-btn">
+                <i class="fa-regular fa-square-plus"></i>
+            </a>
+        </div>
+    </div>
+@endforeach
+
 </div>
 
 <div id="day-container">
@@ -33,5 +38,8 @@
 </div>
 
 @push('scripts')
-<script src="{{ asset('js/create_itinerary_body.js')}}" defer></script>    
+<script src="{{ asset('js/create_itinerary_body.js')}}" defer></script>   
+<script>
+    const itineraryId = "{{ $itinerary->id }}";
+</script> 
 @endpush

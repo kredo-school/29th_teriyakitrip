@@ -1,4 +1,9 @@
-  {{-- Select tab: Go back to Previous page, Search or Favorite --}}
+@extends('layouts.app') 
+
+@section('title', 'Add Spot to Itinerary')
+
+@section('content') 
+ {{-- Select tab: Go back to Previous page, Search or Favorite --}}
 <link rel="stylesheet" href="{{ asset('css/itinerary_search.css') }}">
 
 <div class="container">
@@ -30,7 +35,9 @@
         @include('itineraries.favorite_spot')
     </div>
 </div> 
+@endsection
 
+@push('scripts')
 <script>
     document.getElementById('search-button').addEventListener('click', function() {
         document.getElementById('search-content').style.display = 'block';
@@ -47,3 +54,4 @@
         document.getElementById('add-spot-container').style.display = 'none';
     });
 </script>
+@endphp

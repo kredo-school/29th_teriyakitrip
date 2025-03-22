@@ -208,7 +208,20 @@ class ItineraryController extends Controller
 
         return response()->json(['is_public' => $itinerary->is_public]);
     }
-    
+
+    public function editItinerary($id)
+{
+    $itinerary = Itinerary::findOrFail($id);
+    $spots = ItinerarySpot::where('itinerary_id', $id)
+        ->orderBy('visit_day')
+        ->orderBy('spot_order')
+        ->get();
+
+    return view('create_itinerary', [
+        'itinerary' => $itinerary,
+        'spots' => $spots,
+    ]);
+}    
     public function saveItineraryData(Request $request, $id)
     {
         Log::info("🚀 saveItineraryData() called with ID: " . $id);
