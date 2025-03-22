@@ -46,14 +46,19 @@ class RegionController extends Controller
         $restaurantReviews[$restaurant->place_id] = $reviews;
     }
 
+    $allItineraries = $prefecture->itineraries()
+        ->where('is_public', 1)
+        ->latest()
+        ->take(2)
+        ->get();
     // 📌 ダミーデータを追加
-    $allItineraries = [
-        ['img' => 'biei_flower16.jpg', 'title' => '2025 Hokkaido Trip', 'description' => 'Enjoy the scenic beauty of Hokkaido.'],
-        ['img' => 'OIP.jpg', 'title' => '2023 Hokkaido Trip', 'description' => 'Discover the hidden gems of Japan’s northern island.'],
-        ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2022 Hokkaido Trip', 'description' => 'Snowy landscapes and warm hot springs.'],
-        ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2021 Hokkaido Trip', 'description' => 'Experience the culture and cuisine of Hokkaido.'],
-        ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2020 Hokkaido Trip', 'description' => 'A journey through Japan’s winter wonderland.']
-    ];
+    // $allItineraries = [
+    //     ['img' => 'biei_flower16.jpg', 'title' => '2025 Hokkaido Trip', 'description' => 'Enjoy the scenic beauty of Hokkaido.'],
+    //     ['img' => 'OIP.jpg', 'title' => '2023 Hokkaido Trip', 'description' => 'Discover the hidden gems of Japan’s northern island.'],
+    //     ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2022 Hokkaido Trip', 'description' => 'Snowy landscapes and warm hot springs.'],
+    //     ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2021 Hokkaido Trip', 'description' => 'Experience the culture and cuisine of Hokkaido.'],
+    //     ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2020 Hokkaido Trip', 'description' => 'A journey through Japan’s winter wonderland.']
+    // ];
 
     return view('regions.home', compact('prefecture', 'restaurantReviews', 'popularRestaurants','allItineraries'));
 }
@@ -126,21 +131,40 @@ class RegionController extends Controller
 
 
     // 📌 Itineraryページのデータ
+    // public function itinerary($prefecture_id)
+    // {
+    //     // 🔥 `prefecture_id` に基づいて `prefectures` テーブルから情報を取得
+    //     $prefecture = Prefecture::findOrFail($prefecture_id);
+
+    //     return view('Regions.itinerary', [
+    //         'allItineraries' => [
+    //             ['img' => 'biei_flower16.jpg', 'title' => '2025 Hokkaido Trip', 'description' => 'Enjoy the scenic beauty of Hokkaido.'],
+    //             ['img' => 'OIP.jpg', 'title' => '2023 Hokkaido Trip', 'description' => 'Discover the hidden gems of Japan’s northern island.'],
+    //             ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2022 Hokkaido Trip', 'description' => 'Snowy landscapes and warm hot springs.'],
+    //             ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2021 Hokkaido Trip', 'description' => 'Experience the culture and cuisine of Hokkaido.'],
+    //             ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2020 Hokkaido Trip', 'description' => 'A journey through Japan’s winter wonderland.']
+    //         ],
+    //    'prefecture' => $prefecture // 🔥 ここで `prefecture` をビューに渡す
+    //     ]);
+    // }
+
+
     public function itinerary($prefecture_id)
     {
-        // 🔥 `prefecture_id` に基づいて `prefectures` テーブルから情報を取得
         $prefecture = Prefecture::findOrFail($prefecture_id);
 
+        // 🔥 リレーションを使ってその都道府県に紐づいた旅程を取得！
+        $itineraries = $prefecture->itineraries()
+        ->where('is_public', 1) // ← 公開のやつだけ！
+        ->latest()
+        ->get();
+
+
         return view('Regions.itinerary', [
-            'allItineraries' => [
-                ['img' => 'biei_flower16.jpg', 'title' => '2025 Hokkaido Trip', 'description' => 'Enjoy the scenic beauty of Hokkaido.'],
-                ['img' => 'OIP.jpg', 'title' => '2023 Hokkaido Trip', 'description' => 'Discover the hidden gems of Japan’s northern island.'],
-                ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2022 Hokkaido Trip', 'description' => 'Snowy landscapes and warm hot springs.'],
-                ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2021 Hokkaido Trip', 'description' => 'Experience the culture and cuisine of Hokkaido.'],
-                ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2020 Hokkaido Trip', 'description' => 'A journey through Japan’s winter wonderland.']
-            ],
-       'prefecture' => $prefecture // 🔥 ここで `prefecture` をビューに渡す
+            'prefecture' => $prefecture,
+            'itineraries' => $itineraries
         ]);
     }
+
 
 }

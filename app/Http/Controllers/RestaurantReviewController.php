@@ -229,6 +229,7 @@ class RestaurantReviewController extends Controller
                 'opening_hours' => $data['result']['opening_hours']['weekday_text'] ?? [],
             ];
         });
+        
 
         // レビュー情報を取得（キャッシュは不要）
         $reviews = RestaurantReview::where('place_id', $place_id)->latest()->get();

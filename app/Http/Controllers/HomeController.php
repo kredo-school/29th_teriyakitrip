@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Itinerary;
 use Illuminate\Http\Request;
 use App\Models\RestaurantReview;
-use App\Models\FavoriteRestaurant;
+use App\Models\FavoriteItinerary; //TOSHIMI
+use App\Models\FavoriteRestaurant; //TOSHIMI
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
@@ -108,9 +109,16 @@ class HomeController extends Controller
     public function getItineraries() // SAKI - to display lists of itineraries on toppage
     {
         $itineraries = Itinerary::where('is_public', true) // 公開されているものだけ
-                        ->orderBy('start_date', 'desc') // 開始日が新しい順
-                        ->take(3) // 最新3件のみ取得
-                        ->get();
+            ->orderBy('start_date', 'desc') // 開始日が新しい順
+            ->take(3) // 最新3件のみ取得
+            ->get();
+
+        // 各Itineraryが現在のユーザーのお気に入りかどうかをチェック //TOSHIMI
+        foreach ($itineraries as $itinerary) {
+            $itinerary->is_favorite = FavoriteItinerary::where('user_id', Auth::id())
+                                                        ->where('itinerary_id', $itinerary->id)
+                                                        ->exists();
+        }
 
         return $itineraries; // 🔥 ビューに渡すためのデータ
     }
@@ -131,5 +139,4 @@ class HomeController extends Controller
 
         return response()->json(['message' => 'Image uploaded successfully!']);
     }
-
 }

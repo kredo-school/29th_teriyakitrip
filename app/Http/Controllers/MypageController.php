@@ -31,7 +31,11 @@ class MypageController extends Controller
         // 他のユーザーのデータを取得
         $user = User::findOrFail($userId);
         $topRestaurantReviews = RestaurantReview::where('user_id', $userId)->latest()->take(3)->get();
-        $restaurantReviews = RestaurantReview::where('user_id', $userId)->get();
+        $restaurantReviews = RestaurantReview::where('user_id', $userId)->latest()->get();
+
+        foreach ($topRestaurantReviews as $review) {
+            $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
+        }
 
         // 必要なデータをビューに渡す
         return view('mypage.show_others', compact('user', 'topRestaurantReviews', 'restaurantReviews'));
@@ -70,7 +74,7 @@ private function getRestaurantPhotoFromGoogleAPI($place_id)
         }
 
         // 🔥 写真がない場合のデフォルト画像
-        return asset('img/default-restaurant.jpg');
+        return asset('images/restaurants/default-restaurant.jpg');
     });
 }
 

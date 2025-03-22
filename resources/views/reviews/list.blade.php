@@ -6,23 +6,27 @@
               <div class="col-9">
                 <div class="d-flex align-items-center mb-3">
                   <div class="me-3">
-                    @if ($review->user->avatar)
-                        <img src="{{ Storage::url($review->user->avatar) }}" alt="Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                    @else
-                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 50px; height: 50px;">
-                            <i class="fa-solid fa-user" style="font-size: 24px; color: #666;"></i>
-                        </div>
-                    @endif
+                    <a href="{{ route('mypage.show_others', ['userId' => $review->user_id]) }}">
+                      @if ($review->user->avatar)
+                          <img src="{{ Storage::url($review->user->avatar) }}" alt="Profile" class="rounded-circle avatar-circle">
+                      @else
+                          <div class="rounded-circle d-flex align-items-center justify-content-center bg-light avatar-circle-no-image">
+                              <i class="fa-solid fa-user avatar-circle-icon"></i>
+                          </div>
+                      @endif
+                    </a>
                   </div>
                   <div class="d-flex mt-1">
-                    <h5 class="mb-0 me-4">{{ $review->user->user_name }}</h5>
+                    <a href="{{ route('mypage.show_others', ['userId' => $review->user_id]) }}" class="no-underline">
+                      <h5 class="mb-0 me-4 text-dark">{{ $review->user->user_name }}</h5>
+                    </a>
                     <span class="text-muted me-3">{{ $review->rating }}/5</span>
                     <div class="text-warning">
                       @for ($i = 1; $i <= 5; $i++)
                         @if ($i <= $review->rating)
-                            <i class="fa-solid fa-circle" style="color: #E97911; margin-right: 5px;"></i>
+                            <i class="fa-solid fa-circle rate-circle"></i>
                         @else
-                            <i class="fa-regular fa-circle" style="color: #E97911; margin-right: 5px;"></i>
+                            <i class="fa-regular fa-circle rate-circle"></i>
                         @endif
                       @endfor
                     </div>
@@ -45,7 +49,7 @@
                 <div class="photos d-flex mt-3">
                   @if ($review->photos)
                     @foreach ($review->photos as $photo)
-                        <img src="{{ Storage::url($photo->photo) }}" class="rounded me-2" style="width: 100px; height: 100px; object-fit: cover;">
+                        <img src="{{ Storage::url($photo->photo) }}" class="rounded review-photo me-2">
                     @endforeach
                   @endif
                   
@@ -56,9 +60,9 @@
               <div class="col-3 d-flex align-items-start">
                 @if (isset($review->itinerary))
                     <div class="card shadow-sm border-0 w-100">
-                        <img src="{{ asset($review->itinerary->photo) }}" alt="Itinerary Photo" class="card-img-top" style="object-fit: cover; height: 100px;">
+                        <img src="{{ asset($review->itinerary->photo) }}" alt="Itinerary Photo" class="card-img-top review-itinerary">
                         <div class="card-body p-2">
-                            <h6 class="card-title mb-1" style="font-size: 14px;">{{ $review->itinerary->title }}</h6>
+                            <h6 class="card-title mb-1 review-itinerary-title">{{ $review->itinerary->title }}</h6>
                         </div>
                     </div>
                     

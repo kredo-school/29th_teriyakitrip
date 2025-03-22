@@ -101,12 +101,7 @@
     </div>
 
     <!-- ここまでがページの内容 -->
-
     
-    
-
-
-
     <!-- Members Modal -->
     <div class="modal fade" id="membersModal" tabindex="-1" aria-labelledby="membersModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
