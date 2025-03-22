@@ -11,47 +11,45 @@ use App\Models\RestaurantReview;
 
 class FavoritesController extends Controller
 {
+    //TOSHIMI
     public function toggleFavoriteItinerary(Request $request, $itineraryId)
     {
         $user = Auth::user();
+
         $favorite = FavoriteItinerary::where('user_id', $user->id)
-                                     ->where('itinerary_id', $itineraryId)
-                                     ->first();
+            ->where('itinerary_id', $itineraryId)
+            ->first();
 
         if ($favorite) {
-            $favorite->delete(); // すでにお気に入りなら削除
-            return response()->json(['status' => 'removed']);
+            $favorite->delete();
         } else {
             FavoriteItinerary::create([
                 'user_id' => $user->id,
-                'itinerary_id' => $itineraryId
+                'itinerary_id' => $itineraryId,
             ]);
-            return response()->json(['status' => 'added']);
         }
+
+        return redirect()->back(); // ← これ重要！リダイレクトでページを保つ
     }
 
+    //TOSHIMI
     public function toggleFavoriteRestaurant(Request $request, $placeId)
     {
-       
+
         $user = Auth::user();
         $favorite = FavoriteRestaurant::where('user_id', $user->id)
-                                      ->where('place_id', $placeId)
-                                      ->first();
+            ->where('place_id', $placeId)
+            ->first();
 
         if ($favorite) {
             $favorite->delete();
             return redirect()->back();
-            // return view('home', compact('restaurantReviews', 'popularRestaurants', 'regions'));
-            // return response()->json(['status' => $favorite ? 'removed' : 'added']);
         } else {
             FavoriteRestaurant::create([
                 'user_id' => $user->id,
                 'place_id' => $placeId
             ]);
             return redirect()->back();
-            // return view('home', compact('restaurantReviews', 'popularRestaurants', 'regions'));
-            // return response()->json(['status' => $favorite ? 'removed' : 'added']);
-
         }
     }
 
@@ -63,8 +61,8 @@ class FavoritesController extends Controller
         //                                          ->get();
 
         $favoriteRestaurants = FavoriteRestaurant::where('user_id', Auth::id())
-                                                 ->with('restaurantReview')
-                                                 ->get();
+            ->with('restaurantReview')
+            ->get();
 
         return view('favorites.my_favorite', compact('favoriteRestaurants'));
 

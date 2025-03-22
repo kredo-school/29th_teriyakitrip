@@ -11,9 +11,13 @@ class FavoriteItinerary extends Model
 
     protected $fillable = ['user_id', 'itinerary_id'];
 
+    // ✅ これを追加！created_at / updated_at を使わないよーという意味
+    public $timestamps = false;
+
     public function itinerary()
     {
         return $this->belongsTo(Itinerary::class);
     }
 }
+
 
