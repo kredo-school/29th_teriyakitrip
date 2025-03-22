@@ -29,96 +29,97 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Tabs -->
-            <div class="col-md-12">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs-mypage" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage active fs-2" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage fs-2" id="itineraries-tab" data-bs-toggle="tab" data-bs-target="#itineraries" type="button" role="tab" aria-controls="itineraries" aria-selected="false">Itineraries</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage fs-2" id="restaurant-reviews-tab" data-bs-toggle="tab" data-bs-target="#restaurant-reviews" type="button" role="tab" aria-controls="restaurant-reviews" aria-selected="false">Restaurant Reviews</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <button class="nav-link-mypage fs-2" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers" type="button" role="tab" aria-controls="followers" aria-selected="false">Follower</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link-mypage fs-2" id="following-tab" data-bs-toggle="tab" data-bs-target="#following" type="button" role="tab" aria-controls="following" aria-selected="false">Following</button>
-                        </li>
-                    </ul>
-                </div>
+        <!-- Tabs -->
+        <div class="col-md-12">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs-mypage" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link-mypage active fs-2" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link-mypage fs-2" id="itineraries-tab" data-bs-toggle="tab" data-bs-target="#itineraries" type="button" role="tab" aria-controls="itineraries" aria-selected="false">Itineraries</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link-mypage fs-2" id="restaurant-reviews-tab" data-bs-toggle="tab" data-bs-target="#restaurant-reviews" type="button" role="tab" aria-controls="restaurant-reviews" aria-selected="false">Restaurant Reviews</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link-mypage fs-2" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers" type="button" role="tab" aria-controls="followers" aria-selected="false">Follower</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link-mypage fs-2" id="following-tab" data-bs-toggle="tab" data-bs-target="#following" type="button" role="tab" aria-controls="following" aria-selected="false">Following</button>
+                    </li>
+                </ul>
             </div>
+        </div>
 
-            <!-- タブの中身 -->
-            <div class="tab-content" id="myTabContent">
+        <!-- タブの中身 -->
+        <div class="tab-content" id="myTabContent">
 
-              <!-- Overview タブ -->
-              <div class="tab-pane fade show active mb-5" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                  <div class="mt-4 text-center">
-                      <p style="color: #E97911; font-size: 3rem; font-weight: bold">Itinerary</p>
+            <!-- Overview タブ -->
+            <div class="tab-pane fade show active mb-5" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                <div class="mt-4 text-center">
+                    <p style="color: #E97911; font-size: 3rem; font-weight: bold">Itinerary</p>
 
-                      <div class="container toppage mt-5"> <!-- RECOMMENDED ITINERALIES SECTION -->
-                          
-                          <div class="row mt-3">
-                              <div class="col-4"> <!-- Itinerary 1 -->
-                                  <div class="card shadow-sm border-0 w-100 rounded-4">
-                                      <img src="/images/sample2.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
-                                      <div class="card-body p-2">
-                                          <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Okinawa Trip </h6>
-                                          <div class="d-flex align-items-center">
-                                              <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
-                                              <span class="ms-2 fw-bold">Toshimi's Japan'</span>
-                                              <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="col-4"> <!-- Itinerary 2 -->
-                                  <div class="card shadow-sm border-0 w-100 rounded-4">
-                                      <img src="/images/sample3.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
-                                      <div class="card-body p-2">
-                                          <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2019 Hokkaido Trip </h6>
-                                          <div class="d-flex align-items-center">
-                                              <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
-                                              <span class="ms-2 fw-bold">Toshimi's Japan'</span>
-                                              <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="col-4"> <!-- Itinerary 3 -->
-                                  <div class="card shadow-sm border-0 w-100 rounded-4">
-                                      <img src="/images/sample4.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
-                                      <div class="card-body p-2">
-                                          <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Miyazaki Trip </h6>
-                                          <div class="d-flex align-items-center">
-                                              <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
-                                              <span class="ms-2 fw-bold">Toshimi's Japan'</span>
-                                              <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div><br>
-                      
-                      <div class="text-center mt-2">
-                            <a href="#" class="btn btn-secondary more-tab-button text-white" 
-                            data-target="#itineraries"
-                            style="border-radius: 5px; padding: 0.5rem 1rem;">
-                                MORE
-                            </a>
-                      </div>
-                  </div>
+                    <div class="container toppage mt-5"> <!-- RECOMMENDED ITINERALIES SECTION -->
+                        
+                        <div class="row mt-3">
+                            <div class="col-4"> <!-- Itinerary 1 -->
+                                <div class="card shadow-sm border-0 w-100 rounded-4">
+                                    <img src="/images/sample2.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Okinawa Trip </h6>
+                                        <div class="d-flex align-items-center">
+                                            <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                            <span class="ms-2 fw-bold">Toshimi's Japan'</span>
+                                            <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4"> <!-- Itinerary 2 -->
+                                <div class="card shadow-sm border-0 w-100 rounded-4">
+                                    <img src="/images/sample3.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2019 Hokkaido Trip </h6>
+                                        <div class="d-flex align-items-center">
+                                            <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                            <span class="ms-2 fw-bold">Toshimi's Japan'</span>
+                                            <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4"> <!-- Itinerary 3 -->
+                                <div class="card shadow-sm border-0 w-100 rounded-4">
+                                    <img src="/images/sample4.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Miyazaki Trip </h6>
+                                        <div class="d-flex align-items-center">
+                                            <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
+                                            <span class="ms-2 fw-bold">Toshimi's Japan'</span>
+                                            <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                    
+                    <div class="text-center mt-2">
+                        <a href="#" class="btn btn-secondary more-tab-button text-white" 
+                        data-target="#itineraries"
+                        style="border-radius: 5px; padding: 0.5rem 1rem;">
+                            MORE
+                        </a>
+                    </div>
+                </div>
 
-                  <!-- Restaurant Reviews Section -->
-                  <div class="mt-4 text-center">
-                      <p style="color: #E97911; font-size: 3rem; font-weight: bold">Restaurant's Review</p>
-                      <div class="container toppage mt-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
+                <!-- Restaurant Reviews Section -->
+                <div class="mt-4 text-center">
+                    <p style="color: #E97911; font-size: 3rem; font-weight: bold">Restaurant's Review</p>
+                    <div class="container toppage mt-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
                         <div class="row mt-3">
                             @if($topRestaurantReviews->isNotEmpty())
                                 @foreach ($topRestaurantReviews->take(3) as $review) <!-- 最新の3件を取得 -->
@@ -162,156 +163,152 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                <br>
+                                <div class="text-center mt-2">
+                                <a href="#" class="btn btn-secondary more-tab-button text-white" 
+                                data-target="#restaurant-reviews"
+                                style="border-radius: 5px; padding: 0.5rem 1rem;">
+                                    MORE
+                                </a>
+                                </div>
                             @else
-                                <p>No Restaurant's review</p>
+                                <p class="text-muted">No Restaurant's review</p>
                             @endif
                         </div>
-                      </div>
-
-                      <br>
-                      <div class="text-center mt-2">
-                        <a href="#" class="btn btn-secondary more-tab-button text-white" 
-                        data-target="#restaurant-reviews"
-                        style="border-radius: 5px; padding: 0.5rem 1rem;">
-                          MORE
-                        </a>
-                      </div>
-                  </div>
-              </div> <!-- End of tab content -->
-
-                <!-- Itineraries タブ -->
-                <div class="tab-pane fade mb-5" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
-                    <div class="container mt-4">
-                      
-                        {{-- <p class="text-center" style="color: #E97911; font-size: 3rem; font-weight: bold">Itinerary</p> --}}
-
-                        <!-- ここにダミーデータのまま Itinerary カードを表示 -->
-                        <!-- 📜 Itineraries List -->
-                      <div class="row">
-                          @php
-                              $dummyItineraries = [
-                              [
-                                  'title' => '2025 Okinawa Trip1',
-                                  'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                  'photo' => 'images/Okinawa_photo1.jpeg'
-                              ],
-                              [
-                                  'title' => '2025 Okinawa Trip2',
-                                  'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                  'photo' => 'images/Okinawa_photo2.jpeg'
-                              ],
-                              [
-                                  'title' => '2025 Okinawa Trip3',
-                                  'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                  'photo' => 'images/Okinawa_photo3.jpeg'
-                              ],
-                              [
-                                  'title' => '2025 Okinawa Trip4',
-                                  'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                  'photo' => 'images/Okinawa_photo4.jpeg'
-                              ],
-                          ];
-                          @endphp
-
-                          @foreach ($dummyItineraries as $itinerary)
-                              <div class="col-md-12 mb-3">
-                                  <div class="card" style="border:none; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
-                                      <div class="row g-0">
-                                          <div class="col-md-3">
-                                              <img src="{{ asset($itinerary['photo']) }}" alt="Itinerary Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px 0 0 10px;">
-                                          </div>
-                                          <div class="col-md-9">
-                                              <div class="card-body">
-                                                  <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{ $itinerary['title'] }}</h5>
-                                                  <p class="card-text" style="font-size: 0.8rem; color: #555;">{{ $itinerary['description'] }}</p>
-                                                  <div class="text-end">
-                                                      <a href="#" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          @endforeach
-                      </div>
-
-                      <div class="text-center mt-3">
-                          <button class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
-                      </div><br><br>
-                      
                     </div>
                 </div>
+            </div> <!-- End of tab content -->
 
-                <!-- Restaurant Reviews タブ -->
-                <div class="tab-pane fade mb-5" id="restaurant-reviews" role="tabpanel" aria-labelledby="restaurant-reviews-tab">
-                    <div class="container mt-4">
-                      <div class="row">
-                        @if ($restaurantReviews->isNotEmpty())
-                            @foreach ($restaurantReviews as $index => $review)
-                                <div class="col-md-12 mb-3 review-item" style="display: {{ $index < 5 ? 'block' : 'none' }};">
-                                    <div class="card" style="border:none; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
-                                        <div class="row g-0">
-                                            <div class="col-md-3">
-                                              @if ($review->photo)
-                                                <img src="{{ Storage::url($review->photo) }}" alt="Restaurant Image" 
-                                                    style="width: 100%; height: 220px; object-fit: cover; border-radius: 10px 0 0 10px;">
-                                              @else
-                                                <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 100%; background-color: #f0f0f0; border-radius: 10px 0 0 10px;">
-                                                  <i class="fa-solid fa-image fa-3x display-1" style="color: #ccc;"></i>
-                                                </div>
-                                              @endif
-                                            </div>
-                                            <div class="col-md-9">
-                                                <div class="card-body">
-                                                  <h6 class="restaurant-name" data-place-id="{{ $review->place_id }}" style="font-weight: bold; color: #E97911;">Loading...</h6>
-                                                    <h5 class="card-title fw-bold">{{ $review->title }}</h5>
-                                                    <p class="card-text">
-                                                        @for ($i = 0; $i < 5; $i++)
-                                                            @if ($i < $review->rating)
-                                                                <i class="fas fa-circle" style="color: #E97911;"></i>
-                                                            @else
-                                                                <i class="far fa-circle" style="color: #E0E0E0;"></i>
-                                                            @endif
-                                                        @endfor
-                                                    </p>
-                                                    <p class="short-text review-text mb-1">{{ Str::limit($review->body, 200) }}</p>
-                                                    <p class="full-text d-none review-text mb-1">{{ $review->body }}</p>
-                                            
-                                                    @if (Str::length($review->body) > 100)
-                                                      <span class="read-more">Read more...</span>
-                                                      <span class="read-less d-none">Read less</span>
-                                                    @endif
-                                                    <div class="text-end">
-                                                        <a href="{{ route('reviews.show', ['place_id' => $review->place_id,'photo' => urlencode($review->photo)]) }}" class="btn btn-sm" 
-                                                           style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">
-                                                            View this restaurant
-                                                        </a>
-                                                    </div>
+            <!-- Itineraries タブ -->
+            <div class="tab-pane fade mb-5" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
+                <div class="container mt-4">
+                    
+                    {{-- <p class="text-center" style="color: #E97911; font-size: 3rem; font-weight: bold">Itinerary</p> --}}
+
+                    <!-- ここにダミーデータのまま Itinerary カードを表示 -->
+                    <!-- 📜 Itineraries List -->
+                    <div class="row">
+                        @php
+                            $dummyItineraries = [
+                            [
+                                'title' => '2025 Okinawa Trip1',
+                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
+                                'photo' => 'images/Okinawa_photo1.jpeg'
+                            ],
+                            [
+                                'title' => '2025 Okinawa Trip2',
+                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
+                                'photo' => 'images/Okinawa_photo2.jpeg'
+                            ],
+                            [
+                                'title' => '2025 Okinawa Trip3',
+                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
+                                'photo' => 'images/Okinawa_photo3.jpeg'
+                            ],
+                            [
+                                'title' => '2025 Okinawa Trip4',
+                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
+                                'photo' => 'images/Okinawa_photo4.jpeg'
+                            ],
+                        ];
+                        @endphp
+
+                        @foreach ($dummyItineraries as $itinerary)
+                            <div class="col-md-12 mb-3">
+                                <div class="card" style="border:none; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+                                    <div class="row g-0">
+                                        <div class="col-md-3">
+                                            <img src="{{ asset($itinerary['photo']) }}" alt="Itinerary Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px 0 0 10px;">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="card-body">
+                                                <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{ $itinerary['title'] }}</h5>
+                                                <p class="card-text" style="font-size: 0.8rem; color: #555;">{{ $itinerary['description'] }}</p>
+                                                <div class="text-end">
+                                                    <a href="#" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
-                        @else
-                            <p class="text-center">No Restaurant Reviews Yet.</p>
-                        @endif
-                      </div>
-            
-                      <div class="text-center mt-3">
-                        <button id="loadMore" class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
-                      </div>
-                        
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
+                    </div><br><br>
+                    
+                </div>
+            </div>
+
+            <!-- Restaurant Reviews タブ -->
+            <div class="tab-pane fade mb-5" id="restaurant-reviews" role="tabpanel" aria-labelledby="restaurant-reviews-tab">
+                <div class="container mt-4">
+                    <div class="row">
+                    @if ($restaurantReviews->isNotEmpty())
+                        @foreach ($restaurantReviews as $index => $review)
+                            <div class="col-md-12 mb-3 review-item" style="display: {{ $index < 5 ? 'block' : 'none' }};">
+                                <div class="card" style="border:none; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+                                    <div class="row g-0">
+                                        <div class="col-md-3">
+                                            @if ($review->photo)
+                                            <img src="{{ Storage::url($review->photo) }}" alt="Restaurant Image" 
+                                                style="width: 100%; height: 220px; object-fit: cover; border-radius: 10px 0 0 10px;">
+                                            @else
+                                            <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 100%; background-color: #f0f0f0; border-radius: 10px 0 0 10px;">
+                                                <i class="fa-solid fa-image fa-3x display-1" style="color: #ccc;"></i>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="card-body">
+                                                <h6 class="restaurant-name" data-place-id="{{ $review->place_id }}" style="font-weight: bold; color: #E97911;">Loading...</h6>
+                                                <h5 class="card-title fw-bold">{{ $review->title }}</h5>
+                                                <p class="card-text">
+                                                    @for ($i = 0; $i < 5; $i++)
+                                                        @if ($i < $review->rating)
+                                                            <i class="fas fa-circle" style="color: #E97911;"></i>
+                                                        @else
+                                                            <i class="far fa-circle" style="color: #E0E0E0;"></i>
+                                                        @endif
+                                                    @endfor
+                                                </p>
+                                                <p class="short-text review-text mb-1">{{ Str::limit($review->body, 200) }}</p>
+                                                <p class="full-text d-none review-text mb-1">{{ $review->body }}</p>
+                                        
+                                                @if (Str::length($review->body) > 100)
+                                                    <span class="read-more">Read more...</span>
+                                                    <span class="read-less d-none">Read less</span>
+                                                @endif
+                                                <div class="text-end">
+                                                    <a href="{{ route('reviews.show', ['place_id' => $review->place_id,'photo' => urlencode($review->photo)]) }}" class="btn btn-sm" 
+                                                        style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">
+                                                        View this restaurant
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        <div class="text-center mt-3">
+                            <button id="loadMore" class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
+                        </div>        
+                    @else
+                        <p class="text-center text-muted mt-4">No Restaurant's review</p>
+                    @endif
                     </div>
                 </div>
+            </div>
 
-                <!-- Follower タブ -->
-                <div class="tab-pane fade mb-5" id="followers" role="tabpanel" aria-labelledby="followers-tab">
-                </div>
-            
-                <!-- Following タブ -->
-                <div class="tab-pane fade mb-5" id="following" role="tabpanel" aria-labelledby="following-tab">
-                </div>
+            <!-- Follower タブ -->
+            <div class="tab-pane fade mb-5" id="followers" role="tabpanel" aria-labelledby="followers-tab">
+            </div>
+        
+            <!-- Following タブ -->
+            <div class="tab-pane fade mb-5" id="following" role="tabpanel" aria-labelledby="following-tab">
             </div>
         </div>
     </div>

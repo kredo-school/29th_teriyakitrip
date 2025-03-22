@@ -134,10 +134,12 @@
 
                         @guest
 
-                            @if (Route::has('create_itinerary'))
+                            {{-- ログイン前はそもそも表示しないのでコメントアウト --}}
+                            {{-- 表示させるならコメントアウトを外す --}}
+                            {{-- @if (Route::has('itineraries.create'))
                                 <li class="nav-item">
 
-                                    <a class="nav-link custom-btn" href="{{ route('create_itinerary') }}">
+                                    <a class="nav-link custom-btn" href="{{ route('itineraries.create') }}">
 
                                         <span>Create</span>
 
@@ -162,7 +164,7 @@
                                     </a>
 
                                 </li>
-                            @endif
+                            @endif --}}
 
 
 
