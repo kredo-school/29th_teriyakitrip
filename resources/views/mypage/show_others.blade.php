@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'My Page')
+@section('title', 'Other User Page')
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
