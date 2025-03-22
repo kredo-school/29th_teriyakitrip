@@ -25,7 +25,7 @@ class RestaurantReview extends Model
     {
         return $this->belongsTo(Prefecture::class);
     }
-    
+
     /**
      * 1つのレビューには複数の写真がある
      */

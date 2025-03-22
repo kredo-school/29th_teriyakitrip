@@ -120,61 +120,62 @@
                 <div class="mt-4 text-center">
                     <p style="color: #E97911; font-size: 3rem; font-weight: bold">Restaurant's Review</p>
                     <div class="container toppage mt-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
-                        <div class="row mt-3">
-                            @if($topRestaurantReviews->isNotEmpty())
-                                @foreach ($topRestaurantReviews->take(3) as $review) <!-- 最新の3件を取得 -->
-                                    <div class="col-md-4"> <!-- 3カラムのレイアウト -->
-                                        <div class="card shadow-sm border-0 w-100 rounded-4">
-                                            @if ($review->photo)
-                                                <img src="{{ Storage::url($review->photo) }}" 
-                                                    alt="Restaurant Image" 
-                                                    class="element-style rounded-top-4"
-                                                    style="width: 100%; height: 200px; object-fit: cover;">
-                                                @else
-                                            <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 200px; background-color: #f0f0f0; border-radius: 10px 10px 0 0;">
-                                                <i class="fa-solid fa-image fa-3x display-1" style="color: #ccc;"></i>
-                                            </div>
-                                            @endif
-                                            <div class="card-body top-review-item p-2">
-                                                <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">
-                                                    {{ $review->restaurant_name ?? 'Unknown Restaurant' }} <!-- レストラン名 -->
-                                                    <span class="ms-2">
-                                                        @for ($i = 0; $i < 5; $i++)
-                                                            @if ($i < $review->rating)
-                                                                <i class="fa-solid fa-circle" style="color: #E97911;"></i>
-                                                            @else
-                                                                <i class="fa-regular fa-circle text-warning"></i>
-                                                            @endif
-                                                        @endfor
-                                                    </span>
-                                                </h6>
-                        
-                                                <!-- レビュー一覧 -->
-                                                <p class="text-start mt-2">{{ Str::limit($review->title, 50) }}</p>
-                        
-                                                <!-- 詳細ページへのリンク -->
-                                                <div class="text-center">
-                                                    <a href="#" class="btn more-tab-button" data-target="#restaurant-reviews"
-                                                        class="btn btn-link" style="color: #E97911;">
-                                                        View this review
-                                                    </a>
-                                                </div>
+                    <div class="row mt-3">
+                        @if($topRestaurantReviews->isNotEmpty())
+                            @foreach ($topRestaurantReviews->take(3) as $review) <!-- 最新の3件を取得 -->
+                                <div class="col-md-4"> <!-- 3カラムのレイアウト -->
+                                    <div class="card shadow-sm border-0 w-100 rounded-4">
+                                        @if ($review->photo)
+                                            <img src="{{ Storage::url($review->photo) }}" 
+                                                alt="Restaurant Image" 
+                                                class="element-style rounded-top-4"
+                                                style="width: 100%; height: 200px; object-fit: cover;">
+                                            @else
+                                        <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 200px; background-color: #f0f0f0; border-radius: 10px 10px 0 0;">
+                                            <i class="fa-solid fa-image fa-3x display-1" style="color: #ccc;"></i>
+                                        </div>
+                                        @endif
+                                        <div class="card-body top-review-item p-2">
+                                            <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">
+                                                {{ $review->restaurant_name ?? 'Unknown Restaurant' }} <!-- レストラン名 -->
+                                                <span class="ms-2">
+                                                    @for ($i = 0; $i < 5; $i++)
+                                                        @if ($i < $review->rating)
+                                                            <i class="fa-solid fa-circle" style="color: #E97911;"></i>
+                                                        @else
+                                                            <i class="fa-regular fa-circle text-warning"></i>
+                                                        @endif
+                                                    @endfor
+                                                </span>
+                                            </h6>
+                    
+                                            <!-- レビュー一覧 -->
+                                            <p class="text-start mt-2">{{ Str::limit($review->title, 50) }}</p>
+                    
+                                            <!-- 詳細ページへのリンク -->
+                                            <div class="text-center">
+                                                <a href="#" class="btn more-tab-button" data-target="#restaurant-reviews"
+                                                    class="btn btn-link" style="color: #E97911;">
+                                                    View this review
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
-                                <br>
-                                <div class="text-center mt-2">
-                                <a href="#" class="btn btn-secondary more-tab-button text-white" 
-                                data-target="#restaurant-reviews"
-                                style="border-radius: 5px; padding: 0.5rem 1rem;">
-                                    MORE
-                                </a>
                                 </div>
-                            @else
-                                <p class="text-muted">No Restaurant's review</p>
-                            @endif
-                        </div>
+                            @endforeach
+                        @else
+                            <p>No Restaurant's review</p>
+                        @endif
+                    </div>
+                    </div>
+
+                    <br>
+                    <div class="text-center mt-2">
+                    <a href="#" class="btn btn-secondary more-tab-button text-white" 
+                    data-target="#restaurant-reviews"
+                    style="border-radius: 5px; padding: 0.5rem 1rem;">
+                        MORE
+                    </a>
                     </div>
                 </div>
             </div> <!-- End of tab content -->
@@ -293,13 +294,15 @@
                                 </div>
                             </div>
                         @endforeach
-                        <div class="text-center mt-3">
-                            <button id="loadMore" class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
-                        </div>        
                     @else
-                        <p class="text-center text-muted mt-4">No Restaurant's review</p>
+                        <p class="text-center">No Restaurant Reviews Yet.</p>
                     @endif
                     </div>
+        
+                    <div class="text-center mt-3">
+                    <button id="loadMore" class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
+                    </div>
+                    
                 </div>
             </div>
 
