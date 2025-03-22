@@ -20,7 +20,9 @@ class MypageController extends Controller
         $topRestaurantReviews = $user->reviews()->latest()->limit(3)->get();
 
         foreach ($topRestaurantReviews as $review) {
-            $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
+            $review->restaurant_name = RestaurantReview::where('place_id', $review->place_id)
+            ->first()?->restaurant_name ?? 'Unknown Restaurant';
+            // $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
         }
 
         return view('mypage.index', compact('user', 'itineraries', 'restaurantReviews','topRestaurantReviews'));
@@ -34,7 +36,9 @@ class MypageController extends Controller
         $restaurantReviews = RestaurantReview::where('user_id', $userId)->latest()->get();
 
         foreach ($topRestaurantReviews as $review) {
-            $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
+            $review->restaurant_name = RestaurantReview::where('place_id', $review->place_id)
+            ->first()?->restaurant_name ?? 'Unknown Restaurant';
+            // $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
         }
 
         // 必要なデータをビューに渡す
