@@ -89,11 +89,12 @@ class HomeController extends Controller
         });
     }
 
-
+    // 最新3件のitinerariesを取得
     public function getItineraries() // SAKI - to display lists of itineraries on toppage
     {
         $itineraries = Itinerary::where('is_public', true) // 公開されているものだけ
                         ->orderBy('start_date', 'desc') // 開始日が新しい順
+                        ->take(3) // 最新3件のみ取得
                         ->get();
 
         return $itineraries; // 🔥 ビューに渡すためのデータ
