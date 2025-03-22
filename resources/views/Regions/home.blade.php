@@ -124,7 +124,7 @@
                     </button>
                 </div>
             @else
-                <p class="text-center text-muted">No Restauraut's reviews</p>
+                <p class="text-center text-muted">No Restauraut Reviews</p>
             @endif
             
         </div>

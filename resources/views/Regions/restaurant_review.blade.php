@@ -82,7 +82,7 @@
             <button id="load-more-restaurant" class="btn-more">MORE</button>
         </div>
     @else
-        <p class="text-center mt-5 text-muted">No Restaurant's review</p>
+        <p class="text-center mt-5 text-muted">No Restaurant Review</p>
     @endif
 
 </div>

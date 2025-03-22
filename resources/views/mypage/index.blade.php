@@ -172,7 +172,7 @@
                                 </a>
                                 </div>
                             @else
-                                <p class="text-muted">No Restaurant's review</p>
+                                <p class="text-muted">No Restaurant Review</p>
                             @endif
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                             <button id="loadMore" class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
                         </div>        
                     @else
-                        <p class="text-center text-muted mt-4">No Restaurant's review</p>
+                        <p class="text-center text-muted mt-4">No Restaurant Review</p>
                     @endif
                     </div>
                 </div>
