@@ -9,8 +9,34 @@ use Illuminate\Support\Facades\Auth;
 class MyItineraryController extends Controller
 {
 
-    public function index() //Toshimi
+    public function index() //Toshimi SAKI
     {
-        return view('itinerary.index');
+        // ログインユーザーの旅程のみ取得
+        $itineraries = Itinerary::where('user_id', Auth::id())->get();
+        
+        // ビューにデータを渡す
+        return view('itinerary.index', compact('itineraries'));
     }
+
+    public function updatePrivacy(Request $request, $id)
+    {
+        $itinerary = Itinerary::where('id', $id)
+            ->where('user_id', Auth::id()) // 自分の旅程のみ変更可能
+            ->firstOrFail();
+
+        // プライバシー設定を更新
+        $itinerary->is_public = $request->input('privacySetting') === 'private' ? 0 : 1;
+        $itinerary->save();
+
+        return redirect()->back();
+    }
+
+    
+    
+
+
+
+
+
+
 }

@@ -27,6 +27,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
 Route::get('/my-itineraries', [MyItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
+Route::put('/my-itineraries/{id}/privacy', [MyItineraryController::class, 'updatePrivacy'])->name('my-itineraries.updatePrivacy');
+
 Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
 Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete');//Toshimi
 Route::post('/itinerary/favorite/{id}', function ($id) {
@@ -119,7 +121,7 @@ Route::get('/tabs', function () {
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 
 // Route::get('/', [ItinerariesController::class, 'index'])->name('mypage.itinerary.show');
-Route::post('/itineraries', [ItinerariesController::class, 'store'])->name('store_itinerary');
+// Route::post('/itineraries', [ItinerariesController::class, 'store'])->name('store_itinerary');
 
 //プロフィール閲覧で使用するユーザー情報の取得
 Route::get('/profile/{id}',[ProfileController::class,'get_user']);
