@@ -100,3 +100,39 @@
 .no-underline {
   text-decoration: none;
 }
+
+.avatar-circle{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.avatar-circle-no-image{
+  width: 50px;
+  height: 50px;
+}
+
+.avatar-circle-icon{
+  font-size: 24px; 
+  color: #666;
+}
+
+.rate-circle{
+  color: #E97911;
+  margin-right: 5px;
+}
+
+.review-photo{
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.review-itinerary{
+  object-fit: cover;
+  height: 100px;
+}
+
+.review-itinerary-title{
+  font-size: 14px;
+}
