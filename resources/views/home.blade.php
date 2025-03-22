@@ -127,6 +127,28 @@
                                 </span>
                                 ({{ $restaurant->review_count }} reviews)
                             </h6>
+                            @if (isset($restaurantReviews[$restaurant->place_id]))
+                            @foreach ($restaurantReviews[$restaurant->place_id] as $review)
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="me-3">
+                                        @if ($review->user->avatar)
+                                            <img src="{{ Storage::url($review->user->avatar) }}" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                        @else
+                                            <div class="rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 40px; height: 40px;">
+                                                <i class="fa-solid fa-user" style="font-size: 24px; color: #666;"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <span class="ms-2">{{ $review->title }}</span>
+                                </div>
+                            @endforeach
+                        @endif
+
+                        <div class="text-center">
+                            <a href="{{ route('reviews.show', ['place_id' => $restaurant->place_id, 'photo' => urlencode($restaurant->photo)]) }}" class="btn btn-link text-warning">
+                                View more review
+                            </a>
+                        </div>
                         </div>
                     </div>
                 </div>
