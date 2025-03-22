@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RestaurantReview;
+use App\Models\FavoriteRestaurant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -20,7 +23,7 @@ class HomeController extends Controller
             8 => 'Shikoku',
             9 => 'Kyushu'
         ];
-    
+
         // 🔥 全エリアの口コミ件数が多いレストランを取得（place_idごとにカウント）
         $popularRestaurants = RestaurantReview::select(
             'place_id',
@@ -32,12 +35,24 @@ class HomeController extends Controller
             ->take(3) // 🔥 トップページには上位3つだけ表示
             ->get();
 
+
         // 🔥 Google API からレストランの情報（写真・名前）を取得
         foreach ($popularRestaurants as $restaurant) {
             $restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
             $restaurant->photo = $this->getRestaurantPhotoFromGoogleAPI($restaurant->place_id);
             $restaurant->average_rate = round($restaurant->average_rate, 1) ?? 0; // ⭐ 平均評価を四捨五入
+            $favorite = FavoriteRestaurant::where('user_id', Auth::id())
+                ->where('place_id', $restaurant->place_id)
+                ->first();
+
+            if ($favorite) {
+                $restaurant->isFavorite = true;
+            } else {
+                $restaurant->isFavorite = false;
+            }
         }
+
+
 
         // 🔥 各レストランの最新2レビューを取得
         $restaurantReviews = [];
@@ -48,7 +63,6 @@ class HomeController extends Controller
                 ->get();
             $restaurantReviews[$restaurant->place_id] = $reviews;
         }
-        
 
         return view('home', compact('restaurantReviews', 'popularRestaurants', 'regions'));
     }
