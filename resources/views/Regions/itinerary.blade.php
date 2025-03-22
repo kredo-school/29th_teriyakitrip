@@ -23,25 +23,29 @@
 
 <div class="container mt-4">
     <div class="row" id="itinerary-list">
-        @foreach ($allItineraries as $index => $trip)
-            <div class="col-md-12 itinerary-item" style="{{ $index >= 4 ? 'display: none;' : '' }}">
-                <div class="custom-card">
-                    <div class="card-image">
-                        <img src="{{ asset('img/' . $trip['img']) }}" alt="{{ $trip['title'] }}">
-                    </div>
-                    <div class="card-content">
-                        <h5>{{ $trip['title'] }}</h5>
-                        <p>{{ $trip['description'] }}</p>
-                        <button class="btn-view-itinerary">View this Itinerary</button>
+        @if ($itineraries->isNotEmpty())
+            @foreach ($itineraries as $index => $trip)
+                <div class="col-md-12 itinerary-item" style="{{ $index >= 4 ? 'display: none;' : '' }}">
+                    <div class="custom-card">
+                        <div class="card-image">
+                            <img src="{{ asset('storage/itineraries/images/' . $trip->photo) }}" alt="{{ $trip->title }}">
+                        </div>
+                        <div class="card-content">
+                            <h5>{{ $trip->title }}</h5>
+                            <p>{{ \Carbon\Carbon::parse($trip->start_date)->format('Y/m/d') }} - {{ \Carbon\Carbon::parse($trip->end_date)->format('Y/m/d') }}</p>
+                            <button class="btn-view-itinerary">View this Itinerary</button>
+                        </div>
                     </div>
                 </div>
+            @endforeach
+            <!-- 📌 MORE ボタン -->
+            <div class="text-center mt-3">
+                <button id="load-more-itinerary" class="btn-more">MORE</button>
             </div>
-        @endforeach
-    </div>
-
-    <!-- 📌 MORE ボタン -->
-    <div class="text-center mt-3">
-        <button id="load-more-itinerary" class="btn-more">MORE</button>
+        @else
+            <p class="text-center mt-3 text-muted">No Itineraries</p>
+        @endif
+        
     </div>
 </div>
 
