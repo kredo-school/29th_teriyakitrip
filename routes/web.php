@@ -2,19 +2,21 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\TabController;
 // use App\Http\Controllers\FollowController; //一時的にコメントアウト（後で戻す）
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItineraryController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RegionController;//moko
 use App\Http\Controllers\ApiProxyController; //naho
+use App\Http\Controllers\FavoritesController; //Toshimi
 use App\Http\Controllers\MyItineraryController;//Toshimi
+use App\Http\Controllers\RestaurantReviewPhotoController;
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
-use App\Http\Controllers\FavoritesController; //Toshimi
 
 
 Auth::routes();
@@ -23,9 +25,7 @@ Auth::routes();
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-Route::get('/itinerary/show', [ItineraryController::class, 'showItinerary'])->name('itineraries.show_itinerary');
-
+Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
 Route::get('/my-itineraries', [MyItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
 Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
 Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete');//Toshimi
@@ -57,11 +57,17 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])->name('restaurants.search'); //naho
     Route::get('/restaurant-reviews/create', [RestaurantReviewController::class, 'create'])->name('restaurant-reviews.create'); //naho
     Route::post('/restaurant-reviews', [RestaurantReviewController::class, 'store'])->name('restaurant-reviews.store'); //naho
-    Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
     // Route::get('/logout', 'Auth\LoginController@logout')->name('logout'); // エラー原因となったため一旦コメントアウト 支障あれば相談//Sunao
     Route::get('/restaurants/my_review/{id}', [RestaurantReviewController::class, 'viewMyreview'])->name('reviews.view_myreview'); //saki
-    
-    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+     // Edit review form
+     Route::get('/reviews/edit/{review}', [RestaurantReviewController::class, 'edit'])->name('reviews.edit_myreview'); //SAKI
+     Route::put('/reviews/{id}', [RestaurantReviewController::class, 'update'])->name('reviews.update'); //SAKI
+     // 画像削除のルート設定
+     Route::delete('/reviews/photo/delete/{photoId}', [RestaurantReviewController::class, 'deletePhoto'])->name('review.photo.delete');
+
+
+
+
 });
 Route::group(['middleware' => 'auth'], function() {    
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
@@ -133,19 +139,20 @@ Route::group(['middleware' => 'auth'], function() {
 
 
     
-// Route::get('/itineraries', [ItineraryController::class, 'index'])->name('itineraries.index'); //NozomiさんがFix中
+
 Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])->name('restaurant_reviews.index');
 
+//以下のルートはbladeのファイルごと読み込むが、タブで切り替えるようにしたので以下のルートは必要なしの予定　naho
 // マイページ関連のルートを単一のルートにまとめる
-Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
-    ->name('mypage.show')
-    ->where('tab', 'overview|itineraries|restaurant_reviews');
+// Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
+//     ->name('mypage.show')
+//     ->where('tab', 'overview|itineraries|restaurant_reviews|followings|follower');
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+Route::get('/other_users_page/{userId}', [MypageController::class, 'showOtheruserspage'])->name('mypage.show_others');
 
-
-
+Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);
 
 
 Route::get('/regions/{prefecture_id}/overview', [RegionController::class, 'overview'])

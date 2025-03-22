@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Prefecture;
 use Illuminate\Http\Request;
 use App\Models\RestaurantReview;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Models\RestaurantReviewPhoto;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class RestaurantReviewController extends Controller
 {
@@ -122,49 +126,115 @@ class RestaurantReviewController extends Controller
     /**
      * Display the specified resource.
      */
+    // public function show(Request $request)
+    // {
+    //     $place_id = $request->query('place_id'); // クエリパラメータから取得
+    //     $photoUrl = $request->query('photo'); // 検索結果の画像URLを取得
+    //     if (!$place_id) {
+    //         return redirect()->back()->with('error', 'Invalid restaurant selection.');
+    //     }
+    //     $apiKey = env('GOOGLE_MAPS_API_KEY');
+    //     $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}";
+    //     $response = Http::get($apiUrl);
+    //     $data = $response->json();
+    //     if (!isset($data['result'])) {
+    //         return redirect()->back()->with('error', 'Restaurant details not found.');
+    //     }
+    //     // もし検索結果から画像が渡っていれば、それを使用（検索結果と統一）
+    //     $photo = $photoUrl ?? (isset($data['result']['photos'][0]['photo_reference'])
+    //         ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$data['result']['photos'][0]['photo_reference']}&key={$apiKey}"
+    //         : "/images/restaurants/default-restaurant.jpg"
+    //     );
+    //     $photos = [];
+    //     if (isset($data['result']['photos'])) {
+    //         foreach (array_slice($data['result']['photos'], 0, 3) as $photo) {
+    //             $photos[] = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference={$photo['photo_reference']}&key={$apiKey}";
+    //         }
+    //     }
+    //     // 必要な情報を取得
+    //     $restaurant = [
+    //         'place_id' => $place_id,
+    //         'name' => $data['result']['name'] ?? 'Unknown Restaurant',
+    //         'photos' => $photos, // :white_check_mark: 3枚の画像を渡す
+    //         'photo' => $photo,
+    //         'price_level' => $data['result']['price_level'] ?? null,
+    //         'address' => $data['result']['formatted_address'] ?? 'No address available',
+    //         'phone' => $data['result']['formatted_phone_number'] ?? 'N/A',
+    //         'website' => $data['result']['website'] ?? '#',
+    //         'lat' => $data['result']['geometry']['location']['lat'] ?? null,
+    //         'lng' => $data['result']['geometry']['location']['lng'] ?? null,
+    //         'opening_hours' => $data['result']['opening_hours']['weekday_text'] ?? [],
+    //     ];
+    //     // レビュー情報を取得
+    //     $reviews = RestaurantReview::where('place_id', $place_id)->latest()->get();
+    //     $averageRating = $reviews->avg('rating') ?? 0;
+    //     $reviewCount = $reviews->count();
+    //     return view('reviews.show', compact('restaurant', 'reviews', 'averageRating', 'reviewCount'));
+    // }
+
+    
     public function show(Request $request)
     {
         $place_id = $request->query('place_id'); // クエリパラメータから取得
         $photoUrl = $request->query('photo'); // 検索結果の画像URLを取得
+
         if (!$place_id) {
             return redirect()->back()->with('error', 'Invalid restaurant selection.');
         }
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
-        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}";
-        $response = Http::get($apiUrl);
-        $data = $response->json();
-        if (!isset($data['result'])) {
-            return redirect()->back()->with('error', 'Restaurant details not found.');
-        }
-        // もし検索結果から画像が渡っていれば、それを使用（検索結果と統一）
-        $photo = $photoUrl ?? (isset($data['result']['photos'][0]['photo_reference'])
-            ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$data['result']['photos'][0]['photo_reference']}&key={$apiKey}"
-            : "/images/restaurants/default-restaurant.jpg"
-        );
-        $photos = [];
-        if (isset($data['result']['photos'])) {
-            foreach (array_slice($data['result']['photos'], 0, 3) as $photo) {
-                $photos[] = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference={$photo['photo_reference']}&key={$apiKey}";
+
+        // 🔥 キャッシュを利用してレストラン情報を取得
+        $restaurant = Cache::remember("restaurant_details_{$place_id}", now()->addHours(6), function () use ($place_id) {
+            $apiKey = env('GOOGLE_MAPS_API_KEY');
+            $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}";
+
+            $response = Http::get($apiUrl);
+            $data = $response->json();
+
+            if (!isset($data['result'])) {
+                return [
+                    'place_id' => $place_id,
+                    'name' => 'Unknown Restaurant',
+                    'photos' => [],
+                    'photo' => "/images/restaurants/default-restaurant.jpg",
+                    'price_level' => null,
+                    'address' => 'No address available',
+                    'phone' => 'N/A',
+                    'website' => '#',
+                    'lat' => null,
+                    'lng' => null,
+                    'opening_hours' => [],
+                ];
             }
-        }
-        // 必要な情報を取得
-        $restaurant = [
-            'place_id' => $place_id,
-            'name' => $data['result']['name'] ?? 'Unknown Restaurant',
-            'photos' => $photos, // :white_check_mark: 3枚の画像を渡す
-            'photo' => $photo,
-            'price_level' => $data['result']['price_level'] ?? null,
-            'address' => $data['result']['formatted_address'] ?? 'No address available',
-            'phone' => $data['result']['formatted_phone_number'] ?? 'N/A',
-            'website' => $data['result']['website'] ?? '#',
-            'lat' => $data['result']['geometry']['location']['lat'] ?? null,
-            'lng' => $data['result']['geometry']['location']['lng'] ?? null,
-            'opening_hours' => $data['result']['opening_hours']['weekday_text'] ?? [],
-        ];
-        // レビュー情報を取得
+
+            $photos = [];
+            if (isset($data['result']['photos'])) {
+                foreach (array_slice($data['result']['photos'], 0, 3) as $photo) {
+                    $photos[] = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference={$photo['photo_reference']}&key={$apiKey}";
+                }
+            }
+
+            return [
+                'place_id' => $place_id,
+                'name' => $data['result']['name'] ?? 'Unknown Restaurant',
+                'photos' => $photos,
+                'photo' => isset($data['result']['photos'][0]['photo_reference']) 
+                    ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$data['result']['photos'][0]['photo_reference']}&key={$apiKey}"
+                    : "/images/restaurants/default-restaurant.jpg",
+                'price_level' => $data['result']['price_level'] ?? null,
+                'address' => $data['result']['formatted_address'] ?? 'No address available',
+                'phone' => $data['result']['formatted_phone_number'] ?? 'N/A',
+                'website' => $data['result']['website'] ?? '#',
+                'lat' => $data['result']['geometry']['location']['lat'] ?? null,
+                'lng' => $data['result']['geometry']['location']['lng'] ?? null,
+                'opening_hours' => $data['result']['opening_hours']['weekday_text'] ?? [],
+            ];
+        });
+
+        // レビュー情報を取得（キャッシュは不要）
         $reviews = RestaurantReview::where('place_id', $place_id)->latest()->get();
         $averageRating = $reviews->avg('rating') ?? 0;
         $reviewCount = $reviews->count();
+
         return view('reviews.show', compact('restaurant', 'reviews', 'averageRating', 'reviewCount'));
     }
 
@@ -218,22 +288,156 @@ class RestaurantReviewController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RestaurantReview $restaurantReview)
+    public function edit(RestaurantReview $review)
     {
-        //
+        // 現在のレビューに関連するレストラン情報を取得
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $placeId = $review->place_id;
+        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$placeId}&key={$apiKey}";
+        $response = Http::get($apiUrl);
+        $data = $response->json();
+
+        if (!isset($data['result'])) {
+            return back()->with('error', 'レストラン情報を取得できませんでした。');
+        }
+
+        // レストランの情報を格納
+        $restaurant = [
+            'place_id' => $placeId,
+            'name' => $data['result']['name'] ?? 'Unknown Restaurant',
+            'photo' => isset($data['result']['photos'][0]['photo_reference']) ?
+                    "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$data['result']['photos'][0]['photo_reference']}&key={$apiKey}" : 
+                    '/images/restaurants/default-restaurant.jpg',
+        ];
+
+        // レビューに関連する写真を取得
+        $photos = $review->photos;
+
+        return view('reviews.edit_myreview', compact('review', 'restaurant', 'photos'));
     }
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, RestaurantReview $restaurantReview)
+
+    public function update(Request $request, $id)
+{
+    try {
+        DB::beginTransaction(); // トランザクション開始
+
+        $review = RestaurantReview::findOrFail($id);
+
+        // レビューの更新
+        $review->update([
+            'rating' => $request->input('rating'),
+            'title'  => $request->input('title'),
+            'body'   => $request->input('body'),
+        ]);
+
+        // 既存の写真のカウント
+        $existingPhotoCount = $review->photos()->count();
+
+        // 🟢 【ここに写真処理を追加する！】
+        if ($request->hasFile('photos')) {
+            $newPhotos = $request->file('photos', []);
+            Log::info('Uploaded photos:', ['photos' => $newPhotos]);
+
+            $totalPhotos = $existingPhotoCount + count($newPhotos);
+
+            // 6枚を超えた場合の処理
+            if ($totalPhotos > 6) {
+                return redirect()->back()->with('error', 'You can upload up to 6 images only.');
+            }
+
+            $photoData = [];
+
+            foreach ($newPhotos as $photo) {
+                Log::info('Processing photo:', ['photo' => $photo->getClientOriginalName()]);
+
+                $path = $photo->storeAs('reviews', $photo->hashName(), 'public');
+                Log::info('Photo saved to: ' . $path);
+
+                $photoData[] = [
+                    'restaurant_review_id' => $review->id,
+                    'photo' => str_replace('public/', '', $path),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            if (!empty($photoData)) {
+                RestaurantReviewPhoto::insert($photoData);
+            }
+        }
+
+        // 新たに追加された写真があれば処理する
+        if ($request->hasFile('additional_photos')) {
+            $additionalPhotos = $request->file('additional_photos', []);
+            Log::info('Additional uploaded photos:', ['photos' => $additionalPhotos]);
+
+            $totalPhotos = $existingPhotoCount + count($additionalPhotos);
+
+            // 6枚を超えた場合の処理
+            if ($totalPhotos > 6) {
+                return redirect()->back()->with('error', 'You can upload up to 6 images only.');
+            }
+
+            $additionalPhotoData = [];
+
+            foreach ($additionalPhotos as $photo) {
+                Log::info('Processing additional photo:', ['photo' => $photo->getClientOriginalName()]);
+
+                $path = $photo->storeAs('reviews', $photo->hashName(), 'public');
+                Log::info('Additional photo saved to: ' . $path);
+
+                $additionalPhotoData[] = [
+                    'restaurant_review_id' => $review->id,
+                    'photo' => str_replace('public/', '', $path),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            if (!empty($additionalPhotoData)) {
+                RestaurantReviewPhoto::insert($additionalPhotoData);
+            }
+        }
+
+        DB::commit(); // トランザクションを確定
+
+        return redirect()->route('reviews.view_myreview', $review->id);
+    } catch (\Exception $e) {
+        DB::rollBack(); // 失敗時はロールバック
+        Log::error('Error starts here');
+        Log::error($e->getMessage());
+        Log::error('Error ends here');
+        return redirect()->back()->with('error', 'An error occurred while updating the review.');
+    }
+}
+
+
+    public function deletePhoto($photoId)
     {
-        //
+        try {
+            // restaurant_review_photos テーブルを扱うモデルを使う
+            $photo = RestaurantReviewPhoto::findOrFail($photoId);
+            
+            // ストレージから削除
+            Storage::delete('public/' . $photo->photo);
+            
+            // データベースから削除
+            $photo->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RestaurantReview $restaurantReview)
+    public function destroy($id)
     {
-        //
+        $review = RestaurantReview::findOrFail($id);
+        $review->delete();
+
+        return back()->with('success', 'レビューを削除しました。');
     }
+
 }

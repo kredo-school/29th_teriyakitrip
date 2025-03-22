@@ -1,0 +1,213 @@
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* login page - login button */
+.center-button{
+  text-align: center;
+}  
+
+
+.custom-btn {
+border: 2px solid #E97911 !important;
+border-radius: 10px !important;
+padding: 5px 10px !important;
+margin-left: 10px !important;
+color: #E97911 !important;
+transition: background-color 0.3s, color 0.3s !important;
+display: flex !important;
+flex-direction: column !important;
+align-items: center !important;
+justify-content: center !important;
+width: 100px !important;
+height: 60px !important;
+text-align: center !important;
+line-height: 1.2 !important;
+text-decoration: none !important;
+}
+
+.custom-btn:hover {
+background-color: #E97911 !important;
+color: white !important;
+text-decoration: none !important;  /* ホバー時の下線を削除 */
+}
+
+/* Register Page 各フィールドをタイトルの先頭に合わせる */
+.form-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 100%;
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+margin-bottom: 15px;
+width: 300px;
+}
+
+.form-group label {
+margin-bottom: 5px;
+}
+
+.custom-input {
+width: 100%;
+}
+
+/* Modal Styling */
+.modal-content {
+border-radius: 10px;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-body {
+padding: 0; /* 削除 */
+}
+
+/* card 形式 */
+.card {
+border: none; /* カードの枠線を削除 */
+}
+
+.list-unstyled li a {
+display: block;
+padding: 10px 15px;
+color: #333;
+transition: background-color 0.3s;
+}
+
+.list-unstyled li a:hover {
+background-color: #e9ecef;
+}
+
+.btn-outline-warning {
+color: #e97911;
+border-color: #e97911;
+}
+
+.btn-outline-warning:hover {
+color: #fff;
+background-color: #e97911;
+border-color: #e97911;
+}
+
+.avatar-wrapper {
+position: relative;
+display: inline-block;
+}
+
+.camera-icon {
+position: absolute;
+bottom: 0;
+right: 0;
+background-color: rgba(0, 0, 0, 0.5);
+color: white;
+padding: 0.25rem 0.5rem;
+border-radius: 50%;
+cursor: pointer;
+}
+
+.user-info-container {
+transition: all 0.3s ease;
+padding: 10px;
+border-radius: 8px;
+}
+
+.user-info-container:hover {
+background-color: #E97911;
+box-shadow: 0 0 10px rgba(0,0,0,0.1);
+color: white;
+transform: scale(1.05) translateY(-2px);
+}
+
+.nav-item .avatar-image {
+  border: 3px solid transparent !important;
+  transition: border-color 0.3s ease !important;
+}
+
+.nav-item .avatar-image:hover {
+  border-color: #E97911 !important;
+}
+
+.slightly-right-aligned {
+  padding-left: 20px; /* この値は調整可能です */
+}
+
+.tabs-container {
+    border: 1px solid #D3D3D3;  /* 薄いグレーの枠線 */
+    border-radius: 10px;  /* 角の丸み */
+    padding: 10px;  /* 内側の余白 */
+}
+
+.nav-tabs-mypage {
+    border-bottom: none;
+    justify-content: center;
+}
+
+.nav-tabs-mypage .nav-link-mypage {
+    color: rgb(104, 102, 102);
+    border: none;
+    background-color: transparent;
+    font-weight: 500;
+    padding: 10px 15px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-tabs-mypage .nav-link-mypage:hover,
+.nav-tabs-mypage .nav-link-mypage:focus {
+    color: #e97911;
+    background-color: transparent;
+}
+
+.nav-tabs-mypage .nav-link-mypage.active {
+    background-color: transparent;
+    border-bottom: 3px solid #e97911;
+    color: rgb(104, 102, 102);
+}
+
+.nav-tabs-mypage .nav-link-mypage.active:hover {
+    background-color: #e97911;
+    color: white;
+}
+
+/* More buttun */
+.btn-outline-secondary:hover {
+    color: white !important;
+    background-color: #000000 !important;
+  }
+
+
+/* naho */
+  .nav-link-mypage {
+    display: inline-block;
+    padding: 10px 15px;
+    color: #555;
+    font-size: 1.2rem;
+    text-decoration: none; /* デフォルトのリンクの下線を消す */
+    border-radius: 5px 5px 0 0;
+}
+
+.nav-link-mypage:hover {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.nav-link-mypage.active {
+    background-color: #E97911; /* アクティブ時の背景色 */
+    color: #fff;
+}
+
+                    
+.review-text {
+  font-size: 0.8rem; 
+  color: #555;
+}
+
+.read-more, .read-less{
+  display: block;
+  cursor: pointer;
+  color: #E97911;
+  font-size: 0.8rem;
+}

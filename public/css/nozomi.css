@@ -178,4 +178,25 @@
       background-color: #000000 !important;
     }
 
+
+/* naho */
+    .nav-link-mypage {
+      display: inline-block;
+      padding: 10px 15px;
+      color: #555;
+      font-size: 1.2rem;
+      text-decoration: none; /* デフォルトのリンクの下線を消す */
+      border-radius: 5px 5px 0 0;
+  }
+  
+  .nav-link-mypage:hover {
+      background-color: #f8f9fa;
+      color: #333;
+  }
+  
+  .nav-link-mypage.active {
+      background-color: #E97911; /* アクティブ時の背景色 */
+      color: #fff;
+  }
+  
                       
