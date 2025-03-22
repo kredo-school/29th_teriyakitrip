@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('css/my_itinerary.css') }}">
 
     <!-- BootstrapのJavaScriptを読み込む（CDN） -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
 
 
     <div class="container mt-4">
@@ -43,7 +43,7 @@
                                     <div class="dropdown position-absolute" style="top: 8px; right: 8px;">
                                         <button class="btn btn-more-options dropdown-toggle" type="button"
                                             id="dropdownMenuButtonOkinawa" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis" ></i>
+                                            <i class="fa-solid fa-ellipsis"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonOkinawa">
                                             <!-- Privacyをクリックするとプライバシーモーダルを表示 -->
@@ -52,10 +52,12 @@
                                                     data-bs-target="#privacyModal">Privacy</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#membersModal">Members</a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#membersModal">Members</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a>
+                                                <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal">Delete</a>
                                             </li>
                                         </ul>
 
@@ -110,23 +112,26 @@
                             <div class="card shadow-sm border-0 w-100 rounded-4 position-relative">
                                 <!-- 画像エリア -->
                                 <div class="position-relative">
-                                    <img src="images/sample8.jpg" alt="Itinerary 1" class="element-style rounded-top-4 w-100">
-                                  
+                                    <img src="images/sample8.jpg" alt="Itinerary 1"
+                                        class="element-style rounded-top-4 w-100">
+
                                     <!-- ドロップダウン付きの3点ボタン -->
                                     <div class="dropdown position-absolute top-0 end-0 p-2">
-                                      <button class="btn btn-more-options dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa-solid fa-ellipsis"></i>
-                                      </button>
-                                      <!-- ここにドロップダウンメニューのコードを挿入 -->
-                                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li>
-                                          <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a>
-                                        </li>
-                                        <!-- 他のメニュー項目があればここに追加 -->
-                                      </ul>
+                                        <button class="btn btn-more-options dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis"></i>
+                                        </button>
+                                        <!-- ここにドロップダウンメニューのコードを挿入 -->
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="#"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a>
+                                            </li>
+                                            <!-- 他のメニュー項目があればここに追加 -->
+                                        </ul>
                                     </div>
-                                  </div>
-                                  
+                                </div>
+
                                 <!-- カードの本文 -->
                                 <div class="card-body p-2">
                                     <h6 class="card-title mb-1 fw-bold" style="font-size: 14px;"> 2025 Miyazaki Trip </h6>
@@ -158,7 +163,8 @@
                                         <!-- Membersをクリックするとモーダルを表示 -->
                                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                 data-bs-target="#membersModal">Members</a></li>
-                                        <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#leaveModal">Leave</a></li>
+                                        <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#leaveModal">Leave</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -268,7 +274,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary custom-close-btn" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary custom-close-btn"
+                        data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn save-changes-btn" data-bs-dismiss="modal">Save changes</button>
                 </div>
             </div>
@@ -301,7 +308,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary custom-cancel-btn"
+                        data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary custom-sendinvite-btn">Send Invite</button>
                 </div>
             </div>
@@ -309,66 +317,35 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered"> <!-- modal-smで小さめに、中央表示 -->
-      <div class="modal-content">
-        <div class="modal-body">
-          <p>Are you sure you want to delete?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-warning btn-sm custom-yes-btn">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-<!-- Leave Confirmation Modal -->
-<div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="leaveModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered"> <!-- modal-smで小さめに、中央表示 -->
-      <div class="modal-content">
-        <div class="modal-body">
-          <p>Are you sure you want to leave?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-warning btn-sm custom-yes-btn">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-    </body>
-
-
-    {{-- <div class="container mt-4">
-    <h3 class="text-start">My Itinerary</h3>
-
-    <div class="row">
-        @foreach ($itineraries as $itinerary)
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <!-- しおりの画像 -->
-                    <img src="{{ asset('storage/images/' . $itinerary->image) }}" class="card-img-top" alt="Itinerary Image">
-
-                    <div class="card-body">
-                        <!-- しおりのタイトル -->
-                        <h5 class="card-title">{{ $itinerary->title }}</h5>
-                        
-                        <!-- ユーザー情報 -->
-                        <div class="d-flex align-items-center">
-                            <img src="{{ asset('storage/avatars/' . $itinerary->user->avatar) }}" class="rounded-circle me-2" width="40" height="40" alt="User Avatar">
-                            <span class="fw-bold">{{ $itinerary->user->name }}</span>
-                        </div>
-
-                        <!-- 詳細ボタン -->
-                        <a href="{{ route('itinerary.show', $itinerary->id) }}" class="btn btn-outline-primary mt-2">View Details</a>
-                    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered"> <!-- modal-smで小さめに、中央表示 -->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Are you sure you want to delete?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-sm custom-yes-btn">Yes</button>
+                    <button type="button" class="btn btn-secondary btn-sm custom-cancel-btn"
+                        data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
-        @endforeach
+        </div>
     </div>
-</div> --}}
+
+    <!-- Leave Confirmation Modal -->
+    <div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="leaveModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered"> <!-- modal-smで小さめに、中央表示 -->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Are you sure you want to leave?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-sm custom-yes-btn">Yes</button>
+                    <button type="button" class="btn btn-secondary btn-sm custom-cancel-btn"
+                        data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
 @endsection
