@@ -6,16 +6,20 @@
               <div class="col-9">
                 <div class="d-flex align-items-center mb-3">
                   <div class="me-3">
-                    @if ($review->user->avatar)
-                        <img src="{{ Storage::url($review->user->avatar) }}" alt="Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                    @else
-                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 50px; height: 50px;">
-                            <i class="fa-solid fa-user" style="font-size: 24px; color: #666;"></i>
-                        </div>
-                    @endif
+                    <a href="{{ route('mypage.show_others', ['userId' => $review->user_id]) }}">
+                      @if ($review->user->avatar)
+                          <img src="{{ Storage::url($review->user->avatar) }}" alt="Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                      @else
+                          <div class="rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 50px; height: 50px;">
+                              <i class="fa-solid fa-user" style="font-size: 24px; color: #666;"></i>
+                          </div>
+                      @endif
+                    </a>
                   </div>
                   <div class="d-flex mt-1">
-                    <h5 class="mb-0 me-4">{{ $review->user->user_name }}</h5>
+                    <a href="{{ route('mypage.show_others', ['userId' => $review->user_id]) }}" class="no-underline">
+                      <h5 class="mb-0 me-4 text-dark">{{ $review->user->user_name }}</h5>
+                    </a>
                     <span class="text-muted me-3">{{ $review->rating }}/5</span>
                     <div class="text-warning">
                       @for ($i = 1; $i <= 5; $i++)

@@ -96,3 +96,7 @@
   color: #E97911;
   font-size: 0.8rem;
 }
+
+.no-underline {
+  text-decoration: none;
+}
