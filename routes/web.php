@@ -163,3 +163,9 @@ Route::get('/regions/{prefecture_id}/restaurant-review', [RegionController::clas
 
 Route::get('/regions/{prefecture_id}/itinerary', [RegionController::class, 'itinerary'])
     ->name('regions.itinerary'); //naho
+
+//Toshimi - Favorite function
+Route::middleware(['auth'])->group(function () {
+    Route::post('/favorites/toggle/{reviewId}', [FavoritesController::class, 'toggleFavoriteRestaurant'])
+        ->name('favorites.toggle.restaurant');
+});
