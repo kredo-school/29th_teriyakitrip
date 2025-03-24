@@ -27,15 +27,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
 Route::get('/my-itineraries', [MyItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
-<<<<<<< HEAD
 Route::put('/my-itineraries/{id}/privacy', [MyItineraryController::class, 'updatePrivacy'])->name('my-itineraries.updatePrivacy');
 
 Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
 Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete');//Toshimi
-=======
-Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list'); //Toshimi
-Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete'); //Toshimi
->>>>>>> 94c08f052b4ef4458d699cd2c384824d57134a85
 Route::post('/itinerary/favorite/{id}', function ($id) {
     // ダミー処理: お気に入りの状態をトグルする（本来はデータベースを更新）Toshimi
     session()->put("favorite_$id", !session("favorite_$id", false));
