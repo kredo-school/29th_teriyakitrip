@@ -264,7 +264,9 @@
                                         </div>
                                         <div class="col-md-9">
                                             <div class="card-body">
-                                                <h6 class="restaurant-name" data-place-id="{{ $review->place_id }}" style="font-weight: bold; color: #E97911;">Loading...</h6>
+                                                <h6 class="restaurant-name" style="font-weight: bold; color: #E97911;">
+                                                    {{ $review->restaurant_name ?? 'Unknown' }}
+                                                </h6>
                                                 <h5 class="card-title fw-bold">{{ $review->title }}</h5>
                                                 <p class="card-text">
                                                     @for ($i = 0; $i < 5; $i++)
@@ -295,7 +297,7 @@
                             </div>
                         @endforeach
                     @else
-                        <p class="text-center">No Restaurant Reviews Yet.</p>
+                        <p class="text-center">No Restaurant Reviews</p>
                     @endif
                     </div>
         
