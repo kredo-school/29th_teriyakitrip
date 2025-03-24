@@ -1,98 +1,88 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Http;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use App\Models\Itinerary;
 use App\Models\RestaurantReview;
-use App\Models\User;
 
 class MypageController extends Controller
 {
-
-    public function index()
+    public function index(Request $request)
     {
-        $user = auth()->user(); // ログイン中のユーザーを取得
-        $itineraries = $user->itineraries()->latest()->get(); // 旅程を取得
-        $restaurantReviews = $user->reviews()->latest()->get();
-        $topRestaurantReviews = $user->reviews()->latest()->limit(3)->get();
+        $tab = $request->query('tab', 'overview'); // デフォルトは overview
+        $user = Auth::user();
+    
+        $itineraries = collect();
+        $restaurantReviews = collect();
+        $topRestaurantReviews = collect();
+        $topItineraries = collect(); // ← ここはOK
+    
+        if ($tab === 'itineraries') {
+            $itineraries = $user->itineraries()->orderBy('start_date', 'asc')->get();
+        } elseif ($tab === 'restaurant_reviews') {
+            $restaurantReviews = $user->reviews()->latest()->get();
+        } elseif ($tab === 'overview') {
+            $topItineraries = $user->itineraries()->latest()->take(3)->get(); // ← 修正ポイント
+            $topRestaurantReviews = $user->reviews()->latest()->take(3)->get();
+    
+            foreach ($topRestaurantReviews as $review) {
+                $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
+            }
+        }
+    
+        return view('mypage.index', [
+            'user' => $user,
+            'tab' => $tab,
+            'itineraries' => $itineraries,
+            'restaurantReviews' => $restaurantReviews,
+            'topItineraries' => $topItineraries, // ← ここで使えるようになる
+            'topRestaurantReviews' => $topRestaurantReviews,
+        ]);
+    }
+    
 
-        foreach ($topRestaurantReviews as $review) {
-            $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
+    public function getRestaurantName(Request $request)
+    {
+        $place_id = $request->query('place_id');
+        $apiKey = config('services.google.maps_api_key');
+
+        if (!$place_id || !$apiKey) {
+            return response()->json(['error' => 'Invalid request'], 400);
         }
 
-        return view('mypage.index', compact('user', 'itineraries', 'restaurantReviews','topRestaurantReviews'));
+        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$place_id}&fields=name&key={$apiKey}";
+        $response = Http::get($apiUrl);
+
+        return response()->json($response->json());
     }
 
-    
-public function getRestaurantName(Request $request)
-{
-    $place_id = $request->query('place_id');
-    $apiKey = config('services.google.maps_api_key');
+    private function getRestaurantPhotoFromGoogleAPI($place_id)
+    {
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
 
-    if (!$place_id || !$apiKey) {
-        return response()->json(['error' => 'Invalid request'], 400);
+        $response = Http::get($apiUrl);
+        $data = $response->json();
+
+        if (isset($data['result']['photos'][0]['photo_reference'])) {
+            $photoReference = $data['result']['photos'][0]['photo_reference'];
+            return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
+        }
+
+        return asset('img/default-restaurant.jpg');
     }
 
-    $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$place_id}&fields=name&key={$apiKey}";
-    $response = Http::get($apiUrl);
+    private function getRestaurantNameFromGoogleAPI($place_id)
+    {
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$place_id}&fields=name&key={$apiKey}";
 
-    return response()->json($response->json());
-}
+        $response = Http::get($apiUrl);
+        $data = $response->json();
 
-private function getRestaurantPhotoFromGoogleAPI($place_id)
-{
-    $apiKey = env('GOOGLE_MAPS_API_KEY');
-    $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
-
-    $response = Http::get($apiUrl);
-    $data = $response->json();
-
-    // 🔥 `photo_reference` を取得
-    if (isset($data['result']['photos'][0]['photo_reference'])) {
-        $photoReference = $data['result']['photos'][0]['photo_reference'];
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
+        return $data['result']['name'] ?? 'Unknown Restaurant';
     }
-
-    // 🔥 写真がない場合のデフォルト画像
-    return asset('img/default-restaurant.jpg');
-}
-
-private function getRestaurantNameFromGoogleAPI($place_id)
-{
-    $apiKey = env('GOOGLE_MAPS_API_KEY');
-    $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$place_id}&fields=name&key={$apiKey}";
-
-    $response = Http::get($apiUrl);
-    $data = $response->json();
-
-    return $data['result']['name'] ?? 'Unknown Restaurant';
-}
-
-    public function show($tab = 'overview')
-{
-    $user = Auth::user();
-    $itineraries = Itinerary::where('user_id', $user->id)->get();
-    $restaurantReviews = RestaurantReview::where('user_id', $user->id)->get();
-    // $followers = $user->followers()->paginate(20);
-    // $following = $user->following()->paginate(20);
-
-    // タブに応じて適切なビューを返す
-    switch($tab) {
-        case 'itineraries':
-            return view('mypage.itineraries', compact('user', 'itineraries', 'tab'));
-        case 'restaurant_reviews':
-            return view('mypage.restaurant_reviews', compact('user', 'restaurantReviews', 'tab'));
-        // case 'followers':
-        //     // followers機能が実装されていない場合は、一時的にoverviewにリダイレクト
-        //     return redirect()->route('mypage.show', 'followers');
-        // case 'following':
-        //     // following機能が実装されていない場合は、一時的にoverviewにリダイレクト
-        //     return redirect()->route('mypage.show', 'following');
-        default:
-            return view('mypage.overview', compact('user', 'itineraries', 'restaurantReviews', 'tab'));
-    
-    }
-}
 }

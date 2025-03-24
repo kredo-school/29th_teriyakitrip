@@ -150,10 +150,17 @@ Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])-
 //     ->where('tab', 'overview|itineraries|restaurant_reviews|followings|follower');
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
-Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+// Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 
-Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);
+// Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index'); // デフォルトのマイページ
+    // Route::get('/mypage/{tab}', [MypageController::class, 'index'])->name('mypage.tab'); // タブ切り替え用
+});
+
+// ✅ AJAXタブ読み込み用（新たに追加！）
+Route::get('/mypage-content/{tab}', [MypageController::class, 'tabContent'])->name('mypage.tabContent');
 
 Route::get('/regions/{prefecture_id}/overview', [RegionController::class, 'overview'])
     ->name('regions.overview'); //naho
