@@ -15,7 +15,7 @@ class MypageController extends Controller
     public function index()
     {
         $user = auth()->user(); // ログイン中のユーザーを取得
-        $itineraries = $user->itineraries()->latest()->get(); // 旅程を取得
+        $itineraries = $user->itineraries()->where('is_public', 1)->latest()->limit(3)->get();
         $restaurantReviews = $user->reviews()->latest()->get();
         $topRestaurantReviews = $user->reviews()->latest()->limit(3)->get();
 
@@ -111,5 +111,6 @@ public function show($userId, $tab = 'overview')
             return view('mypage.overview', compact('user', 'itineraries', 'restaurantReviews', 'tab'));
     }
 }
+
 
 }
