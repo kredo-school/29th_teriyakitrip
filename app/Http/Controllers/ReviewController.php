@@ -43,24 +43,33 @@ class ReviewController extends Controller
     //     return view('reviews.mylist', ['reviews' => $reviews]);
     // }
 
+    // public function myList(Request $request)
+    // {
+    //     $reviews = RestaurantReview::where('user_id', Auth::id())->get();
+
+    //     foreach ($reviews as $review) {
+    //         $review->restaurant_name = Cache::remember("restaurant_name_{$review->place_id}", now()->addHours(6), function () use ($review) {
+    //             \Log::info("Google API Request: Fetching name for {$review->place_id}"); // ログ追加
+
+    //             $apiKey = env('GOOGLE_MAPS_API_KEY');
+    //             $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$review->place_id}&key={$apiKey}&language=en";
+
+    //             $response = Http::get($apiUrl);
+    //             $data = $response->json();
+
+    //             return $data['result']['name'] ?? 'Unknown Restaurant';
+    //         });
+    //     }
+
+    //     return view('reviews.mylist', ['reviews' => $reviews]);
+    // }
+
     public function myList(Request $request)
     {
+        // 自分のレビューを取得（restaurant_name もすでに含まれてる）
         $reviews = RestaurantReview::where('user_id', Auth::id())->get();
 
-        foreach ($reviews as $review) {
-            $review->restaurant_name = Cache::remember("restaurant_name_{$review->place_id}", now()->addHours(6), function () use ($review) {
-                \Log::info("Google API Request: Fetching name for {$review->place_id}"); // ログ追加
-
-                $apiKey = env('GOOGLE_MAPS_API_KEY');
-                $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$review->place_id}&key={$apiKey}&language=en";
-
-                $response = Http::get($apiUrl);
-                $data = $response->json();
-
-                return $data['result']['name'] ?? 'Unknown Restaurant';
-            });
-        }
-
+        // すでにDBにあるrestaurant_nameを使えばOKなので、何も追加処理はいらない！
         return view('reviews.mylist', ['reviews' => $reviews]);
     }
 

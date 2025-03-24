@@ -91,7 +91,7 @@
                 <div class="col-4">
                     <div class="card shadow-sm border-0 w-100 rounded-4 position-relative">
                         <!-- レストラン画像 -->
-                        <img src="{{ $restaurant->photo }}" alt="{{ $restaurant->name }}" class="rounded-top-4 img-fluid"
+                        <img src="{{ $restaurant->photo }}" alt="{{ $restaurant->restaurant_name }}" class="rounded-top-4 img-fluid"
                             style="height: 200px; object-fit: cover;">
 
                         @auth <!-- ログインしている場合のみお気に入り機能を表示 -->
@@ -112,7 +112,7 @@
 
                         <div class="card-body p-2">
                             <h6 class="card-title mb-1 fw-bold" style="font-size: 14px;">
-                                {{ $restaurant->name }}
+                                {{ $restaurant->restaurant_name }}
                             </h6>
                             <h6>
                                 <span class="restaurant-rating">{{ number_format($restaurant->average_rate, 1) }}</span>

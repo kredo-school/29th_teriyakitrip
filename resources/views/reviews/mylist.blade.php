@@ -12,7 +12,7 @@
         </div>
 
         <!-- 📜 レビュー一覧 -->
-        <div class="row">
+        <div class="row mb-3">
             @if (count($reviews) > 0)
                 @foreach ($reviews as $review)
                     <div class="col-md-12 position-relative review-container">
@@ -35,7 +35,7 @@
                                 <div>
                                     <!-- レストラン名 & Rating を横並びに配置 -->
                                     <div class="d-flex align-items-center">
-                                        <h5 class="card-title mb-0">{{ $review->restaurant_name }}</h5>
+                                        <h5 class="card-title mb-0">{{ $review->restaurant_name ?? 'Unknown' }}</h5>
                                         <p class="text-warning mb-0 ms-3">
                                             @for ($i = 0; $i < $review->rating; $i++)
                                                 <i class="fa-solid fa-circle text-warning"></i>
