@@ -73,6 +73,23 @@
   text-decoration: none !important;  /* ホバー時の下線を削除 */
 }
 
+.edit-review-btn {
+    background-color: white !important; /* 白の背景色 */
+      color: #e97911 !important; /* オレンジのテキスト */
+      border: 1px solid #e97911 !important; /* オレンジのボーダー */
+      text-decoration: none !important;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 1.8rem; /* アイコンのサイズを大きく */
+      cursor: pointer;
+}
+
+.edit-review-btn:hover {
+  background-color: #E97911 !important;
+  color: white !important;
+  text-decoration: none !important;  /* ホバー時の下線を削除 */
+}
+
 .delete-review-btn {
     background-color: white !important; /* 白の背景色 */
     color: #e97911 !important; /* オレンジのテキスト */
@@ -86,8 +103,8 @@
 
 .delete-review-btn:hover {
     background-color: #E97911 !important;
-  color: white !important;
-  text-decoration: none !important;  /* ホバー時の下線を削除 */
+    color: white !important;
+    text-decoration: none !important;  /* ホバー時の下線を削除 */
 }
 
 /* Cancel ボタンのスタイル */
@@ -151,10 +168,4 @@
   color: white !important;
   text-decoration: none !important;  /* ホバー時の下線を削除 */
 }
-
-
-
-
-
-
 
