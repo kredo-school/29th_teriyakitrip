@@ -12,16 +12,30 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <!-- User Info -->
-                        <div class="col-md-6 text-center">
+                        <div class="col-md-6 text-center profile-card">
                             <div style="position: relative; display: inline-block; width: 100%; max-width: 300px;">
-                                <img src="{{ $user->avatar ? Storage::url($user->avatar) : asset('images/default-avatar.jpeg') }}" alt="User Avatar" class="rounded-circle avatar-image" width="100" height="100" style="border: 3px solid #fff; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2;">
+                                <img src="{{ $user->avatar ? Storage::url($user->avatar) : asset('images/default-avatar.jpeg') }}" 
+                                    alt="User Avatar" 
+                                    class="rounded-circle avatar-image" 
+                                    width="100" height="100" 
+                                    style="border: 3px solid #fff; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2;">
+
                                 <div style="background-color: #d3d0d0; padding: 70px 20px 20px; border-radius: 10px; margin-top: 50px; position: relative; min-height: 200px;">
-                                    <h5 class="mb-3">{{ $user->user_name }}</h5>
-                                    <p class="text-center" style="color: #777; font-size: 0.8em; width: 100%; margin: 0 auto; white-space: pre-wrap; word-wrap: break-word;">{!! nl2br(e($user->introduction)) !!}</p>
+                                    <div class="d-flex justify-content-center align-items-center mb-3" style="gap: 10px;">
+                                        <h4 class="mb-3">{{ $user->user_name }}</h4>
+
+                                        @if(Auth::check() && Auth::id() !== $user->id)
+                                            <button class="btn btn-outline-warning btn-sm mb-3">Follow</button>
+                                        @endif
+                                    </div>
+
+                                    <p class="text-center text-secondary fs-6 w-100 m-0 d-flex align-items-center justify-content-center h-100">
+                                        {!! nl2br(e($user->introduction)) !!}
+                                    </p>
                                 </div>
                             </div>
-                        </div>                    
-
+                        </div>
+                   
                         <!-- Map Image -->
                         <div class="col-md-6">
                             <img src="{{ asset('images/map_japan.png') }}" alt="Japan Map" class="img-fluid">
