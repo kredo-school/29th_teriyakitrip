@@ -10,7 +10,7 @@ footer {
 }
 
 .banner{
-    background-image: url('../images/sample.jpg');
+    background-image: url('../images/Top_page_image.png');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -45,44 +45,55 @@ footer {
     max-width: 1500px !important;
   }
 
+/* prefectures table のcolorに従いました */
 .region-1 {
-    color: #8a85e0;
+    /* color: #8a85e0; */
+    color: #FFC0CB;
 }
 
 .region-2 {
-    color: #47a1f1;
+    /* color: #47a1f1; */
+    color: #A8DADC;
 }
 
 .region-3 {
-    color: #00ac30;
+    /* color: #00ac30; */
+    color: #E558EF;
 }
 
 .region-4 {
-    color: #87ce02;
+    /* color: #87ce02; */
+    color: #8E44AD;
 }
 
 .region-5 {
-    color: #fac100;
+    /* color: #fac100; */
+    color: #457B9D;
 }
 
 .region-6 {
-    color: #ff9300;
+    /* color: #ff9300; */
+    color: #5B9EFF;
 }
 
 .region-7 {
-    color: #ff95a2;
+    /* color: #ff95a2; */
+    color: #2A9D8F;
 }
 
 .region-8 {
-    color: #ff55f4;
+    /* color: #ff55f4; */
+    color: #D7E44A;
 }
 
 .region-9 {
-    color: #ff555a;
+    /* color: #ff555a; */
+    color: #F4A261;
 }
 
 .region-10 {
-    color: #ff555a;
+    /* color: #ff555a; */
+    color: #E63946;
 }
 
 .itinerary-wrapper {
@@ -111,10 +122,12 @@ footer nav a:hover {
 .region-clickable {
     cursor: pointer; /* カーソルをポインターに変更（クリックできることを示す） */
     transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    text-decoration: none; /* 🔥 下線を消す */
 }
 
 .region-clickable:hover {
     transform: scale(1.1); /* 少し拡大して強調 */
+    text-decoration: none; /* 🔥 ホバー時も下線を消す */
 }
 
 /* お気に入りボタンのデザイン */
@@ -137,5 +150,31 @@ footer nav a:hover {
     color: #ffcc00; /* お気に入り登録済みは黄色 */
 }
 
+.card-itinerary {
+    min-height: 200px; /* ここでカードの高さを固定 */
+}
 
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* カード内の内容を上下に分けて配置 */
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* カードの高さを100%に設定 */
+}
+
+.card-body {
+    flex-grow: 1; /* カードボディが残りのスペースを埋める */
+}
+
+.element-style {
+    width: 100%; /* カードの幅いっぱいに広げる */
+    height: 200px; /* 高さを統一 */
+    object-fit: cover; /* 画像の比率を保ちつつ、カード内に収める */
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
 

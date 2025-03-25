@@ -5,6 +5,8 @@
   align-items: center;
   min-height: 60px; /* ✅ 以前の160pxから130pxに縮小 */
   padding: 6px; /* ✅ パディングも少し調整してコンパクトに */
+  max-width: 90%; /* ✅ カードの幅を90%に縮める */
+  margin: 0 auto; /* ✅ 水平中央揃え */
 }
 
 /* 🖼️ 画像のコンテナ（サイズを大きく） */
@@ -66,7 +68,24 @@
 }
 
 .view-review-btn:hover {
-    background-color: #E97911 !important;
+  background-color: #E97911 !important;
+  color: white !important;
+  text-decoration: none !important;  /* ホバー時の下線を削除 */
+}
+
+.edit-review-btn {
+    background-color: white !important; /* 白の背景色 */
+      color: #e97911 !important; /* オレンジのテキスト */
+      border: 1px solid #e97911 !important; /* オレンジのボーダー */
+      text-decoration: none !important;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 1.8rem; /* アイコンのサイズを大きく */
+      cursor: pointer;
+}
+
+.edit-review-btn:hover {
+  background-color: #E97911 !important;
   color: white !important;
   text-decoration: none !important;  /* ホバー時の下線を削除 */
 }
@@ -84,8 +103,8 @@
 
 .delete-review-btn:hover {
     background-color: #E97911 !important;
-  color: white !important;
-  text-decoration: none !important;  /* ホバー時の下線を削除 */
+    color: white !important;
+    text-decoration: none !important;  /* ホバー時の下線を削除 */
 }
 
 /* Cancel ボタンのスタイル */
@@ -120,8 +139,33 @@
   text-decoration: none !important;  /* ホバー時の下線を削除 */
 }
 
+/* 💡 Trashアイコンの配置を修正 */
+.review-container {
+  position: relative;
+}
 
+.trash-icon {
+  position: absolute;
+  right: -50px; /* ✅ 右端に配置、必要なら調整 */
+  top: 50%; /* ✅ カードの中央 */
+  transform: translateY(-50%); /* ✅ 完全に中央に揃える */
+}
 
+/* "Let's create your first review"ボタン */
+.custom-create-review-btn {
+  background-color: white !important; /* 白の背景色 */
+  color: #e97911 !important; /* オレンジのテキスト */
+  border: 1px solid #e97911 !important; /* オレンジのボーダー */
+  text-decoration: none !important;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
 
-
+.custom-create-review-btn:hover {
+  background-color: #E97911 !important;
+  color: white !important;
+  text-decoration: none !important;  /* ホバー時の下線を削除 */
+}
 

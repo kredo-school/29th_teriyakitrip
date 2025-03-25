@@ -6,6 +6,8 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 他のメタタグやCSSの読み込み -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
     <!-- CSRF Token -->
@@ -40,8 +42,7 @@
     {{-- CSS --}}
 
     <link rel="stylesheet" href="{{ asset('css/nozomi.css') }}">
-
-
+    <link rel="stylesheet" href="{{ asset('css/top_page.css') }}">
 
 
 
@@ -65,7 +66,9 @@
 
     <!-- Bootstrap JS -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 
 
@@ -96,23 +99,23 @@
                     </header>
 
                     <!-- Search Bar -->
-                    <div class="search-bar ms-3">
+                    <form action="{{ route('restaurants.search') }}" method="GET" class="search-bar ms-3">
                         <div class="input-group">
-                            <select class="form-select rounded-start"
+                            <select name="type" class="form-select rounded-start"
                                 style="width: 100px!important; background-color: #ffe59d;">
                                 <option value="all">Select</option>
                                 <option value="itinerary">Itinerary</option>
                                 <option value="review">Restaurant's Review</option>
                             </select>
 
-                            <input type="text" class="form-control" style="width: 180px!important;"
+                            <input type="text" name="keyword" class="form-control" style="width: 180px!important;"
                                 placeholder="Search here...">
 
-                            <button class="btn btn-outline-secondary" type="button">
+                            <button class="btn btn-outline-secondary" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -131,10 +134,12 @@
 
                         @guest
 
-                            @if (Route::has('create_itinerary'))
+                            {{-- ログイン前はそもそも表示しないのでコメントアウト --}}
+                            {{-- 表示させるならコメントアウトを外す --}}
+                            {{-- @if (Route::has('itineraries.create'))
                                 <li class="nav-item">
 
-                                    <a class="nav-link custom-btn" href="{{ route('create_itinerary') }}">
+                                    <a class="nav-link custom-btn" href="{{ route('itineraries.create') }}">
 
                                         <span>Create</span>
 
@@ -147,10 +152,10 @@
 
 
 
-                            @if (Route::has('create_review'))
+                            @if (Route::has('restaurants.search'))
                                 <li class="nav-item">
 
-                                    <a class="nav-link custom-btn" href="{{ route('create_review') }}">
+                                    <a class="nav-link custom-btn" href="{{ route('restaurants.search') }}">
 
                                         <span>Create</span>
 
@@ -159,7 +164,7 @@
                                     </a>
 
                                 </li>
-                            @endif
+                            @endif --}}
 
 
 
@@ -223,7 +228,7 @@
                                         <div class="modal-body">
                                             <div class="card border-0" style="background-color: #f0f0f0;">
                                                 <div class="card-body">
-                                                    <a href="{{ route('profile.show', Auth::user()) }}"
+                                                    <a href="{{ route('mypage.index', Auth::user()) }}"
                                                         class="text-reset text-decoration-none">
                                                         <div class="user-info-container d-flex align-items-center">
                                                             <div class="me-3">

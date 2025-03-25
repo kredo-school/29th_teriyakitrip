@@ -9,69 +9,91 @@
 <br>
 <!-- 📌 ヘッダー -->
 <header>
-    <h1 class="page-title">Hokkaido</h1>
+    <h1 class="page-title">{{ $prefecture->name }}</h1>
     <br>
     <nav class="nav-tabs">
-        <a href="{{ url('/regions/overview') }}" class="{{ request()->is('regions/overview') ? 'active' : '' }}">Overview</a>
-        <a href="{{ url('/regions/itinerary') }}" class="{{ request()->is('regions/itinerary') ? 'active' : '' }}">Itinerary</a>
-        <a href="{{ url('/regions/restaurant-review') }}" class="{{ request()->is('regions/restaurant-review') ? 'active' : '' }}">Restaurant Review</a>
+        <a href="{{ route('regions.overview', ['prefecture_id' => $prefecture->id]) }}"
+            class="{{ request()->is('regions/'.$prefecture->id.'/overview') ? 'active' : '' }}">Overview</a>
+        <a href="{{ route('regions.itinerary', ['prefecture_id' => $prefecture->id]) }}" 
+            class="{{ request()->is('regions/'.$prefecture->id.'/itinerary') ? 'active' : '' }}">Itinerary</a>
+        <a href="{{ route('regions.restaurant-review', ['prefecture_id' => $prefecture->id]) }}"
+            class="{{ request()->is('regions/'.$prefecture->id.'/restaurant-review') ? 'active' : '' }}">Restaurant Review</a>
     </nav>
 </header>
 
 <div class="container mt-4">
-    <h2 class="fw-bold">Restaurant Review</h2>
-    <div class="row" id="restaurant-list">
-        @foreach ($allRestaurants as $index => $restaurant)
-            <div class="col-md-12 restaurant-item" style="{{ $index >= 4 ? 'display: none;' : '' }}">
-                <div class="custom-card">
-                    <div class="card-image">
-                        <img src="{{ asset('img/' . $restaurant['img']) }}" alt="{{ $restaurant['title'] }}">
-                    </div>
-                    <div class="card-content">
-                        <h5>{{ $restaurant['title'] }}</h5>
-
-                        <!-- ⭐ 評価（星）表示 -->
-                        <div class="rating">
-                            @for ($i = 1; $i <= 5; $i++)
-                                @if ($i <= $restaurant['rating'])
-                                    <span class="star orange">●</span> <!-- オレンジの星 -->
-                                @else
-                                    <span class="star gray">●</span> <!-- グレーの星 -->
-                                @endif
-                            @endfor
+    {{-- <h1 class="page-title">{{ $prefecture->name }} - Restaurant Reviews</h1> --}}
+    @if (count($allRestaurants) > 0)
+        <div id="restaurant-list">
+            @foreach ($allRestaurants as $restaurant)
+                <div class="restaurant-item" style="{{ $loop->index >= 4 ? 'display: none;' : '' }}">
+                    <div class="custom-card">
+                        <div class="card-image d-flex justify-content-center align-items-center">
+                            <img src="{{ $restaurant->photo }}" 
+                            alt="{{ $restaurant->restaurant_name }}" 
+                            class="rounded img-fluid">
                         </div>
-
-                        <p>{{ $restaurant['description'] }}</p>
-                        <button class="btn-view-itinerary">View this Restaurant</button>
+                        <div class="card-content ms-3">
+                            
+                            <h5>{{ $restaurant->restaurant_name }}</h5>
+                            
+                            <!-- ⭐ 評価（星）表示 -->
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2 fs-5">{{ number_format($restaurant->average_rate, 1) }}</span>
+                                <div class="rating">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= round($restaurant->average_rate))
+                                            <i class="fa-solid fa-circle review-circle orange m-1 fs-5"></i>
+                                        @else
+                                        <i class="fa-solid fa-circle review-circle gray m-1 fs-5"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                            </div>
+                            <div class="row">
+                            @if (isset($restaurantReviews[$restaurant->place_id]))
+                                @foreach ($restaurantReviews[$restaurant->place_id] as $review)
+                                    <div class="col-md-6 review-box">
+                                        <p class="me-3"><strong>{{ $review->title }}</strong></p>
+                                        <div class="rating">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= $review->rating)
+                                                    <span class="star orange">●</span>
+                                                @else
+                                                    <span class="star gray">●</span>
+                                                @endif
+                                            @endfor
+                                        </div>
+                                        <p>{{ Str::limit($review->body, 200) }}</p>
+                                    </div>
+                                @endforeach
+                            @endif
+                            </div>
+                            <a href="{{ route('reviews.show', ['place_id' => $restaurant->place_id, 'photo' => urlencode($restaurant->photo)]) }}" class="btn-view-itinerary mt-3">
+                                View this Restaurant
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
+         <!-- 📌 MORE ボタン -->
+        <div class="text-center mt-3">
+            <button id="load-more-restaurant" class="btn-more">MORE</button>
+        </div>
+    @else
+        <p class="text-center mt-5 text-muted">No Restaurant Review</p>
+    @endif
 
-    <!-- 📌 MORE ボタン -->
-    <div class="text-center mt-3">
-        <button id="load-more-restaurant" class="btn-more">MORE</button>
-    </div>
 </div>
 
 
 
 <script>
-    let restaurantIndex = 4;
-    document.getElementById('load-more-restaurant').addEventListener('click', function() {
-        let items = document.querySelectorAll('.restaurant-item');
-        for (let i = restaurantIndex; i < restaurantIndex + 4; i++) {
-            if (items[i]) {
-                items[i].style.display = 'block';
-            }
-        }
-        restaurantIndex += 4;
-        if (restaurantIndex >= items.length) {
-            this.style.display = 'none';
-        }
-    });
+    
+
 </script>
 <br>
 
+<script src="{{ asset('js/region_restaurant.js') }}"></script>
 @endsection
