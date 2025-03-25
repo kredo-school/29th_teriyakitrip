@@ -147,6 +147,7 @@ Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])-
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+
 Route::get('/other_users_page/{userId}', [MypageController::class, 'showOtheruserspage'])->name('mypage.show_others');
 
 Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);
