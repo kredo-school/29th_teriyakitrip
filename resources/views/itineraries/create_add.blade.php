@@ -54,4 +54,4 @@
         document.getElementById('add-spot-container').style.display = 'none';
     });
 </script>
-@endphp
+@endpush

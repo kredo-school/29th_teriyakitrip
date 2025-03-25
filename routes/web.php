@@ -70,8 +70,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/store', [ItineraryController::class, 'store'])->name('store');// Sunao
         Route::post('/{id}/update-dates', [ItineraryController::class, 'updateDates']) ->name('update-dates'); // Sunao
         Route::get('/{id}/addList/create_itinerary', [ItineraryController::class, 'addList'])->name('addList'); // Sunao
-        Route::post('/save/{id}', [ItineraryController::class, 'saveItineraryData'])
-    ->name('save'); //Sunao
+        Route::post('/save/{id}', [ItineraryController::class, 'saveItineraryData']) ->name('save');//sunao     
+
         Route::get('/edit', [ItineraryController::class, 'edit'])->name('edit_itinerary'); // SAKI
         Route::get('/{id}/edit-destination', [ItineraryController::class, 'editDestination'])->name('editDestination');
         Route::put('/{id}/update/', [ItineraryController::class, 'updateDestination'])->name('itinerary.updateDestination');
@@ -89,7 +89,13 @@ Route::get('/itineraries/{id}/day/{visit_day}/search', [ItinerarySpotController:
     ->name('itineraries.spot.search')
     ->whereNumber('visit_day'); // ✅ `day` は数値のみ許可！
 Route::post('/itineraries/{id}/day/{visit_day}/save/spots', [ItinerarySpotController::class, 'saveItinerarySpots'])->name('itineraries.spots.save');
+Route::get('/itinerary/{id}/show-spots', [ItinerarySpotController::class, 'showSpots'])->name('itinerary.showSpots');
+Route::get('/api/itinerary/{id}/spots', [ItinerarySpotController::class, 'getSpotsByItinerary']);//Sunao   
+
+// Route::get('/itineraries/{id}/addList', [ItinerarySpotController::class, 'showAddList'])->name('itineraries.addList');//Sunao 同じURLの似たRouteがあるが機能が違う。別物
 Route::delete('/itineraries/spots/{spotId}/delete', [ItinerarySpotController::class, 'deleteSpot']);
+Route::delete('/itineraries/{id}/day/{visit_day}/delete-spots-by-day', [ItinerarySpotController::class, 'deleteSpotsByDay'])
+    ->name('itinerary.spots.delete_by_day');
 // Route::get('/itinerary/spots/{spot_id}/reviews', [ItinerarySpotController::class, 'getUserReviews'])->name('itinerary.spots.reviews');
 // Route::post('/itinerary/spots/reviews/save', [ItinerarySpotController::class, 'saveUserReview'])->name('itinerary.spots.reviews.save');
 // Route::delete('/itinerary/spots/reviews/{review_id}/delete', [ItinerarySpotController::class, 'deleteUserReview'])->name('itinerary.spots.reviews.delete');

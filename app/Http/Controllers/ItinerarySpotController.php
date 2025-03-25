@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Region;
 use App\Models\Prefecture;
 use Illuminate\Http\Request;
 use App\Models\ItinerarySpot;
 use App\Models\Itinerary; // 旅程モデル
+use Illuminate\Support\Facades\DB;
+use App\Models\ItineraryPrefecture;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
  // 都道府県モデル
@@ -74,30 +78,153 @@ class ItinerarySpotController extends Controller {
 
     public function saveItinerarySpots(Request $request, $id, $day)
     {
-        $validatedData = $request->validate([
-           'place_id' => 'required|string',
-        ]);
-    
-        $visitDay = (int) $day;  
-    
-        $latestSpot = ItinerarySpot::where('itinerary_id', $id)
-            ->where('visit_day', $visitDay)
-            ->orderBy('spot_order', 'desc')
-            ->first();
-        $spotOrder = $latestSpot ? $latestSpot->spot_order + 1 : 1;
-    
-        ItinerarySpot::create([
+        Log::info('🔥 saveItinerarySpots() が呼ばれました', [
             'itinerary_id' => $id,
-            'place_id' => $validatedData['place_id'],
-            'spot_order' => $spotOrder,
-            'visit_time' => null,
-            'visit_day' => $visitDay,
+            'visit_day' => $day,
+            'request_data' => $request->all()
         ]);
     
-        return redirect()->route('itineraries.create.body', ['id' => $id])
-            ->with('success', 'Spot added successfully!');
+        try {
+            DB::beginTransaction();
+    
+            $validatedData = $request->validate([
+                'place_id' => 'required|string',
+            ]);
+    
+            $visitDay = (int) $day;
+    
+            $latestSpot = ItinerarySpot::where('itinerary_id', $id)
+                ->where('visit_day', $visitDay)
+                ->orderBy('spot_order', 'desc')
+                ->first();
+            $spotOrder = $latestSpot ? $latestSpot->spot_order + 1 : 1;
+    
+            ItinerarySpot::create([
+                'itinerary_id' => $id,
+                'place_id' => $validatedData['place_id'],
+                'spot_order' => $spotOrder,
+                'visit_time' => null,
+                'visit_day' => $visitDay,
+            ]);
+    
+            DB::commit();
+    
+            Log::info('✅ スポットが保存されました', [
+                'itinerary_id' => $id,
+                'place_id' => $validatedData['place_id'],
+                'visit_day' => $visitDay,
+                'spot_order' => $spotOrder
+            ]);
+    
+            return redirect()->route('itinerary.spots.show', ['id' => $id]);
+
+    
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('❌ スポット保存エラー', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->with('error', 'スポット保存に失敗しました');
+        }
+    }
+
+    public function showSpots($itineraryId) {
+        // 旅程情報を取得
+        $itinerary = Itinerary::findOrFail($itineraryId);
+    
+        // スポット情報を取得（visit_day ごとにグループ化）
+        $spots = ItinerarySpot::where('itinerary_id', $itineraryId)
+            ->orderBy('visit_day')
+            ->orderBy('spot_order')
+            ->get()
+            ->groupBy('visit_day');
+    
+        // 都道府県から地域を取得
+        $prefectureIds = ItineraryPrefecture::where('itinerary_id', $itineraryId)
+            ->pluck('prefecture_id');
+    
+        $regions = Region::whereIn('id', function ($query) use ($prefectureIds) {
+            $query->select('region_id')->from('prefectures')->whereIn('id', $prefectureIds);
+        })->get();
+
+            // `$daysList` を作成
+        $daysCount = Carbon::parse($itinerary->start_date)->diffInDays(Carbon::parse($itinerary->end_date)) + 1;
+        $daysList = range(1, $daysCount);
+
+    
+        // ✅ `$itineraryId` を明示的に渡す
+        return view('itineraries.create_itinerary_show_spot', compact('itinerary', 'itineraryId', 'daysList', 'spots', 'regions'));
     }
     
+    
+    
+    // public function showSpots($id) {
+    //     $itinerary = Itinerary::find($id);
+    //     if (!$itinerary) {
+    //         abort(404, "Itinerary not found");
+    //     }
+    
+    //     // 🔥 `spots` だけを取得して渡す
+    //     $spots = ItinerarySpot::where('itinerary_id', $id)
+    //         ->orderBy('visit_day')
+    //         ->orderBy('spot_order')
+    //         ->get();
+    
+    //     // $daysList = implode(',', $daysListArray); // 🔥 `$daysListArray` を `string` に変換
+    
+    //     // // 🔥 `itinerary_prefectures` から `prefecture_id` を取得
+    //     // $prefectureIds = ItineraryPrefecture::where('itinerary_id', $id)->pluck('prefecture_id');
+    
+    //     // // 🔥 `prefectures` から `region_id` を取得し、それを `regions` から取得
+    //     // $regions = Region::whereIn('id', function ($query) use ($prefectureIds) {
+    //     //     $query->select('region_id')
+    //     //           ->from('prefectures')
+    //     //           ->whereIn('id', $prefectureIds);
+    //     // })->get();
+    
+    //     // // 🔥 スポット情報を取得
+    //     // $spots = ItinerarySpot::where('itinerary_id', $id)
+    //     //     ->orderBy('visit_day')
+    //     //     ->orderBy('spot_order')
+    //     //     ->get()
+    //     //     ->groupBy('visit_day'); // `visit_day` ごとにグループ化
+    
+    //     return view('itineraries.create_itinerary_show_spot', compact('itinerary', 'spots'));
+    // }
+    
+    
+      
+    
+
+    public function deleteSpotsByDay($id, $visitDay) {
+        try {
+            ItinerarySpot::where('itinerary_id', $id)
+                ->where('visit_day', $visitDay)
+                ->delete();
+    
+            return response()->json([
+                "success" => true,
+                "message" => "Day $visitDay のスポットを一括削除しました"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "message" => "スポット削除に失敗しました",
+                "error" => $e->getMessage()
+            ], 500);
+        }
+    }
+      
+//     public function getSpotsByItinerary($id)
+// {
+//     $spots = ItinerarySpot::where('itinerary_id', $id)
+//         ->orderBy('visit_day')
+//         ->orderBy('spot_order')
+//         ->get();
+
+//     return response()->json($spots);
+// }
 
     public function deleteSpot($spotId)
 {
