@@ -150,5 +150,31 @@ footer nav a:hover {
     color: #ffcc00; /* お気に入り登録済みは黄色 */
 }
 
+.card-itinerary {
+    min-height: 200px; /* ここでカードの高さを固定 */
+}
 
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* カード内の内容を上下に分けて配置 */
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* カードの高さを100%に設定 */
+}
+
+.card-body {
+    flex-grow: 1; /* カードボディが残りのスペースを埋める */
+}
+
+.element-style {
+    width: 100%; /* カードの幅いっぱいに広げる */
+    height: 200px; /* 高さを統一 */
+    object-fit: cover; /* 画像の比率を保ちつつ、カード内に収める */
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
 

@@ -19,13 +19,14 @@ class RestaurantReview extends Model
         'title',
         'body',
         'photo', // メイン画像
+        'restaurant_name', 
     ];
 
     public function prefecture()
     {
         return $this->belongsTo(Prefecture::class);
     }
-    
+
     /**
      * 1つのレビューには複数の写真がある
      */

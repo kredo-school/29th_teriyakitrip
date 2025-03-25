@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\RestaurantReview;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 
 class RegionController extends Controller
@@ -30,7 +31,9 @@ class RegionController extends Controller
 
     // 🔥 各 `place_id` について Google API からレストラン名を取得
     foreach ($popularRestaurants as $restaurant) {
-        $restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
+        $restaurant->restaurant_name = RestaurantReview::where('place_id', $restaurant->place_id)
+            ->first()?->restaurant_name ?? 'Unknown Restaurant';
+        //$restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
         $restaurant->photo = $this->getRestaurantPhotoFromGoogleAPI($restaurant->place_id);
         $restaurant->average_rate = round($restaurant->average_rate, 1) ?? 0; // ⭐ 平均評価を四捨五入
     }
@@ -45,14 +48,19 @@ class RegionController extends Controller
         $restaurantReviews[$restaurant->place_id] = $reviews;
     }
 
+    $allItineraries = $prefecture->itineraries()
+        ->where('is_public', 1)
+        ->latest()
+        ->take(2)
+        ->get();
     // 📌 ダミーデータを追加
-    $allItineraries = [
-        ['img' => 'biei_flower16.jpg', 'title' => '2025 Hokkaido Trip', 'description' => 'Enjoy the scenic beauty of Hokkaido.'],
-        ['img' => 'OIP.jpg', 'title' => '2023 Hokkaido Trip', 'description' => 'Discover the hidden gems of Japan’s northern island.'],
-        ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2022 Hokkaido Trip', 'description' => 'Snowy landscapes and warm hot springs.'],
-        ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2021 Hokkaido Trip', 'description' => 'Experience the culture and cuisine of Hokkaido.'],
-        ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2020 Hokkaido Trip', 'description' => 'A journey through Japan’s winter wonderland.']
-    ];
+    // $allItineraries = [
+    //     ['img' => 'biei_flower16.jpg', 'title' => '2025 Hokkaido Trip', 'description' => 'Enjoy the scenic beauty of Hokkaido.'],
+    //     ['img' => 'OIP.jpg', 'title' => '2023 Hokkaido Trip', 'description' => 'Discover the hidden gems of Japan’s northern island.'],
+    //     ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2022 Hokkaido Trip', 'description' => 'Snowy landscapes and warm hot springs.'],
+    //     ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2021 Hokkaido Trip', 'description' => 'Experience the culture and cuisine of Hokkaido.'],
+    //     ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2020 Hokkaido Trip', 'description' => 'A journey through Japan’s winter wonderland.']
+    // ];
 
     return view('regions.home', compact('prefecture', 'restaurantReviews', 'popularRestaurants','allItineraries'));
 }
@@ -71,7 +79,9 @@ class RegionController extends Controller
             ->get();
 
         foreach ($allRestaurants as $restaurant) {
-            $restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
+            $restaurant->restaurant_name = RestaurantReview::where('place_id', $restaurant->place_id)
+            ->first()?->restaurant_name ?? 'Unknown Restaurant';
+            //$restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
             $restaurant->photo = $this->getRestaurantPhotoFromGoogleAPI($restaurant->place_id);
             $restaurant->average_rate = round($restaurant->average_rate, 1) ?? 0; // ⭐ 平均評価を四捨五入
         }
@@ -91,51 +101,74 @@ class RegionController extends Controller
 
     private function getRestaurantNameFromGoogleAPI($place_id)
     {
+        return Cache::remember("restaurant_name_{$place_id}", now()->addHours(6), function () use ($place_id) {
+            $apiKey = env('GOOGLE_MAPS_API_KEY');
+            $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
+
+            $response = Http::get($apiUrl);
+            $data = $response->json();
+
+            return $data['result']['name'] ?? 'Unknown Restaurant'; // 🔥 レストラン名が取得できなかった場合のデフォルト
+        });
+    }
+
+    private function getRestaurantPhotoFromGoogleAPI($place_id)
+{
+    return Cache::remember("restaurant_photo_{$place_id}", now()->addHours(6), function () use ($place_id) {
         $apiKey = env('GOOGLE_MAPS_API_KEY');
         $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
 
         $response = Http::get($apiUrl);
         $data = $response->json();
 
-        return $data['result']['name'] ?? 'Unknown Restaurant'; // 🔥 レストラン名が取得できなかった場合のデフォルト
-    }
+        // 🔥 `photo_reference` を取得
+        if (isset($data['result']['photos'][0]['photo_reference'])) {
+            $photoReference = $data['result']['photos'][0]['photo_reference'];
+            return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
+        }
 
-    private function getRestaurantPhotoFromGoogleAPI($place_id)
-{
-    $apiKey = env('GOOGLE_MAPS_API_KEY');
-    $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
-
-    $response = Http::get($apiUrl);
-    $data = $response->json();
-
-    // 🔥 `photo_reference` を取得
-    if (isset($data['result']['photos'][0]['photo_reference'])) {
-        $photoReference = $data['result']['photos'][0]['photo_reference'];
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
-    }
-
-    // 🔥 写真がない場合のデフォルト画像
-    return asset('img/default-restaurant.jpg');
+        // 🔥 写真がない場合のデフォルト画像
+        return asset('img/default-restaurant.jpg');
+    });
 }
 
 
 
     // 📌 Itineraryページのデータ
+    // public function itinerary($prefecture_id)
+    // {
+    //     // 🔥 `prefecture_id` に基づいて `prefectures` テーブルから情報を取得
+    //     $prefecture = Prefecture::findOrFail($prefecture_id);
+
+    //     return view('Regions.itinerary', [
+    //         'allItineraries' => [
+    //             ['img' => 'biei_flower16.jpg', 'title' => '2025 Hokkaido Trip', 'description' => 'Enjoy the scenic beauty of Hokkaido.'],
+    //             ['img' => 'OIP.jpg', 'title' => '2023 Hokkaido Trip', 'description' => 'Discover the hidden gems of Japan’s northern island.'],
+    //             ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2022 Hokkaido Trip', 'description' => 'Snowy landscapes and warm hot springs.'],
+    //             ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2021 Hokkaido Trip', 'description' => 'Experience the culture and cuisine of Hokkaido.'],
+    //             ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2020 Hokkaido Trip', 'description' => 'A journey through Japan’s winter wonderland.']
+    //         ],
+    //    'prefecture' => $prefecture // 🔥 ここで `prefecture` をビューに渡す
+    //     ]);
+    // }
+
+
     public function itinerary($prefecture_id)
     {
-        // 🔥 `prefecture_id` に基づいて `prefectures` テーブルから情報を取得
         $prefecture = Prefecture::findOrFail($prefecture_id);
 
+        // 🔥 リレーションを使ってその都道府県に紐づいた旅程を取得！
+        $itineraries = $prefecture->itineraries()
+        ->where('is_public', 1) // ← 公開のやつだけ！
+        ->latest()
+        ->get();
+
+
         return view('Regions.itinerary', [
-            'allItineraries' => [
-                ['img' => 'biei_flower16.jpg', 'title' => '2025 Hokkaido Trip', 'description' => 'Enjoy the scenic beauty of Hokkaido.'],
-                ['img' => 'OIP.jpg', 'title' => '2023 Hokkaido Trip', 'description' => 'Discover the hidden gems of Japan’s northern island.'],
-                ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2022 Hokkaido Trip', 'description' => 'Snowy landscapes and warm hot springs.'],
-                ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2021 Hokkaido Trip', 'description' => 'Experience the culture and cuisine of Hokkaido.'],
-                ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2020 Hokkaido Trip', 'description' => 'A journey through Japan’s winter wonderland.']
-            ],
-       'prefecture' => $prefecture // 🔥 ここで `prefecture` をビューに渡す
+            'prefecture' => $prefecture,
+            'itineraries' => $itineraries
         ]);
     }
+
 
 }

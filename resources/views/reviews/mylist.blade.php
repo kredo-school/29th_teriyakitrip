@@ -12,23 +12,30 @@
         </div>
 
         <!-- 📜 レビュー一覧 -->
-        <div class="row">
+        <div class="row mb-3">
             @if (count($reviews) > 0)
                 @foreach ($reviews as $review)
-                    <div class="col-md-12 position-relative review-container">
+                    <div class="col-md-12 position-relative review-container mb-2">
                         <div class="card review-card mb-3 d-flex flex-row align-items-center p-2">
                             <!-- 画像 -->
+                            @if ($review->photo)
                             <div class="myreview-image-container">
-                                <img src="{{ asset('storage/' . $review->photo) }}" class="favorite-image"
+                                <img src="{{ asset('storage/' . $review->photo) }}" class="favorite-image" 
                                     alt="Restaurant Image">
                             </div>
+                            @else
+                                <div class="myreview-image-container" style=" background-color: #f0f0f0; border-radius: 10px 0 0 10px;">
+                                    <i class="d-flex align-items-center justify-content-center text-center fa-solid fa-image fa-3x display-1 favorite-image" style="color: #ccc;"></i>
+                                </div>
+                            @endif
+                            
 
                             <!-- カードの本文 -->
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <div>
                                     <!-- レストラン名 & Rating を横並びに配置 -->
                                     <div class="d-flex align-items-center">
-                                        <h5 class="card-title mb-0">{{ $review->restaurant_name }}</h5>
+                                        <h5 class="card-title mb-0">{{ $review->restaurant_name ?? 'Unknown' }}</h5>
                                         <p class="text-warning mb-0 ms-3">
                                             @for ($i = 0; $i < $review->rating; $i++)
                                                 <i class="fa-solid fa-circle text-warning"></i>
@@ -53,13 +60,22 @@
                                     <a href="#" class="btn view-review-btn btn-sm">View This Review</a>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- 🗑️ Trashアイコンをカードの右端 & 縦中央に配置 -->
-                            <button type="button" class="btn delete-review-btn trash-icon" data-bs-toggle="modal"
+                        <!-- 編集ボタンと削除ボタンをカードの外側の右側中央に縦並びに配置 -->
+                        <div class="position-absolute top-50 end-0 translate-middle-y d-flex flex-column align-items-center">
+                            <!-- ✏️ Editアイコン -->
+                            <a href="{{ route('reviews.edit_myreview', ['review' => $review->id]) }}" class="btn edit-review-btn mb-3">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                        
+                            <!-- 🗑️ Trashアイコン -->
+                            <button type="button" class="btn delete-review-btn mb-3" data-bs-toggle="modal"
                                 data-bs-target="#deleteReviewModal{{ $review->id }}">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
+                        
                     </div>
 
                     <!-- ⭐ 各レビューごとの削除モーダル -->
@@ -95,7 +111,6 @@
                     <a href="{{ route('restaurants.search') }}" class="btn custom-create-review-btn mt-3">
                         Let's create your first review !
                     </a>                    
-
                 </div>
             @endif
         </div>

@@ -74,6 +74,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
             <!-- Tabs -->
             <div class="col-md-12">

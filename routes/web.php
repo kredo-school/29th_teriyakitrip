@@ -10,10 +10,10 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItineraryController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\RegionController;//moko
+use App\Http\Controllers\RegionController; //moko
 use App\Http\Controllers\ApiProxyController; //naho
 use App\Http\Controllers\FavoritesController; //Toshimi
-use App\Http\Controllers\MyItineraryController;//Toshimi
+use App\Http\Controllers\MyItineraryController; //Toshimi
 use App\Http\Controllers\RestaurantReviewPhotoController;
 use App\Http\Controllers\RestaurantReviewController; //naho
 use App\Http\Controllers\RestaurantSearchController; //naho
@@ -25,8 +25,10 @@ Auth::routes();
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
+Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
 Route::get('/my-itineraries', [MyItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
+Route::put('/my-itineraries/{id}/privacy', [MyItineraryController::class, 'updatePrivacy'])->name('my-itineraries.updatePrivacy');
+
 Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
 Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete');//Toshimi
 Route::post('/itinerary/favorite/{id}', function ($id) {
@@ -36,11 +38,10 @@ Route::post('/itinerary/favorite/{id}', function ($id) {
 })->name('itinerary.favorite');
 
 
-Route::group(['middleware' => 'auth'], function() { //Toshimi
+Route::group(['middleware' => 'auth'], function () { //Toshimi
     Route::get('/my-favorites', [FavoritesController::class, 'index']) //Toshimi
-    // ->middleware('auth')  // ログインユーザーのみアクセス可能
-    ->name('favorites.list');
-
+        // ->middleware('auth')  // ログインユーザーのみアクセス可能
+        ->name('favorites.list');
 });
 
 // Route::get('/create-itinerary', [ItineraryController::class, 'create'])->name('create_itinerary');
@@ -50,36 +51,31 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
 
 //ログイン後のみ入れる
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])->name('restaurants.search'); //naho
     Route::get('/restaurant-reviews/create', [RestaurantReviewController::class, 'create'])->name('restaurant-reviews.create'); //naho
     Route::post('/restaurant-reviews', [RestaurantReviewController::class, 'store'])->name('restaurant-reviews.store'); //naho
-    Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
     // Route::get('/logout', 'Auth\LoginController@logout')->name('logout'); // エラー原因となったため一旦コメントアウト 支障あれば相談//Sunao
     Route::get('/restaurants/my_review/{id}', [RestaurantReviewController::class, 'viewMyreview'])->name('reviews.view_myreview'); //saki
-     // Edit review form
-     Route::get('/reviews/edit/{review}', [RestaurantReviewController::class, 'edit'])->name('reviews.edit_myreview'); //SAKI
-     Route::put('/reviews/{id}', [RestaurantReviewController::class, 'update'])->name('reviews.update'); //SAKI
-     // 画像削除のルート設定
-     Route::delete('/reviews/photo/delete/{photoId}', [RestaurantReviewController::class, 'deletePhoto'])->name('review.photo.delete');
-
-
-
-
+    // Edit review form
+    Route::get('/reviews/edit/{review}', [RestaurantReviewController::class, 'edit'])->name('reviews.edit_myreview'); //SAKI
+    Route::put('/reviews/{id}', [RestaurantReviewController::class, 'update'])->name('reviews.update'); //SAKI
+    // 画像削除のルート設定
+    Route::delete('/reviews/photo/delete/{photoId}', [RestaurantReviewController::class, 'deletePhoto'])->name('review.photo.delete');
 });
-Route::group(['middleware' => 'auth'], function() {    
+Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
         Route::get('/create_add', [ItineraryController::class, 'show'])->name('show');
-        Route::get('/create', [ItineraryController::class, 'create'])->name('create');// Sunao
+        Route::get('/create', [ItineraryController::class, 'create'])->name('create'); // Sunao
         // Route::get('/itinerary_first_form', [ItineraryController::class, 'create'])->name('itineraries.create'); // フォーム表示
-        Route::post('/store', [ItineraryController::class, 'store'])->name('store');// Sunao
-        Route::post('/{id}/update-dates', [ItineraryController::class, 'updateDates']) ->name('update-dates'); // Sunao
+        Route::post('/store', [ItineraryController::class, 'store'])->name('store'); // Sunao
+        Route::post('/{id}/update-dates', [ItineraryController::class, 'updateDates'])->name('update-dates'); // Sunao
         Route::get('/{id}/addList/create_itinerary', [ItineraryController::class, 'addList'])->name('addList'); // Sunao
         Route::post('/save/{id}', [ItineraryController::class, 'saveItineraryData'])
-    ->name('save'); //Sunao
+            ->name('save'); //Sunao
         // Route::get('/create_itinerary', [ItineraryController::class, 'addList'])->name('create_itinerary_header');
         // Route::post('/itinerary_first_form', [ItineraryController::class, 'showFirstform'])->name('showFirstform'); // フォーム送信処理
         // Edit itinerary P33
@@ -98,20 +94,20 @@ Route::get('/profile', function () {
 })->name('profile.show')->middleware('auth');
 
 
-    Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function() {
-        Route::get('/create_add', [ItineraryController::class, 'show'])->name('show');
-        // Route::get('/create', [ItineraryController::class, 'create'])->name('create');
-    });
-        Route::get('/{id}/edit-destination', [ItineraryController::class, 'editDestination'])->name('editDestination');
-        Route::put('/{id}/update/', [ItineraryController::class, 'updateDestination'])->name('itinerary.updateDestination');
+Route::group(['prefix' => 'itineraries', 'as' => 'itineraries.'], function () {
+    Route::get('/create_add', [ItineraryController::class, 'show'])->name('show');
+    // Route::get('/create', [ItineraryController::class, 'create'])->name('create');
+});
+Route::get('/{id}/edit-destination', [ItineraryController::class, 'editDestination'])->name('editDestination');
+Route::put('/{id}/update/', [ItineraryController::class, 'updateDestination'])->name('itinerary.updateDestination');
 
-        // Route::post('/store', [ItineraryController::class, 'store'])->name('store');
-        // Route::delete('/{user_id}/destroy', [ItineraryController::class, 'destroy'])->name('destroy');
-        // Route::get('/{user_id}/edit', [ItineraryController::class, 'edit'])->name('edit');
+// Route::post('/store', [ItineraryController::class, 'store'])->name('store');
+// Route::delete('/{user_id}/destroy', [ItineraryController::class, 'destroy'])->name('destroy');
+// Route::get('/{user_id}/edit', [ItineraryController::class, 'edit'])->name('edit');
 
 // Route::middleware(['auth'])->group(function () {
 //     Route::get('/itineraries/create', [ItineraryController::class, 'addList'])->name('itinerary.create_itinerary_header'); //エラー原因となったため一旦コメントアウト　支障あれば相談//Sunao
-    
+
 // });
 Route::get('/tabs', function () {
     return view('tabs');
@@ -120,10 +116,10 @@ Route::get('/tabs', function () {
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 
 // Route::get('/', [ItinerariesController::class, 'index'])->name('mypage.itinerary.show');
-Route::post('/itineraries', [ItinerariesController::class, 'store'])->name('store_itinerary');
+// Route::post('/itineraries', [ItinerariesController::class, 'store'])->name('store_itinerary');
 
 //プロフィール閲覧で使用するユーザー情報の取得
-Route::get('/profile/{id}',[ProfileController::class,'get_user']);
+Route::get('/profile/{id}', [ProfileController::class, 'get_user']);
 
 //フォロー状態の確認 // 一時的にコメントアウト（後で戻す）
 // Route::get('/follow/status/{id}',[FollowController::class,'check_following']);
@@ -134,12 +130,12 @@ Route::get('/profile/{id}',[ProfileController::class,'get_user']);
 //フォロー解除 // 一時的にコメントアウト（後で戻す）
 // Route::post('/follow/remove',[FollowController::class,'unfollowing']);
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth'], function () {
     // Route::get('/show','FollowsController@show');
-    });
+});
 
 
-    
+
 
 Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])->name('restaurant_reviews.index');
 
@@ -150,9 +146,9 @@ Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])-
 //     ->where('tab', 'overview|itineraries|restaurant_reviews|followings|follower');
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
-// Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 
-// Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);
+Route::get('/other_users_page/{userId}', [MypageController::class, 'showOtheruserspage'])->name('mypage.show_others');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index'); // デフォルトのマイページ
@@ -170,3 +166,12 @@ Route::get('/regions/{prefecture_id}/restaurant-review', [RegionController::clas
 
 Route::get('/regions/{prefecture_id}/itinerary', [RegionController::class, 'itinerary'])
     ->name('regions.itinerary'); //naho
+
+// Toshimi - Favorite function
+Route::middleware(['auth'])->group(function () {
+    Route::post('/favorites/toggle/{reviewId}', [FavoritesController::class, 'toggleFavoriteRestaurant'])
+        ->name('favorites.toggle.restaurant');
+
+    Route::post('/itinerary/favorite/{id}', [FavoritesController::class, 'toggleFavoriteItinerary'])
+        ->name('itinerary.favorite');
+});

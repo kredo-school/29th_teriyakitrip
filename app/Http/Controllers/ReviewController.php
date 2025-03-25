@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\RestaurantReview; // Review モデルを使用
+use Illuminate\Support\Facades\Cache;
 /**
  * ログインユーザーのレストランレビュー一覧を取得
  */
 
+use App\Models\RestaurantReview; // Review モデルを使用
 use Illuminate\Support\Facades\Http; // Google API 呼び出し用
 
 class ReviewController extends Controller
@@ -22,25 +23,56 @@ class ReviewController extends Controller
     }
 
 
+    // public function myList(Request $request)
+    // {
+    //     // ログインユーザーが書いたレビューのみを取得
+    //     $reviews = RestaurantReview::where('user_id', Auth::id())->get();
+
+    //     $apiKey = env('GOOGLE_MAPS_API_KEY'); // Google APIキーを取得
+
+    //     foreach ($reviews as $review) {
+    //         // Google Places API を呼び出してレストラン情報を取得
+    //         $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$review->place_id}&key={$apiKey}&language=en";
+    //         $response = Http::get($apiUrl);
+    //         $data = $response->json();
+
+    //         // レストラン名を取得できたら `restaurant_name` を追加
+    //         $review->restaurant_name = $data['result']['name'] ?? 'Unknown Restaurant';
+    //     }
+
+    //     return view('reviews.mylist', ['reviews' => $reviews]);
+    // }
+
+    // public function myList(Request $request)
+    // {
+    //     $reviews = RestaurantReview::where('user_id', Auth::id())->get();
+
+    //     foreach ($reviews as $review) {
+    //         $review->restaurant_name = Cache::remember("restaurant_name_{$review->place_id}", now()->addHours(6), function () use ($review) {
+    //             \Log::info("Google API Request: Fetching name for {$review->place_id}"); // ログ追加
+
+    //             $apiKey = env('GOOGLE_MAPS_API_KEY');
+    //             $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$review->place_id}&key={$apiKey}&language=en";
+
+    //             $response = Http::get($apiUrl);
+    //             $data = $response->json();
+
+    //             return $data['result']['name'] ?? 'Unknown Restaurant';
+    //         });
+    //     }
+
+    //     return view('reviews.mylist', ['reviews' => $reviews]);
+    // }
+
     public function myList(Request $request)
     {
-        // ログインユーザーが書いたレビューのみを取得
+        // 自分のレビューを取得（restaurant_name もすでに含まれてる）
         $reviews = RestaurantReview::where('user_id', Auth::id())->get();
 
-        $apiKey = env('GOOGLE_MAPS_API_KEY'); // Google APIキーを取得
-
-        foreach ($reviews as $review) {
-            // Google Places API を呼び出してレストラン情報を取得
-            $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$review->place_id}&key={$apiKey}&language=en";
-            $response = Http::get($apiUrl);
-            $data = $response->json();
-
-            // レストラン名を取得できたら `restaurant_name` を追加
-            $review->restaurant_name = $data['result']['name'] ?? 'Unknown Restaurant';
-        }
-
+        // すでにDBにあるrestaurant_nameを使えばOKなので、何も追加処理はいらない！
         return view('reviews.mylist', ['reviews' => $reviews]);
     }
+
 
 
     /**
