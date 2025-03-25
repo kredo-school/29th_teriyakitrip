@@ -79,44 +79,18 @@
                     <div class="container toppage mt-5"> <!-- RECOMMENDED ITINERALIES SECTION -->
                         
                         <div class="row mt-3">
-                            <div class="col-4"> <!-- Itinerary 1 -->
-                                <div class="card shadow-sm border-0 w-100 rounded-4">
-                                    <img src="/images/sample2.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
-                                    <div class="card-body p-2">
-                                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Okinawa Trip </h6>
-                                        <div class="d-flex align-items-center">
-                                            <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
-                                            <span class="ms-2 fw-bold">Toshimi's Japan'</span>
-                                            <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
+                            <div class="row mt-3">
+                                @foreach ($itineraries->take(3) as $itinerary) <!-- 3件だけ表示 -->
+                                    <div class="col-4 mt-2">
+                                        <div class="card card-itinerary shadow-sm border-0 w-100 rounded-4 position-relative">
+                                            <img src="{{ asset('storage/itineraries/images/' . $itinerary->photo) }}" alt="Itinerary Image" class="element-style rounded-top-4 itinerary-image">
+    
+                                            <div class="card-body p-2 mt-2">
+                                                <h5 class="card-title mb-1 fw-bold">{{ $itinerary->title }}</h5>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-4"> <!-- Itinerary 2 -->
-                                <div class="card shadow-sm border-0 w-100 rounded-4">
-                                    <img src="/images/sample3.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
-                                    <div class="card-body p-2">
-                                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2019 Hokkaido Trip </h6>
-                                        <div class="d-flex align-items-center">
-                                            <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
-                                            <span class="ms-2 fw-bold">Toshimi's Japan'</span>
-                                            <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4"> <!-- Itinerary 3 -->
-                                <div class="card shadow-sm border-0 w-100 rounded-4">
-                                    <img src="/images/sample4.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
-                                    <div class="card-body p-2">
-                                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Miyazaki Trip </h6>
-                                        <div class="d-flex align-items-center">
-                                            <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
-                                            <span class="ms-2 fw-bold">Toshimi's Japan'</span>
-                                            <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div><br>
