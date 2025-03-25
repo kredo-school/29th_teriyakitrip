@@ -150,8 +150,13 @@ Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 
 Route::get('/other_users_page/{userId}', [MypageController::class, 'showOtheruserspage'])->name('mypage.show_others');
 
-Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index'); // デフォルトのマイページ
+    // Route::get('/mypage/{tab}', [MypageController::class, 'index'])->name('mypage.tab'); // タブ切り替え用
+});
 
+// ✅ AJAXタブ読み込み用（新たに追加！）
+Route::get('/mypage-content/{tab}', [MypageController::class, 'tabContent'])->name('mypage.tabContent');
 
 Route::get('/regions/{prefecture_id}/overview', [RegionController::class, 'overview'])
     ->name('regions.overview'); //naho

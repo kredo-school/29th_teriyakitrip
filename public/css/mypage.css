@@ -139,6 +139,8 @@ transform: scale(1.05) translateY(-2px);
     border: 1px solid #D3D3D3;  /* 薄いグレーの枠線 */
     border-radius: 10px;  /* 角の丸み */
     padding: 10px;  /* 内側の余白 */
+    border: none !important;
+    padding: 0;
 }
 
 .nav-tabs-mypage {
