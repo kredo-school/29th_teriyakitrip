@@ -233,7 +233,7 @@
                                                         <div class="user-info-container d-flex align-items-center">
                                                             <div class="me-3">
                                                                 <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}"
-                                                                    alt="Avatar" class="rounded-circle" width="70"
+                                                                    alt="Avatar" class="rounded-circle avatar-image" width="70"
                                                                     height="70">
                                                             </div>
 
