@@ -62,10 +62,10 @@
                     {{-- member + icon --}}
                     <i class="fa-solid fa-user-plus"></i>
                 </div>
-            </div>     
+            </div>    
 
             {{-- Modal destination list --}}
-            <div class="modal fade" id="itineraryModal" tabindex="-1" aria-labelledby="itineraryModalLabel" aria-hidden="true">
+            <div class="modal fade" id="itineraryModal" name="itineraryModal" tabindex="-1" aria-labelledby="itineraryModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="flex-grow-1  modal-header d-flex justify-content-between align-items-center mb-4">

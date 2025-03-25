@@ -104,7 +104,7 @@ class ItineraryController extends Controller
 
     
         // 6️⃣ **リダイレクト**
-        return redirect()->route('itineraries.addList', ['id' => $itinerary->id])
+        return redirect()->route('itineraries.create_itinerary', ['id' => $itinerary->id])
                          ->with('success', 'Itinerary created successfully!');
     }
     
@@ -117,7 +117,8 @@ class ItineraryController extends Controller
     public function addList($id, Request $request)
     {
        Log::info("addList 実行", ['itinerary_id' => $id]);
-    
+    try
+    {
         // **旅程データを取得**
         $itinerary = Itinerary::with('prefectures')->findOrFail($id);
     
@@ -149,6 +150,11 @@ class ItineraryController extends Controller
     
         // **ビューにデータを渡して表示**
         return view('itineraries.create_itinerary', compact('itinerary', 'days', 'daysList','regions', 'selectedPrefectures'));
+        }
+        catch(\Exception $e) {
+            Log::error('保存エラー', ['error' => $e->getMessage()]);
+            return redirect()->back()->with('error', ' itinerary保存に失敗しました');
+        }
 
     }
 
@@ -289,21 +295,6 @@ class ItineraryController extends Controller
             return response()->json(['error' => 'Error updating itinerary: ' . $e->getMessage()], 500);
         }
     }
-    
-    
-    
-                    // ✅ **スポット情報を保存**
-        // ItinerarySpot::where('itinerary_id', $itinerary->id)->delete(); // 既存のスポットを削除
-        // foreach ($validated['spots'] as $spot) {
-        //     ItinerarySpot::create([
-        //         'itinerary_id' => $itinerary->id,
-        //         'place_id' => $spot['place_id'],
-        //         'spot_order' => $spot['spot_order'],
-        //         'visit_time' => $spot['visit_time'] ?? null,
-        //         'visit_day' => $spot['visit_day'],
-        //     ]);
-        // }
-        
 
     /**
      * Display the specified resource.

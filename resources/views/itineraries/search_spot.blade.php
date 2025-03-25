@@ -33,8 +33,11 @@
                         <p class="search-result-name">{{ $spot->place_id }}</p>
                         <p class="search-result-address">（スポット詳細は Google API から取得）</p>
                     </div>
+                    <form action="submit" action="{{ route('itineraries.spots.save', ['id' => $itinerary->id, 'visit_day' => session('selectedDay', 1)]) }}" method="POST">
+                        @csrf
                     <div class="search-result-btn-container">
                         <button type="submit" class="btn-white-orange">Add to Itinerary</button>
+                    </form>
                     </div>
                 </div>
             </form>
