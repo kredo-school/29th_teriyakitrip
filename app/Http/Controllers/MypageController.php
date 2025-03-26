@@ -32,7 +32,13 @@ class MypageController extends Controller
     {
         // 他のユーザーのデータを取得
         $user = User::findOrFail($userId);
-        $itineraries = $user->itineraries()->where('is_public', 1)->latest()->limit(3)->get();
+        // Overview 用の最新3件
+        $latestItineraries = $user->itineraries()->where('is_public', 1)->latest()->limit(3)->get();
+
+        // Itineraries タブ用の全件
+        $allItineraries = $user->itineraries()->where('is_public', 1)->latest()->get();
+
+
         $topRestaurantReviews = RestaurantReview::where('user_id', $userId)->latest()->take(3)->get();
         $restaurantReviews = RestaurantReview::where('user_id', $userId)->latest()->get();
 
@@ -43,8 +49,10 @@ class MypageController extends Controller
         }
 
         // 必要なデータをビューに渡す
-        return view('mypage.show_others', compact('user','itineraries', 'topRestaurantReviews', 'restaurantReviews'));
+        return view('mypage.show_others', compact('user','latestItineraries', 'allItineraries', 'topRestaurantReviews', 'restaurantReviews'));
     }
+    
+
 
 
     
