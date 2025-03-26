@@ -156,50 +156,21 @@
             <!-- Itineraries タブ -->
             <div class="tab-pane fade mb-5" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
                 <div class="container mt-4">
-                    
-                    {{-- <p class="text-center" style="color: #E97911; font-size: 3rem; font-weight: bold">Itinerary</p> --}}
-
-                    <!-- ここにダミーデータのまま Itinerary カードを表示 -->
                     <!-- 📜 Itineraries List -->
                     <div class="row">
-                        @php
-                            $dummyItineraries = [
-                            [
-                                'title' => '2025 Okinawa Trip1',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo1.jpeg'
-                            ],
-                            [
-                                'title' => '2025 Okinawa Trip2',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo2.jpeg'
-                            ],
-                            [
-                                'title' => '2025 Okinawa Trip3',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo3.jpeg'
-                            ],
-                            [
-                                'title' => '2025 Okinawa Trip4',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo4.jpeg'
-                            ],
-                        ];
-                        @endphp
-
-                        @foreach ($dummyItineraries as $itinerary)
+                        @foreach ($itineraries as $itinerary) <!-- ユーザーの公開されたしおりを表示 -->
                             <div class="col-md-12 mb-3">
                                 <div class="card" style="border:none; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
                                     <div class="row g-0">
-                                        <div class="col-md-3">
-                                            <img src="{{ asset($itinerary['photo']) }}" alt="Itinerary Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px 0 0 10px;">
+                                        <div class="col-md-3" style="height: 200px;">
+                                            <img src="{{ asset('storage/itineraries/images/' . $itinerary->photo) }}" alt="Itinerary Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px 0 0 10px;">
                                         </div>
                                         <div class="col-md-9">
                                             <div class="card-body">
-                                                <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{ $itinerary['title'] }}</h5>
-                                                <p class="card-text" style="font-size: 0.8rem; color: #555;">{{ $itinerary['description'] }}</p>
+                                                <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{ $itinerary->title }}</h5>
+                                                <p class="card-text" style="font-size: 0.8rem; color: #555;">{{ $itinerary->description }}</p>
                                                 <div class="text-end">
-                                                    <a href="#" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
+                                                    <a href="{{ route('itineraries.show', $itinerary->id) }}" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
                                                 </div>
                                             </div>
                                         </div>

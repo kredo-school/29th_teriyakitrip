@@ -169,7 +169,6 @@
             <!-- Itineraries タブ -->
             <div class="tab-pane fade mb-5" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
                 <div class="container mt-4">
-                    <!-- ここにダミーデータのまま Itinerary カードを表示 -->
                     <!-- 📜 Itineraries List -->
                     <div class="row">
                         @foreach ($itineraries as $itinerary) <!-- ユーザーの公開されたしおりを表示 -->
