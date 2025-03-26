@@ -57,7 +57,7 @@
 
                                 <!-- 🔽 "View This Review" ボタンを右下に配置 -->
                                 <div class="mt-auto text-end w-100">
-                                    <a href="#" class="btn view-review-btn btn-sm">View This Review</a>
+                                    <a href="{{ route('reviews.show', ['place_id' => $review->place_id,'photo' => urlencode($review->photo)]) }}" class="btn view-review-btn btn-sm">View This Restaurant</a>
                                 </div>
                             </div>
                         </div>
