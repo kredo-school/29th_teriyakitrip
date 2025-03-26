@@ -125,6 +125,11 @@
 .nav-item .avatar-image {
     border: 3px solid transparent !important;
     transition: border-color 0.3s ease !important;
+    object-fit: cover;
+}
+
+.avatar-image{
+  object-fit: cover;
 }
 
 .nav-item .avatar-image:hover {
