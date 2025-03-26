@@ -132,4 +132,31 @@ document.addEventListener("DOMContentLoaded", function () {
             tab.show();
         }
     }
+
+    // ⭐ 初期表示：最初の5件だけ表示（Itineraries用）
+    let itineraryItems = document.querySelectorAll(".all-itinerary-item");
+    let loadMoreItineraryBtn = document.getElementById("loadMoreAllItineraries");
+    let itineraryIndex = 5;
+
+    // 初期チェック：5件以下ならボタン非表示
+    if (itineraryItems.length <= 5 && loadMoreItineraryBtn) {
+        loadMoreItineraryBtn.style.display = "none";
+    }
+
+    // 🔘 MOREボタン：さらに5件表示
+    if (loadMoreItineraryBtn) {
+        loadMoreItineraryBtn.addEventListener("click", function () {
+            let nextIndex = itineraryIndex + 5;
+
+            for (let i = itineraryIndex; i < nextIndex && i < itineraryItems.length; i++) {
+                itineraryItems[i].style.display = "block";
+            }
+
+            itineraryIndex = nextIndex;
+
+            if (itineraryIndex >= itineraryItems.length) {
+                loadMoreItineraryBtn.style.display = "none";
+            }
+        });
+    }
 });

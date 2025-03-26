@@ -18,6 +18,8 @@ class MypageController extends Controller
         $itineraries = $user->itineraries()->where('is_public', 1)->latest()->limit(3)->get();
         $restaurantReviews = $user->reviews()->latest()->get();
         $topRestaurantReviews = $user->reviews()->latest()->limit(3)->get();
+         // Itineraries タブ用の全件
+        $allItineraries = $user->itineraries()->where('is_public', 1)->latest()->get();
 
         foreach ($topRestaurantReviews as $review) {
             $review->restaurant_name = RestaurantReview::where('place_id', $review->place_id)
@@ -25,7 +27,7 @@ class MypageController extends Controller
             // $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
         }
 
-        return view('mypage.index', compact('user', 'itineraries', 'restaurantReviews','topRestaurantReviews'));
+        return view('mypage.index', compact('user', 'itineraries', 'restaurantReviews','allItineraries', 'topRestaurantReviews'));
     }
 
     public function showOtheruserspage($userId)

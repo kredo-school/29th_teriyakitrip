@@ -65,7 +65,8 @@
 
                     <div class="container toppage mt-5"> <!-- RECOMMENDED ITINERALIES SECTION -->
                         
-                        <div class="row mt-3">
+                        <div class="row">
+                            @if($itineraries->isNotEmpty())
                             @foreach ($itineraries->take(3) as $itinerary) <!-- 3件だけ表示 -->
                                 <div class="col-4 mt-2">
                                     <div class="card card-itinerary shadow-sm border-0 w-100 rounded-4 position-relative">
@@ -77,24 +78,26 @@
                                     </div>
                                 </div>
                             @endforeach
+                            <div class="text-center mt-2">
+                                <a href="#" class="btn btn-secondary more-tab-button text-white mt-3" 
+                                data-target="#itineraries"
+                                style="border-radius: 5px; padding: 0.5rem 1rem;">
+                                    MORE
+                                </a>
+                            </div>
+                            @else
+                            <p class="text-muted">No Itineraries</p>
+                            @endif
                         </div>
                         
                     </div><br>
-                    
-                    <div class="text-center mt-2">
-                        <a href="#" class="btn btn-secondary more-tab-button text-white" 
-                        data-target="#itineraries"
-                        style="border-radius: 5px; padding: 0.5rem 1rem;">
-                            MORE
-                        </a>
-                    </div>
                 </div>
 
                 <!-- Restaurant Reviews Section -->
                 <div class="mt-4 text-center">
                     <p style="color: #E97911; font-size: 3rem; font-weight: bold">Restaurant's Review</p>
                     <div class="container toppage mt-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
-                        <div class="row mt-3">
+                        <div class="row">
                             @if($topRestaurantReviews->isNotEmpty())
                                 @foreach ($topRestaurantReviews->take(3) as $review) <!-- 最新の3件を取得 -->
                                     <div class="col-md-4"> <!-- 3カラムのレイアウト -->
@@ -139,7 +142,7 @@
                                 @endforeach
                                 <br>
                                 <div class="text-center mt-2">
-                                <a href="#" class="btn btn-secondary more-tab-button text-white" 
+                                <a href="#" class="btn btn-secondary more-tab-button text-white mt-3" 
                                 data-target="#restaurant-reviews"
                                 style="border-radius: 5px; padding: 0.5rem 1rem;">
                                     MORE
@@ -158,8 +161,9 @@
                 <div class="container mt-4">
                     <!-- 📜 Itineraries List -->
                     <div class="row">
-                        @foreach ($itineraries as $itinerary) <!-- ユーザーの公開されたしおりを表示 -->
-                            <div class="col-md-12 mb-3">
+                        @if ($allItineraries->isNotEmpty())
+                        @foreach ($allItineraries as $index => $itinerary)
+                            <div class="col-md-12 mb-3 all-itinerary-item" style="display: {{ $index < 5 ? 'block' : 'none' }};">
                                 <div class="card" style="border:none; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
                                     <div class="row g-0">
                                         <div class="col-md-3" style="height: 200px;">
@@ -178,11 +182,13 @@
                                 </div>
                             </div>
                         @endforeach
+                        <div class="text-center mt-3">
+                            <button class="btn btn-secondary" id="loadMoreAllItineraries"  style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
+                        </div><br><br>
+                        @else
+                        <p class="text-center text-muted mt-4">No Itineraries</p>
+                        @endif
                     </div>
-
-                    <div class="text-center mt-3">
-                        <button class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
-                    </div><br><br>
                     
                 </div>
             </div>
@@ -241,7 +247,7 @@
                             </div>
                         @endforeach
                         <div class="text-center mt-3">
-                            <button id="loadMore" class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
+                            <button id="loadMore" class="btn btn-secondary mt-3" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
                         </div>        
                     @else
                         <p class="text-center text-muted mt-4">No Restaurant Review</p>
@@ -262,6 +268,6 @@
 </div>
 
 <!-- JavaScripts -->
-<script src="{{ asset('js/mypage.js') }}"></script>
+<script src="{{ asset('js/mypage_login_user.js') }}"></script>
 
 @endsection
