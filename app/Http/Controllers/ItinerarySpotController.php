@@ -33,7 +33,7 @@ class ItinerarySpotController extends Controller {
                               ->orderBy('spot_order', 'asc')
                               ->get();
     
-    return view('itineraries/create_add', compact('itinerary', 'visit_day'));
+    return view('itineraries/create_spots_add', compact('itinerary', 'visit_day'));
 }
 
     /**
@@ -116,7 +116,7 @@ class ItinerarySpotController extends Controller {
                 'spot_order' => $spotOrder
             ]);
     
-            return redirect()->route('itinerary.spots.show', ['id' => $id]);
+            return redirect()->route('itineraries.showSpots', ['id' => $id]);
 
     
         } catch (\Exception $e) {

@@ -104,7 +104,7 @@ class ItineraryController extends Controller
 
     
         // 6️⃣ **リダイレクト**
-        return redirect()->route('itineraries.create_itinerary', ['id' => $itinerary->id])
+        return redirect()->route('itineraries.addList', ['id' => $itinerary->id])
                          ->with('success', 'Itinerary created successfully!');
     }
     

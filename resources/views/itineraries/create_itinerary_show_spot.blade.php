@@ -11,7 +11,6 @@
     <div class="row">
         <div class="col-12">
             <div id="itinerary-spot-body" data-itinerary-id="{{ $itinerary->id }}">
-                {{-- @dd($spots->toArray()); --}}
                 @foreach($spots as $visitDay => $daySpots)
                 <h3>Day {{ $visitDay }}</h3>
                 @foreach($daySpots as $spot)

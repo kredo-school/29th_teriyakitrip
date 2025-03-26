@@ -68,13 +68,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/create', [ItineraryController::class, 'create'])->name('create');// Sunao
         Route::post('/store', [ItineraryController::class, 'store'])->name('store');// Sunao
         Route::post('/{id}/update-dates', [ItineraryController::class, 'updateDates']) ->name('update-dates'); // Sunao
-        Route::get('/{id}/create_itinerary', [ItineraryController::class, 'addList'])->name('create_itinerary');
+        Route::get('/{id}/addList/create_itinerary', [ItineraryController::class, 'addList'])->name('addList');
         // Sunao
         Route::post('/save/{id}', [ItineraryController::class, 'saveItineraryData']) ->name('save');//sunao     
 
-        Route::get('/edit', [ItineraryController::class, 'edit'])->name('edit_itinerary'); // SAKI
-        Route::get('/{id}/edit-destination', [ItineraryController::class, 'editDestination'])->name('editDestination');
-        Route::put('/{id}/update/', [ItineraryController::class, 'updateDestination'])->name('itinerary.updateDestination');
+        // Route::get('/edit', [ItineraryController::class, 'edit'])->name('edit_itinerary'); // SAKI
+        // Route::get('/{id}/edit-destination', [ItineraryController::class, 'editDestination'])->name('editDestination');
+        // Route::put('/{id}/update/', [ItineraryController::class, 'updateDestination'])->name('itinerary.updateDestination');
     });
 
 //Itinerary の spot 検索
@@ -88,12 +88,13 @@ Route::get('/itineraries/{id}/day/{visit_day}/search', [ItinerarySpotController:
     ->name('itineraries.spot.search')
     ->whereNumber('visit_day'); // ✅ `day` は数値のみ許可！
 Route::post('/itineraries/{id}/day/{visit_day}/save/spots', [ItinerarySpotController::class, 'saveItinerarySpots'])->name('itineraries.spots.save');
-Route::get('/itinerary/{id}/show-spots', [ItinerarySpotController::class, 'showSpots'])->name('itinerary.showSpots');
+Route::get('/itinerary/{id}/show-spots', [ItinerarySpotController::class, 'showSpots'])->name('itineraries.showSpots');
 Route::get('/api/itinerary/{id}/spots', [ItinerarySpotController::class, 'getSpotsByItinerary']);//Sunao   
 
 Route::delete('/itineraries/spots/{spotId}/delete', [ItinerarySpotController::class, 'deleteSpot']);
 Route::delete('/itineraries/{id}/day/{visit_day}/delete-spots-by-day', [ItinerarySpotController::class, 'deleteSpotsByDay'])
     ->name('itinerary.spots.delete_by_day');
+
 
 
 

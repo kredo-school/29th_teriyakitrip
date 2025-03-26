@@ -52,6 +52,6 @@
 </div>
 
 @push('scripts')
-<script src="{{ asset('js/create_itinerary_show_spot.js')}}" defer></script>   
+<script src="{{ asset('js/create_itinerary_show_spot_header.js')}}" defer></script>   
 @endpush
 @endsection

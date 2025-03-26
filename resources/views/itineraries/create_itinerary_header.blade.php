@@ -151,10 +151,6 @@
         <div class="col-6">     
             @include('itineraries.create_itinerary_body', ['daysList' => $daysList])
         </div> 
-        <!-- create_itinerary.blade.php に配置 -->
-    <div id="add-spot-container" style="display: none;">
-        @include('itineraries.create_add')
-    </div>
 </div>
 </form>
 
