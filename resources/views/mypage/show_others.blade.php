@@ -79,7 +79,7 @@
                     <div class="container toppage mt-5"> <!-- RECOMMENDED ITINERALIES SECTION -->
                         
                         <div class="row mt-3">
-                            @foreach ($itineraries->take(3) as $itinerary) <!-- 3件だけ表示 -->
+                            @foreach ($latestItineraries as $itinerary) <!-- 最新3件のみ -->
                             <div class="col-4 mt-2">
                                 <div class="card card-itinerary shadow-sm border-0 w-100 rounded-4 position-relative">
                                     <img src="{{ asset('storage/itineraries/images/' . $itinerary->photo) }}" alt="Itinerary Image" class="element-style rounded-top-4 itinerary-image">
@@ -171,8 +171,8 @@
                 <div class="container mt-4">
                     <!-- 📜 Itineraries List -->
                     <div class="row">
-                        @foreach ($itineraries as $itinerary) <!-- ユーザーの公開されたしおりを表示 -->
-                            <div class="col-md-12 mb-3">
+                        @foreach ($allItineraries as $itinerary) <!-- 全件表示 -->
+                        <div class="col-md-12 mb-3">
                                 <div class="card" style="border:none; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
                                     <div class="row g-0">
                                         <div class="col-md-3" style="height: 200px;">
