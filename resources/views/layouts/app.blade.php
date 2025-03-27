@@ -48,9 +48,6 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
-    <!-- LivewireのCSS -->
-    @livewireStyles  <!-- ここでLivewireのCSSを読み込みます -->
 </head>
 
 <body>
