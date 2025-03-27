@@ -26,7 +26,7 @@
 
                 <div class="review-detail px-2 py-4">
                     <div class="mb-4">
-                        <label class="fw-bold mb-2">Rate this restaurant</label>
+                        <label class="fw-bold mb-2">Rate this restaurant <span class="text-danger">*</span></label>
                         <div class="rating mb-2">
                           @for ($i = 1; $i <= 5; $i++)
                               <input type="radio" name="rating" value="{{ $i }}" id="star{{ $i }}" class="d-none" {{ $review->rating == $i ? 'checked' : '' }}>
@@ -39,13 +39,13 @@
 
                     <!-- Title -->
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Title your review</label>
+                        <label class="form-label fw-bold">Title your review <span class="text-danger">*</span></label>
                         <input type="text" name="title" class="form-control" value="{{ $review->title }}" required>
                     </div>
 
                     <!-- Body -->
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Your review</label>
+                        <label class="form-label fw-bold">Your review <span class="text-danger">*</span></label>
                         <textarea name="body" class="form-control" rows="5" required>{{ $review->body }}</textarea>
                     </div>
 

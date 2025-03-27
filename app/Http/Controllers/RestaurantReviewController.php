@@ -200,7 +200,7 @@ class RestaurantReviewController extends Controller
     {
         return Cache::remember("restaurant_name_{$place_id}", now()->addHours(6), function () use ($place_id) {
             $apiKey = env('GOOGLE_MAPS_API_KEY');
-            $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=ja";
+            $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
             $response = Http::get($apiUrl);
             $data = $response->json();
             return $data['result']['name'] ?? 'Unknown Restaurant';
