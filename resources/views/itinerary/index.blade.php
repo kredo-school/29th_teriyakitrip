@@ -61,7 +61,10 @@
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#membersModal">Members</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a>
+                                                <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-itinerary-id="{{ $itinerary->id }}">
+                                                    Delete
+                                                </button>
+                                                
                                             </li>
                                         </ul>
                                     </div>
@@ -135,18 +138,23 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
+    <!-- 削除モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered"> <!-- modal-smで小さめに、中央表示 -->
-        <div class="modal-content">
-            <div class="modal-body">
-            <p>Are you sure you want to delete?</p>
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Are you sure you want to delete?</p>
+                </div>
+                <div class="modal-footer">
+                    <!-- Yesボタンでフォーム送信 -->
+                    <form action="{{ route('myitinerary.destroy', $itinerary->id) }}" method="POST" id="confirm-delete-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-warning btn-sm custom-yes-btn">Yes</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary btn-sm custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                </div>
             </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-warning btn-sm custom-yes-btn">Yes</button>
-            <button type="button" class="btn btn-secondary btn-sm custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
-            </div>
-        </div>
         </div>
     </div>
   

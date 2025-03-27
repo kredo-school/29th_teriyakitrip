@@ -31,6 +31,20 @@ class MyItineraryController extends Controller
         return redirect()->back();
     }
 
+    public function destroy($id)
+    {
+        $itinerary = Itinerary::findOrFail($id);
+
+        // ユーザーが自分の旅程を削除していることを確認
+        if ($itinerary->user_id == auth()->id()) {
+            $itinerary->delete(); // 旅程を削除
+            
+        }
+
+        return redirect()->back();
+    }
+
+
     
     
 
