@@ -136,3 +136,18 @@
 .review-itinerary-title{
   font-size: 14px;
 }
+
+/* 星アイコンを大きくする TOSHIMI */
+.favorite-btn i {
+  font-size: 2rem; /* ここでサイズを調整（2remなどで調整） */
+}
+
+/* お気に入り登録済みアイコン TOSHIMI */
+.favorite-btn i.fa-solid {
+  font-size: 2rem; /* お気に入りアイコンのサイズ */
+}
+
+/* お気に入り未登録アイコン TOSHIMI */
+.favorite-btn i.fa-regular {
+  font-size: 2rem; /* お気に入り未登録アイコンのサイズ */
+}

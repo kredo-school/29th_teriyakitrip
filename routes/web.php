@@ -164,7 +164,7 @@ Route::get('/regions/{prefecture_id}/itinerary', [RegionController::class, 'itin
 
 // Toshimi - Favorite function
 Route::middleware(['auth'])->group(function () {
-    Route::post('/favorites/toggle/{reviewId}', [FavoritesController::class, 'toggleFavoriteRestaurant'])
+    Route::post('/favorites/toggle/{placeId}', [FavoritesController::class, 'toggleFavoriteRestaurant'])
         ->name('favorites.toggle.restaurant');
 
     Route::post('/itinerary/favorite/{id}', [FavoritesController::class, 'toggleFavoriteItinerary'])

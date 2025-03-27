@@ -1,17 +1,10 @@
 @extends('layouts.app')
-
 @section('title','Regions overview')
-
 @section('content')
-
 <div class="container mt-4">
     <h1 class="page-title"></h1>
-
 <link rel="stylesheet" href="{{ asset('css/regions-style.css') }}">
-
-
     <br>
-
     <header>
         <h1 class="page-title">{{ $prefecture->name }}</h1>
         <br>
@@ -23,13 +16,10 @@
             <a href="{{ route('regions.restaurant-review', ['prefecture_id' => $prefecture->id]) }}"
                 class="{{ request()->is('regions/'.$prefecture->id.'/restaurant-review') ? 'active' : '' }}">Restaurant Review</a>
         </nav>
-
     </header>
-
     <main class="container mt-4">
-        
         {{-- Itinerary が完成したら入れること。 --}}
-        <!-- 📌 Itinerary セクション -->
+        <!-- :pushpin: Itinerary セクション -->
         <h2 class="fw-bold mb-4">{{ $prefecture->name }}’s Popular Itineraries</h2>
         <div class="row">
             @if ($allItineraries->isNotEmpty())
@@ -55,11 +45,8 @@
             @else
                 <p class="text-center text-muted">No Itineraries</p>
             @endif
-           
-
         </div>
-
-        <!-- 📌 Restaurant Review セクション -->
+        <!-- :pushpin: Restaurant Review セクション -->
         <div class="container mt-4">
             <h2 class="fw-bold mb-4">{{ $prefecture->name }}’s Popular Restaurants</h2>
             @if (count($popularRestaurants) > 0)
@@ -68,15 +55,13 @@
                         <div class="restaurant-item">
                             <div class="custom-card">
                                 <div class="card-image d-flex justify-content-center align-items-center">
-                                    <img src="{{ $restaurant->photo }}" 
-                                    alt="{{ $restaurant->restaurant_name }}" 
+                                    <img src="{{ $restaurant->photo }}"
+                                    alt="{{ $restaurant->restaurant_name }}"
                                     class="rounded img-fluid">
                                 </div>
                                 <div class="card-content ms-3">
-                                    
                                     <h5>{{ $restaurant->restaurant_name }}</h5>
-                                    
-                                    <!-- ⭐ 評価（星）表示 -->
+                                    <!-- :star: 評価（星）表示 -->
                                     <div class="d-flex align-items-center mb-2">
                                         <span class="me-2 fs-5">{{ number_format($restaurant->average_rate, 1) }}</span>
                                         <div class="rating">
@@ -116,7 +101,7 @@
                         </div>
                     @endforeach
                 </div>
-                <!-- 📌 MORE ボタン -->
+                <!-- :pushpin: MORE ボタン -->
                 <div class="text-center mt-3">
                     <button class="btn-more">
                         <a href="{{ route('regions.restaurant-review', ['prefecture_id' => $prefecture->id]) }}"
@@ -126,7 +111,6 @@
             @else
                 <p class="text-center text-muted">No Restauraut Reviews</p>
             @endif
-            
         </div>
     </main>
 <br>
