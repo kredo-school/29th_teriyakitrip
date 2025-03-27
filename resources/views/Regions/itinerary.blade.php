@@ -33,6 +33,21 @@
                         <div class="card-content">
                             <h5>{{ $trip->title }}</h5>
                             <p>{{ \Carbon\Carbon::parse($trip->start_date)->format('Y/m/d') }} - {{ \Carbon\Carbon::parse($trip->end_date)->format('Y/m/d') }}</p>
+                            
+                            <!-- お気に入りボタン -->
+                            {{-- <form method="POST"
+                                action="{{ route('favorites.toggle.itinerary', $trip->id) }}"
+                                class="d-inline position-absolute top-0 end-0 m-2">
+                                @csrf
+                                <button type="submit" class="favorite-btn border-0 bg-transparent">
+                                    @if (FavoriteItinerary::where('user_id', Auth::id())->where('itinerary_id', $trip->id)->exists())
+                                        <i class="fa-solid fa-star text-warning"></i> <!-- お気に入り登録済み -->
+                                    @else
+                                        <i class="fa-regular fa-star text-secondary"></i> <!-- お気に入り未登録 -->
+                                    @endif
+                                </button>
+                            </form> --}}
+
                             <button class="btn-view-itinerary">View this Itinerary</button>
                         </div>
                     </div>
@@ -45,7 +60,6 @@
         @else
             <p class="text-center mt-3 text-muted">No Itineraries</p>
         @endif
-        
     </div>
 </div>
 
@@ -53,4 +67,3 @@
 
 <script src="{{ asset('js/region_itinerary.js') }}"></script>
 @endsection
-

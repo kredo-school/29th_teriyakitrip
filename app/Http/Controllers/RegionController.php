@@ -7,6 +7,9 @@ use App\Models\RestaurantReview;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use App\Models\FavoriteItinerary; //TOSHIMI
+use App\Models\FavoriteRestaurant; //TOSHIMI
+use Illuminate\Support\Facades\Auth; //TOSHIMI
 
 
 class RegionController extends Controller
@@ -33,10 +36,10 @@ class RegionController extends Controller
     foreach ($popularRestaurants as $restaurant) {
         $restaurant->name = $this->getRestaurantNameFromGoogleAPI($restaurant->place_id);
         $restaurant->photo = $this->getRestaurantPhotoFromGoogleAPI($restaurant->place_id);
-        $restaurant->average_rate = round($restaurant->average_rate, 1) ?? 0; // ⭐ 平均評価を四捨五入
+        $restaurant->average_rate = round($restaurant->average_rate, 1) ?? 0;
     }
-
-    // 🔥 上位の `place_id` に基づいて、最近の2レビューを取得
+    
+    // ⭐ レビュー取得
     $restaurantReviews = [];
     foreach ($popularRestaurants as $restaurant) {
         $reviews = RestaurantReview::where('place_id', $restaurant->place_id)
@@ -45,22 +48,34 @@ class RegionController extends Controller
             ->get();
         $restaurantReviews[$restaurant->place_id] = $reviews;
     }
+    
+    // ⭐ お気に入り判定（Auth チェックもつけてね）
+    if (Auth::check()) {
+        foreach ($popularRestaurants as $restaurant) {
+            $restaurant->isFavorite = FavoriteRestaurant::where('user_id', Auth::id())
+                ->where('place_id', $restaurant->place_id)
+                ->exists();
+        }
+    }
+    
 
     $allItineraries = $prefecture->itineraries()
         ->where('is_public', 1)
         ->latest()
         ->take(2)
         ->get();
-    // 📌 ダミーデータを追加
-    // $allItineraries = [
-    //     ['img' => 'biei_flower16.jpg', 'title' => '2025 Hokkaido Trip', 'description' => 'Enjoy the scenic beauty of Hokkaido.'],
-    //     ['img' => 'OIP.jpg', 'title' => '2023 Hokkaido Trip', 'description' => 'Discover the hidden gems of Japan’s northern island.'],
-    //     ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2022 Hokkaido Trip', 'description' => 'Snowy landscapes and warm hot springs.'],
-    //     ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2021 Hokkaido Trip', 'description' => 'Experience the culture and cuisine of Hokkaido.'],
-    //     ['img' => 'k7yn4os6sqfpuott0plx.jpg', 'title' => '2020 Hokkaido Trip', 'description' => 'A journey through Japan’s winter wonderland.']
-    // ];
 
-    return view('regions.home', compact('prefecture', 'restaurantReviews', 'popularRestaurants','allItineraries'));
+        if (Auth::check()) {
+            foreach ($allItineraries as $itinerary) {
+                $itinerary->is_favorite = FavoriteItinerary::where('user_id', Auth::id())
+                    ->where('itinerary_id', $itinerary->id)
+                    ->exists();
+            }
+        }
+        
+        // 🔚 if文の外に出しておく！
+        return view('regions.home', compact('prefecture', 'restaurantReviews', 'popularRestaurants', 'allItineraries'));
+        
 }
 
 
