@@ -27,8 +27,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
 Route::get('/my-itineraries', [MyItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
-Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list'); //Toshimi
-Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete'); //Toshimi
+Route::put('/my-itineraries/{id}/privacy', [MyItineraryController::class, 'updatePrivacy'])->name('my-itineraries.updatePrivacy');
+
+Route::get('/my-reviews', [ReviewController::class, 'myList'])->name('my-reviews.list');//Toshimi
+Route::post('/review/delete', [ReviewController::class, 'destroy'])->name('review.delete');//Toshimi
 Route::post('/itinerary/favorite/{id}', function ($id) {
     // ダミー処理: お気に入りの状態をトグルする（本来はデータベースを更新）Toshimi
     session()->put("favorite_$id", !session("favorite_$id", false));
@@ -145,6 +147,7 @@ Route::get('/restaurant-reviews', [RestaurantReviewController::class, 'index'])-
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+
 Route::get('/other_users_page/{userId}', [MypageController::class, 'showOtheruserspage'])->name('mypage.show_others');
 
 Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);

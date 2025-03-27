@@ -15,12 +15,14 @@ class MypageController extends Controller
     public function index()
     {
         $user = auth()->user(); // ログイン中のユーザーを取得
-        $itineraries = $user->itineraries()->latest()->get(); // 旅程を取得
+        $itineraries = $user->itineraries()->where('is_public', 1)->latest()->limit(3)->get();
         $restaurantReviews = $user->reviews()->latest()->get();
         $topRestaurantReviews = $user->reviews()->latest()->limit(3)->get();
 
         foreach ($topRestaurantReviews as $review) {
-            $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
+            $review->restaurant_name = RestaurantReview::where('place_id', $review->place_id)
+            ->first()?->restaurant_name ?? 'Unknown Restaurant';
+            // $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
         }
 
         return view('mypage.index', compact('user', 'itineraries', 'restaurantReviews','topRestaurantReviews'));
@@ -30,16 +32,27 @@ class MypageController extends Controller
     {
         // 他のユーザーのデータを取得
         $user = User::findOrFail($userId);
+        // Overview 用の最新3件
+        $latestItineraries = $user->itineraries()->where('is_public', 1)->latest()->limit(3)->get();
+
+        // Itineraries タブ用の全件
+        $allItineraries = $user->itineraries()->where('is_public', 1)->latest()->get();
+
+
         $topRestaurantReviews = RestaurantReview::where('user_id', $userId)->latest()->take(3)->get();
         $restaurantReviews = RestaurantReview::where('user_id', $userId)->latest()->get();
 
         foreach ($topRestaurantReviews as $review) {
-            $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
+            $review->restaurant_name = RestaurantReview::where('place_id', $review->place_id)
+            ->first()?->restaurant_name ?? 'Unknown Restaurant';
+            // $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
         }
 
         // 必要なデータをビューに渡す
-        return view('mypage.show_others', compact('user', 'topRestaurantReviews', 'restaurantReviews'));
+        return view('mypage.show_others', compact('user','latestItineraries', 'allItineraries', 'topRestaurantReviews', 'restaurantReviews'));
     }
+    
+
 
 
     
@@ -107,5 +120,6 @@ public function show($userId, $tab = 'overview')
             return view('mypage.overview', compact('user', 'itineraries', 'restaurantReviews', 'tab'));
     }
 }
+
 
 }

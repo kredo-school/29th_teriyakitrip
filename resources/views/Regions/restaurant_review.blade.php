@@ -29,12 +29,12 @@
                     <div class="custom-card">
                         <div class="card-image d-flex justify-content-center align-items-center">
                             <img src="{{ $restaurant->photo }}" 
-                            alt="{{ $restaurant->name }}" 
+                            alt="{{ $restaurant->restaurant_name }}" 
                             class="rounded img-fluid">
                         </div>
                         <div class="card-content ms-3">
                             
-                            <h5>{{ $restaurant->name }}</h5>
+                            <h5>{{ $restaurant->restaurant_name }}</h5>
                             
                             <!-- ⭐ 評価（星）表示 -->
                             <div class="d-flex align-items-center mb-2">

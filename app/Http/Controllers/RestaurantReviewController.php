@@ -96,11 +96,13 @@ class RestaurantReviewController extends Controller
                 $mainPhotoPath = $photos[0]->store('reviews', 'public');
             }
         }
+        $restaurantName = $this->getRestaurantNameFromGoogleAPI($request->place_id);
         // `restaurant_reviews` テーブルにレビューを保存
         $review = RestaurantReview::create([
             'user_id' => auth()->id(), // 現在のユーザーID
             'place_id' => $request->place_id, // Google APIの place_id
             'prefecture_id' => $prefectureId, // :fire: `prefecture_id` を保存
+            'restaurant_name' => $restaurantName, // 🔥 Google APIから取得した名前を保存！
             'rating' => $request->rating,
             'title' => $request->title,
             'body' => $request->body,
@@ -126,51 +128,6 @@ class RestaurantReviewController extends Controller
     /**
      * Display the specified resource.
      */
-    // public function show(Request $request)
-    // {
-    //     $place_id = $request->query('place_id'); // クエリパラメータから取得
-    //     $photoUrl = $request->query('photo'); // 検索結果の画像URLを取得
-    //     if (!$place_id) {
-    //         return redirect()->back()->with('error', 'Invalid restaurant selection.');
-    //     }
-    //     $apiKey = env('GOOGLE_MAPS_API_KEY');
-    //     $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}";
-    //     $response = Http::get($apiUrl);
-    //     $data = $response->json();
-    //     if (!isset($data['result'])) {
-    //         return redirect()->back()->with('error', 'Restaurant details not found.');
-    //     }
-    //     // もし検索結果から画像が渡っていれば、それを使用（検索結果と統一）
-    //     $photo = $photoUrl ?? (isset($data['result']['photos'][0]['photo_reference'])
-    //         ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$data['result']['photos'][0]['photo_reference']}&key={$apiKey}"
-    //         : "/images/restaurants/default-restaurant.jpg"
-    //     );
-    //     $photos = [];
-    //     if (isset($data['result']['photos'])) {
-    //         foreach (array_slice($data['result']['photos'], 0, 3) as $photo) {
-    //             $photos[] = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference={$photo['photo_reference']}&key={$apiKey}";
-    //         }
-    //     }
-    //     // 必要な情報を取得
-    //     $restaurant = [
-    //         'place_id' => $place_id,
-    //         'name' => $data['result']['name'] ?? 'Unknown Restaurant',
-    //         'photos' => $photos, // :white_check_mark: 3枚の画像を渡す
-    //         'photo' => $photo,
-    //         'price_level' => $data['result']['price_level'] ?? null,
-    //         'address' => $data['result']['formatted_address'] ?? 'No address available',
-    //         'phone' => $data['result']['formatted_phone_number'] ?? 'N/A',
-    //         'website' => $data['result']['website'] ?? '#',
-    //         'lat' => $data['result']['geometry']['location']['lat'] ?? null,
-    //         'lng' => $data['result']['geometry']['location']['lng'] ?? null,
-    //         'opening_hours' => $data['result']['opening_hours']['weekday_text'] ?? [],
-    //     ];
-    //     // レビュー情報を取得
-    //     $reviews = RestaurantReview::where('place_id', $place_id)->latest()->get();
-    //     $averageRating = $reviews->avg('rating') ?? 0;
-    //     $reviewCount = $reviews->count();
-    //     return view('reviews.show', compact('restaurant', 'reviews', 'averageRating', 'reviewCount'));
-    // }
 
     
     public function show(Request $request)
@@ -238,6 +195,18 @@ class RestaurantReviewController extends Controller
 
         return view('reviews.show', compact('restaurant', 'reviews', 'averageRating', 'reviewCount'));
     }
+
+    public function getRestaurantNameFromGoogleAPI($place_id)
+    {
+        return Cache::remember("restaurant_name_{$place_id}", now()->addHours(6), function () use ($place_id) {
+            $apiKey = env('GOOGLE_MAPS_API_KEY');
+            $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=ja";
+            $response = Http::get($apiUrl);
+            $data = $response->json();
+            return $data['result']['name'] ?? 'Unknown Restaurant';
+        });
+    }
+
 
     // SAKI - show my restaurant review page
     public function viewMyreview($id) {
@@ -440,5 +409,29 @@ class RestaurantReviewController extends Controller
 
         return back()->with('success', 'レビューを削除しました。');
     }
+
+    public function search(Request $request)
+    {
+        $type = $request->input('type');
+        $keyword = $request->input('keyword');
+
+        // レビュー検索の場合のみ処理（他のタイプも将来追加できるように）
+        if ($type === 'review') {
+            $placeIdsWithReviews = RestaurantReview::select('place_id')
+                ->groupBy('place_id')
+                ->pluck('place_id');
+
+            $results = RestaurantReview::whereIn('place_id', $placeIdsWithReviews)
+                ->where('restaurant_name', 'like', "%{$keyword}%")
+                ->groupBy('place_id', 'restaurant_name')
+                ->get(['place_id', 'restaurant_name']);
+
+            return view('reviews.search_results', compact('results', 'keyword'));
+        }
+
+        // 他のタイプ or 未選択 → トップに戻すか、他ページへ
+        return redirect()->back()->with('error', 'Please select a valid search type.');
+    }
+
 
 }

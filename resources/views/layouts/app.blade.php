@@ -70,23 +70,23 @@
                     </header>
 
                     <!-- Search Bar -->
-                    <div class="search-bar ms-3">
+                    <form action="{{ route('restaurants.search') }}" method="GET" class="search-bar ms-3">
                         <div class="input-group">
-                            <select class="form-select rounded-start"
+                            <select name="type" class="form-select rounded-start"
                                 style="width: 100px!important; background-color: #ffe59d;">
                                 <option value="all">Select</option>
                                 <option value="itinerary">Itinerary</option>
                                 <option value="review">Restaurant's Review</option>
                             </select>
 
-                            <input type="text" class="form-control" style="width: 180px!important;"
+                            <input type="text" name="keyword" class="form-control" style="width: 180px!important;"
                                 placeholder="Search here...">
 
-                            <button class="btn btn-outline-secondary" type="button">
+                            <button class="btn btn-outline-secondary" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -145,7 +145,7 @@
                                                         <div class="user-info-container d-flex align-items-center">
                                                             <div class="me-3">
                                                                 <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('images/default-avatar.jpeg') }}"
-                                                                    alt="Avatar" class="rounded-circle" width="70"
+                                                                    alt="Avatar" class="rounded-circle avatar-image" width="70"
                                                                     height="70">
                                                             </div>
 

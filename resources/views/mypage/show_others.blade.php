@@ -12,16 +12,30 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <!-- User Info -->
-                        <div class="col-md-6 text-center">
+                        <div class="col-md-6 text-center profile-card">
                             <div style="position: relative; display: inline-block; width: 100%; max-width: 300px;">
-                                <img src="{{ $user->avatar ? Storage::url($user->avatar) : asset('images/default-avatar.jpeg') }}" alt="User Avatar" class="rounded-circle avatar-image" width="100" height="100" style="border: 3px solid #fff; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2;">
+                                <img src="{{ $user->avatar ? Storage::url($user->avatar) : asset('images/default-avatar.jpeg') }}" 
+                                    alt="User Avatar" 
+                                    class="rounded-circle avatar-image" 
+                                    width="100" height="100" 
+                                    style="border: 3px solid #fff; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2;">
+
                                 <div style="background-color: #d3d0d0; padding: 70px 20px 20px; border-radius: 10px; margin-top: 50px; position: relative; min-height: 200px;">
-                                    <h5 class="mb-3">{{ $user->user_name }}</h5>
-                                    <p class="text-center" style="color: #777; font-size: 0.8em; width: 100%; margin: 0 auto; white-space: pre-wrap; word-wrap: break-word;">{!! nl2br(e($user->introduction)) !!}</p>
+                                    <div class="d-flex justify-content-center align-items-center mb-3" style="gap: 10px;">
+                                        <h4 class="mb-3">{{ $user->user_name }}</h4>
+
+                                        @if(Auth::check() && Auth::id() !== $user->id)
+                                            <button class="btn btn-outline-warning btn-sm mb-3">Follow</button>
+                                        @endif
+                                    </div>
+
+                                    <p class="text-center text-secondary fs-6 w-100 m-0 d-flex align-items-center justify-content-center h-100">
+                                        {!! nl2br(e($user->introduction)) !!}
+                                    </p>
                                 </div>
                             </div>
-                        </div>                    
-
+                        </div>
+                   
                         <!-- Map Image -->
                         <div class="col-md-6">
                             <img src="{{ asset('images/map_japan.png') }}" alt="Japan Map" class="img-fluid">
@@ -65,45 +79,17 @@
                     <div class="container toppage mt-5"> <!-- RECOMMENDED ITINERALIES SECTION -->
                         
                         <div class="row mt-3">
-                            <div class="col-4"> <!-- Itinerary 1 -->
-                                <div class="card shadow-sm border-0 w-100 rounded-4">
-                                    <img src="/images/sample2.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
-                                    <div class="card-body p-2">
-                                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Okinawa Trip </h6>
-                                        <div class="d-flex align-items-center">
-                                            <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
-                                            <span class="ms-2 fw-bold">Toshimi's Japan'</span>
-                                            <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
-                                        </div>
+                            @foreach ($latestItineraries as $itinerary) <!-- 最新3件のみ -->
+                            <div class="col-4 mt-2">
+                                <div class="card card-itinerary shadow-sm border-0 w-100 rounded-4 position-relative">
+                                    <img src="{{ asset('storage/itineraries/images/' . $itinerary->photo) }}" alt="Itinerary Image" class="element-style rounded-top-4 itinerary-image">
+
+                                    <div class="card-body p-2 mt-2">
+                                        <h5 class="card-title mb-1 fw-bold">{{ $itinerary->title }}</h5>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4"> <!-- Itinerary 2 -->
-                                <div class="card shadow-sm border-0 w-100 rounded-4">
-                                    <img src="/images/sample3.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
-                                    <div class="card-body p-2">
-                                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2019 Hokkaido Trip </h6>
-                                        <div class="d-flex align-items-center">
-                                            <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
-                                            <span class="ms-2 fw-bold">Toshimi's Japan'</span>
-                                            <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4"> <!-- Itinerary 3 -->
-                                <div class="card shadow-sm border-0 w-100 rounded-4">
-                                    <img src="/images/sample4.jpg" alt="Itinerary 1" class="element-style rounded-top-4">
-                                    <div class="card-body p-2">
-                                        <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;"> 2025 Miyazaki Trip </h6>
-                                        <div class="d-flex align-items-center">
-                                            <img src="/images/user-icon.jpg" alt="ユーザーアイコン" class="rounded-circle" style="width: 40px; height: 40px;">
-                                            <span class="ms-2 fw-bold">Toshimi's Japan'</span>
-                                            <button class="btn btn-outline-warning btn-sm ms-auto">Follow</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        @endforeach
                         </div>
                     </div><br>
                     
@@ -183,50 +169,21 @@
             <!-- Itineraries タブ -->
             <div class="tab-pane fade mb-5" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
                 <div class="container mt-4">
-                    
-                    {{-- <p class="text-center" style="color: #E97911; font-size: 3rem; font-weight: bold">Itinerary</p> --}}
-
-                    <!-- ここにダミーデータのまま Itinerary カードを表示 -->
                     <!-- 📜 Itineraries List -->
                     <div class="row">
-                        @php
-                            $dummyItineraries = [
-                            [
-                                'title' => '2025 Okinawa Trip1',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo1.jpeg'
-                            ],
-                            [
-                                'title' => '2025 Okinawa Trip2',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo2.jpeg'
-                            ],
-                            [
-                                'title' => '2025 Okinawa Trip3',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo3.jpeg'
-                            ],
-                            [
-                                'title' => '2025 Okinawa Trip4',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo4.jpeg'
-                            ],
-                        ];
-                        @endphp
-
-                        @foreach ($dummyItineraries as $itinerary)
-                            <div class="col-md-12 mb-3">
+                        @foreach ($allItineraries as $itinerary) <!-- 全件表示 -->
+                        <div class="col-md-12 mb-3">
                                 <div class="card" style="border:none; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
                                     <div class="row g-0">
-                                        <div class="col-md-3">
-                                            <img src="{{ asset($itinerary['photo']) }}" alt="Itinerary Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px 0 0 10px;">
+                                        <div class="col-md-3" style="height: 200px;">
+                                            <img src="{{ asset('storage/itineraries/images/' . $itinerary->photo) }}" alt="Itinerary Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px 0 0 10px;">
                                         </div>
                                         <div class="col-md-9">
                                             <div class="card-body">
-                                                <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{ $itinerary['title'] }}</h5>
-                                                <p class="card-text" style="font-size: 0.8rem; color: #555;">{{ $itinerary['description'] }}</p>
+                                                <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{ $itinerary->title }}</h5>
+                                                <p class="card-text" style="font-size: 0.8rem; color: #555;">{{ $itinerary->description }}</p>
                                                 <div class="text-end">
-                                                    <a href="#" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
+                                                    <a href="{{ route('itineraries.show', $itinerary->id) }}" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -242,6 +199,7 @@
                     
                 </div>
             </div>
+
 
             <!-- Restaurant Reviews タブ -->
             <div class="tab-pane fade mb-5" id="restaurant-reviews" role="tabpanel" aria-labelledby="restaurant-reviews-tab">
@@ -264,7 +222,9 @@
                                         </div>
                                         <div class="col-md-9">
                                             <div class="card-body">
-                                                <h6 class="restaurant-name" data-place-id="{{ $review->place_id }}" style="font-weight: bold; color: #E97911;">Loading...</h6>
+                                                <h6 class="restaurant-name" style="font-weight: bold; color: #E97911;">
+                                                    {{ $review->restaurant_name ?? 'Unknown' }}
+                                                </h6>
                                                 <h5 class="card-title fw-bold">{{ $review->title }}</h5>
                                                 <p class="card-text">
                                                     @for ($i = 0; $i < 5; $i++)
@@ -295,7 +255,7 @@
                             </div>
                         @endforeach
                     @else
-                        <p class="text-center">No Restaurant Reviews Yet.</p>
+                        <p class="text-center">No Restaurant Reviews</p>
                     @endif
                     </div>
         
