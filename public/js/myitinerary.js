@@ -22,3 +22,13 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteButtons = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#deleteModal"]');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const itineraryId = this.getAttribute('data-itinerary-id');
+            const form = document.getElementById('confirm-delete-form');
+            form.action = '/my-itineraries/' + itineraryId; // フォームのactionをセット
+        });
+    });
+});
