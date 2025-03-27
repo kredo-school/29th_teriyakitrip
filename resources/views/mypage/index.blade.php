@@ -115,15 +115,15 @@
                                             <div class="card-body top-review-item p-2">
                                                 <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">
                                                     {{ $review->restaurant_name ?? 'Unknown Restaurant' }} <!-- レストラン名 -->
-                                                    <span class="ms-2">
-                                                        @for ($i = 0; $i < 5; $i++)
-                                                            @if ($i < $review->rating)
-                                                                <i class="fa-solid fa-circle" style="color: #E97911;"></i>
-                                                            @else
-                                                                <i class="fa-regular fa-circle text-warning"></i>
-                                                            @endif
-                                                        @endfor
-                                                    </span>
+                                                </h6>
+                                                <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">
+                                                    @for ($i = 0; $i < 5; $i++)
+                                                        @if ($i < $review->rating)
+                                                            <i class="fa-solid fa-circle" style="color: #E97911;"></i>
+                                                        @else
+                                                            <i class="fa-regular fa-circle text-warning"></i>
+                                                        @endif
+                                                    @endfor
                                                 </h6>
                         
                                                 <!-- レビュー一覧 -->
