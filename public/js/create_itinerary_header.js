@@ -1,3 +1,5 @@
+create_itinerary_show_spot_header
+
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ JavaScript が読み込まれました");
 

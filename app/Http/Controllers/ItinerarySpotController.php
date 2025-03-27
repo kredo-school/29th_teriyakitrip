@@ -129,6 +129,41 @@ class ItinerarySpotController extends Controller {
         }
     }
 
+    //from backend part 3
+    // public function saveItinerarySpots(Request $request, $itineraryId)
+    // {
+    //     dd($request->all()); // デバッグ用: 送信データを確認する
+    //     Log::info("🔍 受信データ(raw):", $request->all()); // 🔍 デバッグログ追加
+
+    //     $validatedData =  $request->validate([
+    //         'spots' => 'required|array|min:1',
+    //         'spots.*.place_id' => 'required|string',
+    //         'spots.*.spot_order' => 'required|integer',
+    //         'spots.*.visit_time' => 'nullable|date_format:H:i',
+    //         'spots.*.visit_day' => 'required|integer',
+    //     ]);
+
+    //     Log::info("✅ バリデーション通過データ:", $validatedData);
+
+
+    //     foreach ($validatedData['spots'] as $spot) {
+    
+                
+    //         ItinerarySpot::create([
+    //             'itinerary_id' => $itineraryId,
+    //             'place_id' => $spot['place_id'],
+    //             'order' => $spot['spot_order'],
+    //             'visit_time' => $spot['visit_time'] ?? null,
+    //             'visit_day' => $spot['visit_day'],
+    //         ]);
+    //     }
+    
+    //     return response()->json([
+    //         'message' => 'Spots saved successfully',
+    //         'redirect_url' => route('home') 
+    //     ]);
+    // }
+
     public function showSpots($itineraryId) {
         // 旅程情報を取得
         $itinerary = Itinerary::findOrFail($itineraryId);

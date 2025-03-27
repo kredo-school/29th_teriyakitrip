@@ -107,29 +107,31 @@ class GooglePlaceController extends Controller
         return response()->json(['photos' => $photos]);
     }
     
+        public function getPlaceInfo($place_id)
+        {
+            $apiKey = env('GOOGLE_PLACES_API_KEY');
+            $url = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$place_id}&fields=name,formatted_address,photos&key={$apiKey}";
     
-        public function getSpotDetails($placeId)
-    {
-        if (!$placeId) {
-            return response()->json(['error' => 'place_id が必要です'], 400);
-        }
-
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$placeId}&key={$apiKey}";
-
-        $response = Http::get($url);
+            $response = Http::get($url);
             $data = $response->json();
-
-        if (!$response->ok()) {
-            return response()->json(['error' => 'Google API リクエスト失敗'], 500);
+    
+            if (!isset($data['result'])) {
+                return response()->json(['error' => 'データが取得できません'], 400);
+            }
+    
+            $place = $data['result'];
+            $photoUrl = isset($place['photos'][0]['photo_reference']) 
+                ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$place['photos'][0]['photo_reference']}&key={$apiKey}"
+                : null;
+    
+            return response()->json([
+                'name' => $place['name'] ?? '名前なし',
+                'address' => $place['formatted_address'] ?? '住所なし',
+                'photo' => $photoUrl
+            ]);
         }
-
-        if (!isset($data['result'])) {
-            return response()->json(['error' => 'スポットの詳細情報が取得できませんでした'], 500);
-        }
-
-        return response()->json($data['result']);
-    }
+    
+    
 
         public function getPhoto($placeId)
     {

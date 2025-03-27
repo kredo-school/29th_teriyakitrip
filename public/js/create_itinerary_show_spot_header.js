@@ -1,3 +1,5 @@
+create_itinerary_show_spot_header
+
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ JavaScript が読み込まれました");
 
@@ -532,60 +534,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ✅ ページロード時のデータ適用
     updateDates();
-
-    let daysList = JSON.parse(localStorage.getItem(`daysList_itinerary_${itineraryId}`)) || [1];
-
-    function renderDays() {
-        let daysContainer = document.querySelector(".swiper-wrapper");
-        if (!daysContainer) return;
-        daysContainer.innerHTML = `<div class="swiper-slide active-tab overview-margin">Overview</div>`;
-
-        daysList.forEach((day, index) => {
-            let newDayElement = document.createElement("div");
-            newDayElement.classList.add("swiper-slide", "day-tab");
-            newDayElement.dataset.day = index + 1;
-            newDayElement.innerHTML = `
-                <i class="fa-solid fa-arrow-right-arrow-left float-start mt-1"></i> 
-                Day ${index + 1}
-                <i class="fa-solid fa-trash-can float-end mt-1 remove-day" data-day="${index + 1}"></i>
-            `;
-            daysContainer.appendChild(newDayElement);
-        });
-
-        let addDayElement = document.createElement("div");
-        addDayElement.classList.add("swiper-slide");
-        addDayElement.id = "add-day";
-        addDayElement.innerHTML = `<i class="fa-solid fa-plus"></i>`;
-        daysContainer.appendChild(addDayElement);
-    }
-
-    // 🔹 `🗑️ 削除ボタン` をクリックしたら、その `visit_day` のスポットを削除
-    document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("remove-day")) {
-            let dayToRemove = parseInt(event.target.dataset.day);
-            console.log(`🗑️ Day ${dayToRemove} を削除`);
-
-            // 🔥 `daysList` を更新
-            daysList = daysList.filter(day => day !== dayToRemove);
-            localStorage.setItem(`daysList_itinerary_${itineraryId}`, JSON.stringify(daysList));
-
-            // 🔥 サーバーに削除リクエストを送信
-            fetch(`/itineraries/${itineraryId}/day/${dayToRemove}/delete-spots-by-day`, {
-                method: "DELETE",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("✅ スポット削除結果:", data);
-                renderDays();
-                updateSpotsDisplay(); // ボディのスポットも更新
-            })
-            .catch(error => console.error("❌ スポット削除エラー:", error));            
-        }
-    });
-
-    renderDays();
-
 });

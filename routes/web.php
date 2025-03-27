@@ -80,7 +80,7 @@ Route::group(['middleware' => 'auth'], function() {
 //Itinerary の spot 検索
 Route::get('/search-spot', [GooglePlaceController::class, 'searchSpotDetail'])->name('search.spot');
 Route::get('/search-photo/{place_id}', [GooglePlaceController::class, 'searchPhoto'])->name('search.photo');
-Route::get('/spots/details/{place_id}', [GooglePlaceController::class, 'getSpotDetails'])->name('spots.details');
+Route::get('/api/get-place-info/{place_id}', [GooglePlaceController::class, 'getPlaceInfo']);
 Route::get('/spots/photo/{place_id}', [GooglePlaceController::class, 'getPhoto'])->name('spots.photo');
 
 //Spot 情報をitinerarySpotsテーブルへ保存
