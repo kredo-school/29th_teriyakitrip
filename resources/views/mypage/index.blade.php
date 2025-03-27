@@ -230,7 +230,7 @@
                                                 <p class="short-text review-text mb-1">{{ Str::limit($review->body, 200) }}</p>
                                                 <p class="full-text d-none review-text mb-1">{{ $review->body }}</p>
                                         
-                                                @if (Str::length($review->body) > 100)
+                                                @if (Str::length($review->body) > 200)
                                                     <span class="read-more">Read more...</span>
                                                     <span class="read-less d-none">Read less</span>
                                                 @endif
