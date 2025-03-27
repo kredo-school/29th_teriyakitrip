@@ -14,29 +14,6 @@
                         use App\Models\RestaurantReview; // RestaurantReview モデルをインポート
                     @endphp
 
-                    <!-- お気に入りボタン -->
-                    @auth
-                        <form method="POST" action="{{ route('favorites.toggle.restaurant', $restaurant['place_id']) }}"
-                            class="d-inline ms-3">
-                            @csrf
-                            <button type="submit" class="favorite-btn border-0 bg-transparent">
-                                @php
-                                    // RestaurantReviewインスタンスを取得
-                                    $restaurantReview = RestaurantReview::where(
-                                        'place_id',
-                                        $restaurant['place_id'],
-                                    )->first();
-                                @endphp
-                                @if ($restaurantReview && $restaurantReview->isFavorite())
-                                    <!-- ここで isFavorite メソッドを呼び出し -->
-                                    <i class="fa-solid fa-star text-warning"></i> <!-- お気に入り登録済み -->
-                                @else
-                                    <i class="fa-regular fa-star text-secondary"></i> <!-- お気に入り未登録 -->
-                                @endif
-                            </button>
-                        </form>
-                    @endauth
-
                 </div>
 
                 <!-- レビュー数・評価・お気に入り -->
@@ -54,6 +31,34 @@
                                     @endif
                                 @endfor
                             </div>
+                            <!-- お気に入りボタン -->
+                            @auth
+                                <form method="POST" action="{{ route('favorites.toggle.restaurant', $restaurant['place_id']) }}"
+                                    class="d-inline ms-3">
+                                    @csrf
+                                    <button type="submit" class="favorite-btn border-0 bg-transparent">
+                                        @php
+                                            // RestaurantReviewインスタンスを取得
+                                            $restaurantReview = RestaurantReview::where(
+                                                'place_id',
+                                                $restaurant['place_id'],
+                                            )->first();
+                                        @endphp
+                                        @if ($restaurantReview && $restaurantReview->isFavorite())
+                                            <!-- ここで isFavorite メソッドを呼び出し -->
+                                            <i class="fa-solid fa-star text-warning"></i> <!-- お気に入り登録済み -->
+                                        @else
+                                            <i class="fa-regular fa-star text-secondary"></i> <!-- お気に入り未登録 -->
+                                        @endif
+                                    </button>
+                                </form>
+                            @endauth
+                        </div>
+                    </div>
+                    <!-- レビュー作成ボタン -->
+                    <div class="row">
+                        <div class="text-center text-md-end mt-3 mt-md-4">
+                            <a href="{{ route('restaurant-reviews.create', ['place_id' => $restaurant['place_id']]) }}" class="btn review_this_restaurant">Review this restaurant</a>
                         </div>
                     </div>
                 </div>

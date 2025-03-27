@@ -115,15 +115,15 @@
                                             <div class="card-body top-review-item p-2">
                                                 <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">
                                                     {{ $review->restaurant_name ?? 'Unknown Restaurant' }} <!-- レストラン名 -->
-                                                    <span class="ms-2">
-                                                        @for ($i = 0; $i < 5; $i++)
-                                                            @if ($i < $review->rating)
-                                                                <i class="fa-solid fa-circle" style="color: #E97911;"></i>
-                                                            @else
-                                                                <i class="fa-regular fa-circle text-warning"></i>
-                                                            @endif
-                                                        @endfor
-                                                    </span>
+                                                </h6>
+                                                <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">
+                                                    @for ($i = 0; $i < 5; $i++)
+                                                        @if ($i < $review->rating)
+                                                            <i class="fa-solid fa-circle" style="color: #E97911;"></i>
+                                                        @else
+                                                            <i class="fa-regular fa-circle text-warning"></i>
+                                                        @endif
+                                                    @endfor
                                                 </h6>
                         
                                                 <!-- レビュー一覧 -->
@@ -230,7 +230,7 @@
                                                 <p class="short-text review-text mb-1">{{ Str::limit($review->body, 200) }}</p>
                                                 <p class="full-text d-none review-text mb-1">{{ $review->body }}</p>
                                         
-                                                @if (Str::length($review->body) > 100)
+                                                @if (Str::length($review->body) > 200)
                                                     <span class="read-more">Read more...</span>
                                                     <span class="read-less d-none">Read less</span>
                                                 @endif
