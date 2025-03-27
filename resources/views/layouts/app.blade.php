@@ -213,8 +213,6 @@
 
 <script src="{{ asset('js/gmaps.js') }}"></script>
 
-<!-- LivewireのJavaScript -->
-@livewireScripts  <!-- ここでLivewireのJSを読み込みます -->
 
 </html>
 
