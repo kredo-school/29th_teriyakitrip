@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Http;
 use App\Models\Itinerary;
 use App\Models\RestaurantReview;
 use App\Models\User;
@@ -12,20 +13,37 @@ use Illuminate\Support\Facades\Cache;
 class MypageController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $user = auth()->user(); // ログイン中のユーザーを取得
-        $itineraries = $user->itineraries()->where('is_public', 1)->latest()->limit(3)->get();
-        $restaurantReviews = $user->reviews()->latest()->get();
-        $topRestaurantReviews = $user->reviews()->latest()->limit(3)->get();
+        $tab = $request->query('tab', 'overview'); // デフォルトは overview
+        $user = Auth::user();
 
-        foreach ($topRestaurantReviews as $review) {
-            $review->restaurant_name = RestaurantReview::where('place_id', $review->place_id)
-            ->first()?->restaurant_name ?? 'Unknown Restaurant';
-            // $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
+        $itineraries = collect();
+        $restaurantReviews = collect();
+        $topRestaurantReviews = collect();
+        $topItineraries = collect(); // ← ここはOK
+
+        if ($tab === 'itineraries') {
+            $itineraries = $user->itineraries()->orderBy('start_date', 'asc')->get();
+        } elseif ($tab === 'restaurant_reviews') {
+            $restaurantReviews = $user->reviews()->latest()->get();
+        } elseif ($tab === 'overview') {
+            $topItineraries = $user->itineraries()->latest()->take(3)->get(); // ← 修正ポイント
+            $topRestaurantReviews = $user->reviews()->latest()->take(3)->get();
+
+            foreach ($topRestaurantReviews as $review) {
+                $review->restaurant_name = $this->getRestaurantNameFromGoogleAPI($review->place_id);
+            }
         }
 
-        return view('mypage.index', compact('user', 'itineraries', 'restaurantReviews','topRestaurantReviews'));
+        return view('mypage.index', [
+            'user' => $user,
+            'tab' => $tab,
+            'itineraries' => $itineraries,
+            'restaurantReviews' => $restaurantReviews,
+            'topItineraries' => $topItineraries, // ← ここで使えるようになる
+            'topRestaurantReviews' => $topRestaurantReviews,
+        ]);
     }
 
     public function showOtheruserspage($userId)

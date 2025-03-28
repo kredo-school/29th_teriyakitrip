@@ -139,11 +139,19 @@ transform: scale(1.05) translateY(-2px);
     border: 1px solid #D3D3D3;  /* 薄いグレーの枠線 */
     border-radius: 10px;  /* 角の丸み */
     padding: 10px;  /* 内側の余白 */
+    border: none !important;
+    padding: 0;
 }
 
 .nav-tabs-mypage {
-    border-bottom: none;
+    display: flex;
     justify-content: center;
+    list-style: none;
+    border-bottom: 2px solid #ccc;
+    padding-left: 0;
+    margin-top: 20px;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .nav-tabs-mypage .nav-link-mypage {
@@ -187,6 +195,14 @@ transform: scale(1.05) translateY(-2px);
     font-size: 1.2rem;
     text-decoration: none; /* デフォルトのリンクの下線を消す */
     border-radius: 5px 5px 0 0;
+    background: none;
+    border: none;
+    font-weight: bold;
+    margin: 0 15px;
+    padding: 10px 15px;
+    cursor: pointer;
+    position: relative;
+    color: #333;
 }
 
 .nav-link-mypage:hover {
@@ -210,4 +226,150 @@ transform: scale(1.05) translateY(-2px);
   cursor: pointer;
   color: #E97911;
   font-size: 0.8rem;
+}
+
+.nav-tabs-mypage {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        border-bottom: 2px solid #ccc;
+        padding-left: 0;
+        margin-top: 20px;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .nav-link-mypage {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0 15px;
+        padding: 10px 15px;
+        cursor: pointer;
+        position: relative;
+        color: #333;
+    }
+    .nav-link-mypage.active {
+        color: #E97911;
+    }
+    .nav-link-mypage.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        width: 100%;
+        background-color: #E97911;
+        border-radius: 5px;
+    }
+
+    /* --- Itinerary Section Styling --- */
+
+    .itinerary-card {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      padding: 16px;
+      gap: 20px;
+      position: relative;
+      min-height: 150px;
+  }
+
+.itinerary-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.itinerary-thumbnail {
+  width: 50%; /* 横幅の1/3程度に */
+  max-width: 400px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.itinerary-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  position: relative;
+  padding-right: 150px;/* ボタン分のスペースを右に確保 */
+}
+
+.itinerary-content h5 {
+  font-size: 2.3rem;       /* 👈 タイトル文字大きく */
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.itinerary-description {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.btn-outline-secondary {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+}
+
+.btn-outline-dark {
+  margin-top: 20px;
+  border-radius: 25px;
+  font-weight: 500;
+}
+
+.restaurant-review-card {
+  display: flex;
+  flex-direction: row;
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  padding: 10px;
+}
+
+.restaurant-thumbnail {
+  width: 220px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-right: 15px;
+}
+
+.restaurant-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 5px;
+}
+
+.restaurant-description {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.restaurant-rating i {
+  color: #E97911;
+  font-size: 0.9rem;
+  margin-right: 4px;
+}
+
+.view-button {
+  background-color: #e0e0e0;
+  color: #333;
+  font-size: 0.75rem;
+  border-radius: 5px;
+  padding: 3px 8px;
+  text-decoration: none;
 }
