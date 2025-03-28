@@ -7,6 +7,7 @@ use App\Models\Region;
 
 use App\Models\Itinerary;
 use Illuminate\Http\Request;
+use App\Models\ItinerarySpot;
 use App\Models\ItineraryPrefecture;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;//Sunao
@@ -49,7 +50,7 @@ class ItineraryController extends Controller
             return redirect()->back()->withErrors(['error' => 'ユーザーIDが必要です']);
         }
     
-    
+        // dd($request);
         // 2️⃣ **バリデーション**
         $validatedData = $request->validate([
             'title' => 'required|max:255',
@@ -116,7 +117,8 @@ class ItineraryController extends Controller
     public function addList($id, Request $request)
     {
        Log::info("addList 実行", ['itinerary_id' => $id]);
-    
+    try
+    {
         // **旅程データを取得**
         $itinerary = Itinerary::with('prefectures')->findOrFail($id);
     
@@ -148,6 +150,11 @@ class ItineraryController extends Controller
     
         // **ビューにデータを渡して表示**
         return view('itineraries.create_itinerary', compact('itinerary', 'days', 'daysList','regions', 'selectedPrefectures'));
+        }
+        catch(\Exception $e) {
+            Log::error('保存エラー', ['error' => $e->getMessage()]);
+            return redirect()->back()->with('error', ' itinerary保存に失敗しました');
+        }
 
     }
 
@@ -207,7 +214,20 @@ class ItineraryController extends Controller
 
         return response()->json(['is_public' => $itinerary->is_public]);
     }
-    
+
+    public function editItinerary($id)
+{
+    $itinerary = Itinerary::findOrFail($id);
+    $spots = ItinerarySpot::where('itinerary_id', $id)
+        ->orderBy('visit_day')
+        ->orderBy('spot_order')
+        ->get();
+
+    return view('create_itinerary', [
+        'itinerary' => $itinerary,
+        'spots' => $spots,
+    ]);
+}    
     public function saveItineraryData(Request $request, $id)
     {
         Log::info("🚀 saveItineraryData() called with ID: " . $id);
@@ -222,22 +242,21 @@ class ItineraryController extends Controller
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'is_public' => 'boolean',
-                'selected_prefectures' => 'required|string', // 🔥 string で受け取る
+                'selected_prefectures' => 'nullable|string', // 🔥 文字列で受け取る（後で JSON をデコード）
             ]);
     
             Log::info("✅ バリデーション成功:", $validated);
     
-            Log::info("✅ バリデーション成功:", $validated);
-
-            // ✅ **修正: JSONをデコードして整数配列に変換**
+            // ✅ `selected_prefectures` を JSON デコードし、整数配列に変換
             $selectedPrefectureIds = json_decode($validated['selected_prefectures'], true);
     
-            if (!is_array($selectedPrefectureIds) || empty($selectedPrefectureIds)) {
-                throw new \Exception("selected_prefectures の形式が正しくありません");
+            if (!is_array($selectedPrefectureIds)) {
+                $selectedPrefectureIds = null; // 🔥 null の場合は更新しない
+            } else {
+                $selectedPrefectureIds = array_map('intval', $selectedPrefectureIds);
             }
     
-            Log::info("✅ 変換後の selected_prefectures:", $selectedPrefectureIds);
-    
+            Log::info("✅ 変換後の selected_prefectures:", is_array($selectedPrefectureIds) ? $selectedPrefectureIds : []);
     
             // ✅ **旅程データの更新**
             $itinerary = Itinerary::findOrFail($id);
@@ -249,20 +268,26 @@ class ItineraryController extends Controller
                 'is_public' => $validated['is_public'] ?? false,
             ]);
     
-            // ✅ **中間テーブルの更新**
-            ItineraryPrefecture::where('itinerary_id', $itinerary->id)->delete();
-            foreach ($selectedPrefectureIds as $prefectureId) {
-                ItineraryPrefecture::create([
-                    'itinerary_id' => $itinerary->id,
-                    'prefecture_id' => $prefectureId,
-                ]);
+            // ✅ **destination の処理**
+            if (!is_null($selectedPrefectureIds)) { 
+                if (empty($selectedPrefectureIds)) {
+                    // 🔥 空配列の場合は `destination` を削除
+                    Log::info("🛑 都道府県データを削除");
+                    $itinerary->prefectures()->detach();
+                } else {
+                    // 🔥 変更がある場合のみ更新
+                    Log::info("✅ 都道府県データを更新:", $selectedPrefectureIds);
+                    $itinerary->prefectures()->sync($selectedPrefectureIds);
+                }
+            } else {
+                Log::info("🚫 都道府県データは変更なし");
             }
     
             DB::commit();
-            Log::info("✅ 旅程更新成功！", ['itinerary_id' => $itinerary->id]);
-        
-            return redirect()->route('home')->with('success', 'Itinerary saved successfully!');
-        
+            Log::info("✅ 旅程保存成功！", ['itinerary_id' => $itinerary->id]);
+    
+            return response()->json(['message' => 'Itinerary saved successfully'], 200);
+    
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("❌ DB 更新エラー:", ['error' => $e->getMessage()]);
@@ -270,8 +295,6 @@ class ItineraryController extends Controller
             return response()->json(['error' => 'Error updating itinerary: ' . $e->getMessage()], 500);
         }
     }
-    
-        
 
     /**
      * Display the specified resource.

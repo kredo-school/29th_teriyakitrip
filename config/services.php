@@ -40,5 +40,10 @@ return [
         'maps_api_key' => env('GOOGLE_MAPS_API_KEY'),
     ],
     
+    'google_places' => [
+        'key' => env('GOOGLE_PLACES_API_KEY', ''),
+    ],
+
+    
 
 ];

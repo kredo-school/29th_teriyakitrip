@@ -84,11 +84,13 @@ function addDestinationSelect(selectElement) {
 
         let newSelect = document.createElement("select");
         newSelect.classList.add("form-select", "select-box", "with-button");
-
+        newSelect.setAttribute("multiple", "multiple");
+        newSelect.setAttribute("name", "prefectures[]");
+        newSelect.setAttribute("id", "prefectures-select");
         let selectOptions = `<option value="">Choose your destination</option>`;
         destinations.forEach(region => {
             region.prefectures.forEach(prefecture => {
-                selectOptions += `<option value="${region.name}-${prefecture.name}">${region.name} - ${prefecture.name}</option>`;
+                selectOptions += `<option value="${prefecture.id}">${region.name} - ${prefecture.name}</option>`;
             });
         });
 

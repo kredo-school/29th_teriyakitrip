@@ -1,0 +1,94 @@
+.search-results-container {
+    display: flex;
+    flex-direction: column; /* ✅ これをrowに変更 */
+    align-items: center;
+    gap: 15px; /* ✅ 情報の間隔を広げる */
+    padding: 16px;
+    width: 100%;
+    max-height: 65vh; /* ✅ 検索結果の最大高さを設定 */
+    overflow-y: auto; /* ✅ 縦スクロール可能にする */
+    margin-top: 10px; /* 検索バーとの間隔 */
+}
+
+.search-result-card {
+    display: flex;
+    flex-direction: row; /* ✅ 横並びのレイアウト */
+    align-items: center;
+    background: #fff;
+    border-radius: 8px !important; ;
+    padding: 10px !important;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1)  !important; /* ✅ 他の影響を防ぐ */
+    transition: transform 0.2s ease-in-out;
+    width: 90%; /* ✅ 幅を広げる */
+    max-width: 600px; /* ✅ 横長のリストサイズを調整 */
+    border: 1px solid rgba(204, 204, 204, 0.8) !important; /* ✅ 各カードに薄い枠線を追加 */
+    margin-bottom: 16px !important; /* ✅ margin を確実に適用 */
+}
+
+
+.search-result-card:hover {
+    transform: scale(1.02);
+    border: 1px solid #e97911 !important; /* ✅ ホバー時にオレンジ色に変化 */
+    box-shadow: 4px 4px 12px rgba(233, 121, 17, 0.3) !important; /* ✅ ホバー時に影もオレンジに */
+}
+
+.search-result-img-container {
+    flex-shrink: 0;
+    width: 100px !important; /* ✅ 画像サイズを確実に適用 */
+    height: 100px !important;
+
+    border-radius: 5px !important;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.search-result-image {
+    width: 100px !important; /* ✅ 画像サイズを固定 */
+    height: 100px !important;
+    object-fit: cover;
+    border-radius: 8px !important; /* ✅ 画像自体にも角丸を適用 */
+}
+
+.search-result-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    padding: 5px 0;
+}
+
+.search-result-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.search-result-address {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.search-result-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto; /* ✅ ボタンを右端に配置 */
+}
+
+/* ✅ ボタンのスタイル */
+.btn-white-orange {
+    background-color: white; /* 白の背景色 */
+    color: #e97911; /* オレンジのテキスト */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.btn-white-orange:hover {
+    background-color: #e97911; /* オレンジの背景色 */
+    color: white; /* 白文字 */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+}

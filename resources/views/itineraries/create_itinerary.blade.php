@@ -15,9 +15,14 @@
     <div class="col-6">     
         @include('itineraries.create_itinerary_body', ['daysList' => $daysList])
     </div> 
+
 </div>
 <div class="col-6">
     <!-- 右側にGoogle Map -->
     <div id="map" class="google-map-wrapper"></div>
 </div>
 @endsection
+
+{{-- @push('scripts')
+<script src="{{ asset('js/create_itinerary_body.js')}}" defer></script>
+@endpush --}}

@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Create Itinerary')
@@ -27,7 +26,7 @@
                     <label class="form-label mb-0">Destination <span class="text-danger">*</span></label>
                     <div id="destination-container">
                         <div class="destination-row mt-2">
-                            <select class="form-select select-box full-width" name="prefectures[]" multiple onchange="addDestinationSelect(this)">
+                            <select class="form-select select-box full-width" name="prefectures[]" onchange="addDestinationSelect(this)">
                                 <option value="">Choose your destination</option>
                                 @foreach($regions as $region)
                                     @foreach($region->prefectures as $prefecture)

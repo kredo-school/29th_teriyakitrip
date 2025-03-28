@@ -1,0 +1,84 @@
+/* 🔹 右側の詳細エリア */
+#custom-spot-detail-container {
+    all: unset; /* ✅ すべてのスタイルをリセット */
+    position: absolute !important; /* ✅ 画面固定 */
+    top: 80px !important; /* ✅ ヘッダーの下に配置 */
+    right: 0 !important; /* ✅ 右側に固定 */
+    width: 45% !important; /* ✅ 幅を30%に調整 */
+    height: calc(100vh - 80px) !important; /* ✅ ヘッダーを除いた全高を確保 */
+    background: white !important; /* ✅ 背景を白に */
+    border-left: 2px solid #e5e5e5 !important; /* ✅ 左側に区切り線 */
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1) !important; /* ✅ 影をつける */
+    display: block !important; /* ✅ 確実に表示 */
+    overflow-y: auto !important; /* ✅ 縦スクロール可能 */
+    z-index: 99999 !important; /* ✅ 画面最前面 */
+    padding: 20px !important; /* ✅ 内側の余白 */
+}
+
+
+/* ✅ `custom-detail-card` の表示 */
+.custom-spot-detail-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.custom-detail-card {
+    width: 100%;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ✅ 画像のサイズ調整 */
+.custom-spot-detail-content img {
+    width: 100% !important; /* ✅ 横幅いっぱい */
+    max-height: 300px !important; /* ✅ 高さ制限 */
+    object-fit: cover !important; /* ✅ 縦横比を崩さない */
+    border-radius: 8px !important; /* ✅ 角丸デザイン */
+}
+
+/* ✅ テキストのスタイル */
+.custom-detail-card h2 {
+    font-size: 22px !important;
+    font-weight: bold !important;
+    margin-top: 10px !important;
+}
+
+.custom-detail-card p {
+    font-size: 16px !important;
+    color: #444 !important;
+    margin-bottom: 15px !important;
+}
+
+
+/* 🔹 詳細エリアの閉じるボタン */
+.close-detail {
+    background: red !important;
+    color: white !important;
+    padding: 5px 10px !important;
+    border: none !important;
+    cursor: pointer !important;
+    margin-top: 10px !important;
+}
+
+/* ✅ ボタンのスタイル */
+.btn-white-orange {
+    background-color: white; /* 白の背景色 */
+    color: #e97911; /* オレンジのテキスト */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.btn-white-orange:hover {
+    background-color: #e97911; /* オレンジの背景色 */
+    color: white; /* 白文字 */
+    border: 1px solid #e97911; /* オレンジのボーダー */
+}

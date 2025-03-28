@@ -1,3 +1,5 @@
+create_itinerary_show_body.js from backend part 4
+
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ JavaScript 読み込み完了");
 
@@ -10,77 +12,78 @@ document.addEventListener("DOMContentLoaded", function () {
     let backButton = document.getElementById("back-button"); // 戻るボタン取得
     window.renderItineraryBody = renderItineraryBody;
 
-    if (!dayContainer || !headerDaysContainer || !addSpotContainer) {
-        console.error(
-            "⚠️ 必須要素が不足しているため、スクリプトを停止します。"
-        );
-        return;
-    }
+    // if (!dayContainer || !headerDaysContainer || !addSpotContainer) {
+    //     console.error(
+    //         "⚠️ 必須要素が不足しているため、スクリプトを停止します。"
+    //     );
+    //     return;
+    // }
 
-    function updateBodyDays() {
-        console.log("✅ ヘッダーの変更を検知、Bodyを更新");
-
-        setTimeout(() => {
-            let dayTabs = document.querySelectorAll(".swiper-slide.day-tab");
-            if (dayTabs.length === 0) {
-                console.warn("⚠️ Dayタブが見つかりません！");
-                return;
-            }
-
-            let currentDays = document.querySelectorAll(".day-body");
-            let newDayCount = dayTabs.length;
-
-            console.log(
-                `🔍 現在の Day 数: ${currentDays.length}, ヘッダーの Day 数: ${newDayCount}`
-            );
-
-            // ✅ 既存の Day を削除（add-spot-container を消さない）
-            document
-                .querySelectorAll(".day-body")
-                .forEach((day) => day.remove());
-
-            document.querySelectorAll(".day-body").forEach((day) => day.remove());
-
-for (let i = 1; i <= newDayCount; i++) {
-    let newDayBody = document.createElement("div");
-    newDayBody.classList.add("row", "mt-2", "day-body");
-    newDayBody.dataset.day = i;
-    newDayBody.id = `day-body-${i}`;
-    newDayBody.style.display = "flex";
-
-    // ✅ `href` を JavaScript で動的に生成する！
-    let plusButtonUrl = `/itineraries/${itineraryId}/day/${i}/search`;
-
-
-    newDayBody.innerHTML = `
-        <div class="col-2">
-            <div class="day-box text-center text-light">Day ${i}</div>
-        </div>
-        <div class="plus-icon text-center">
-            <a href="${plusButtonUrl}" class="border-0 bg-transparent plus-btn">
-                <i class="fa-regular fa-square-plus"></i>
-            </a>
-        </div>
-    `;
-
-                document
-                    .getElementById("day-container")
-                    .appendChild(newDayBody);
-                console.log(`✅ Body に Day ${i} を追加`);
-            }
-
-            // ✅ 「+」ボタンのクリックイベントを適用
-            bindAddSpotEvents();
-        }, 50);
-    }
-
-    function bindAddSpotEvents() {
-        if (!addSpotContainer || !footer) {
-            console.error(
-                "⚠️ 必須要素が見つかりません。スクリプトを停止します。"
-            );
-            return;
+    function updateDates() {
+        console.log("✅ updateDates() が実行された");
+    
+        let startDate = new Date(startDateInput.value);
+        let endDate = new Date(endDateInput.value);
+    
+        if (endDate < startDate) {
+            console.warn("❌ 終了日が開始日より前になっています。修正します。");
+            endDateInput.value = startDateInput.value;
+            endDate = new Date(endDateInput.value);
         }
+    
+        fetch(`/itineraries/${itineraryId}/update-dates`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector(
+                    'meta[name="csrf-token"]'
+                ).content,
+            },
+            body: JSON.stringify({
+                start_date: startDateInput.value,
+                end_date: endDateInput.value,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("✅ fetch response:", data);
+    
+                document.getElementById("trip_days").innerText =
+                    data.days + " days";
+    
+                let daysContainer = document.querySelector(".swiper-wrapper");
+                daysContainer.innerHTML = `<div class="swiper-slide active-tab overview-margin">Overview</div>`;
+    
+                data.daysList.forEach((day, index) => {
+                    let newDayElement = document.createElement("div");
+                    newDayElement.classList.add("swiper-slide", "day-tab");
+                    newDayElement.dataset.day = index + 1;
+                    newDayElement.innerHTML = `
+                        <i class="fa-solid fa-arrow-right-arrow-left float-start mt-1"></i> 
+                        ${day}
+                        <i class="fa-solid fa-trash-can float-end mt-1 remove-day"></i>
+                    `;
+                    daysContainer.appendChild(newDayElement);
+                });
+    
+                let addDayElement = document.createElement("div");
+                addDayElement.classList.add("swiper-slide");
+                addDayElement.id = "add-day";
+                addDayElement.innerHTML = `<i class="fa-solid fa-plus"></i>`;
+                daysContainer.appendChild(addDayElement);
+    
+                console.log("✅ 全 `Days` を追加:", data.daysList);
+            })
+            .catch((error) => console.error("❌ Error:", error));
+    }
+    
+    function bindAddSpotEvents() {
+        // if (!addSpotContainer || !footer) {
+        //     console.error(
+        //         "⚠️ 必須要素が見つかりません。スクリプトを停止します。"
+        //     );
+        //     return;
+        // }
 
         console.log("🔄 `+` ボタンにイベントをバインド中...");
 
@@ -155,98 +158,65 @@ for (let i = 1; i <= newDayCount; i++) {
 
     function renderItineraryBody() {
         console.log("🔄 `renderItineraryBody()` 実行");
-
+    
         let itineraryId =
             document.getElementById("itinerary-data").dataset.itineraryId;
         if (!itineraryId) {
             console.error("❌ `itineraryId` が見つかりません！");
             return;
         }
-
+    
         let storedSpots =
-            JSON.parse(
-                localStorage.getItem(`itinerary_spots_${itineraryId}`)
-            ) || [];
+            JSON.parse(localStorage.getItem(`itinerary_spots_${itineraryId}`)) || [];
         console.log("🟢 localStorage から取得:", storedSpots);
-
+    
         document.querySelectorAll(".day-body").forEach((container) => {
-            container.innerHTML = ""; // 各 Day のコンテナをクリア
+            container.remove(); // 各 Day のコンテナを削除
         });
-
-        let spotsByDay = {};
-        storedSpots.forEach((spot) => {
-            if (!spot.day || spot.day === "undefined") {
-                console.error(
-                    "❌ `day` のデータが `undefined` です！修正してください",
-                    spot
-                );
-                return;
+    
+        // 🔹 すべての Day を取得し、空でも表示する
+        let daysList = JSON.parse(localStorage.getItem(`daysList_itinerary_${itineraryId}`)) || [1, 2, 3];
+    
+        daysList.forEach((day) => {
+            let dayContainer = document.createElement("div");
+            dayContainer.classList.add("row", "mt-2", "day-body");
+            dayContainer.dataset.day = day;
+            dayContainer.id = `day-body-${day}`;
+            dayContainer.style.display = "flex";
+    
+            dayContainer.innerHTML = `
+                <div class="col-2">
+                    <div class="day-box text-center text-light">Day ${day}</div>
+                </div>
+            `;
+    
+            document.getElementById("day-container").appendChild(dayContainer);
+            console.log(`✅ Day ${day} を追加`);
+    
+            if (storedSpots.length > 0) {
+                storedSpots.forEach((spot) => {
+                    if (spot.day == day) {
+                        let newSpotElement = document.createElement("div");
+                        newSpotElement.classList.add("itinerary-spot");
+                        newSpotElement.dataset.placeId = spot.place_id;
+    
+                        newSpotElement.innerHTML = `
+                            <div class="itinerary-spot-header">
+                                <span class="spot-name">${spot.name}</span>
+                                <p class="spot-address">${spot.address}</p>
+                            </div>
+                        `;
+    
+                        dayContainer.appendChild(newSpotElement);
+                        console.log(`✅ Day ${day} にスポット追加: ${spot.name}`);
+                    }
+                });
             }
-
-            if (!spotsByDay[spot.day]) spotsByDay[spot.day] = [];
-            spotsByDay[spot.day].push(spot);
         });
-
-        for (let day in spotsByDay) {
-            let dayContainer = document.querySelector(`#day-body-${day}`);
-            if (!dayContainer) {
-                console.warn(
-                    `⚠️ Day ${day} のコンテナが見つかりません。新規作成します`
-                );
-                let newDayBody = document.createElement("div");
-                newDayBody.classList.add("row", "mt-2", "day-body");
-                newDayBody.dataset.day = day;
-                newDayBody.id = `day-body-${day}`;
-                newDayBody.style.display = "flex";
-
-                newDayBody.innerHTML = `
-                    <div class="col-2">
-                        <div class="day-box text-center text-light">Day ${day}</div>
-                    </div>
-                `;
-
-                document
-                    .getElementById("day-container")
-                    .appendChild(newDayBody);
-                dayContainer = newDayBody;
-            }
-
-            console.log(
-                `✅ スポットを追加する Day ${day} のコンテナを取得`,
-                dayContainer
-            );
-
-            spotsByDay[day].forEach((spot, index) => {
-                let imageSection = "";
-                if (spot.image_url && spot.image_url !== "no-image") {
-                    imageSection = `<img src="${spot.image_url}" class="spot-image">`;
-                } else {
-                    imageSection = `<h3 class="no-image-text">No Image</h3>`;
-                }
-
-                let newSpotElement = document.createElement("div");
-                newSpotElement.classList.add("itinerary-spot");
-                newSpotElement.dataset.placeId = spot.place_id;
-
-                newSpotElement.innerHTML = `
-                    <div class="itinerary-spot-header" >
-                        ${imageSection}
-                        <span class="spot-name">${spot.name}</span>
-                        <div id="spots" name="spots">${spot.place_id}</div>
-                        <div id="spots_order" name="spots_order">${spot.order}</div>
-
-                        <button class="remove-spot" data-index="${index}">❌</button>
-                    </div>
-                    <p class="spot-address">${spot.address}</p>
-                `;
-
-                dayContainer.appendChild(newSpotElement);
-                console.log(`✅ Day ${day} にスポット追加: ${spot.name}`);
-            });
-        }
-
+    
         bindRemoveEvents();
     }
+    
 
     function bindRemoveEvents() {
         document.querySelectorAll(".remove-spot").forEach((button) => {
@@ -305,4 +275,24 @@ for (let i = 1; i <= newDayCount; i++) {
             }
         });
     }
+
+
+    function adjustAddSpotButton() {
+        document.querySelectorAll(".add-spot-btn").forEach((btn) => {
+            btn.style.display = "block";
+            btn.style.width = "100%";
+            btn.style.marginTop = "10px";
+        });
+    }
+
+    function updateSpotImages() {
+        document.querySelectorAll(".itinerary-spot img").forEach((img) => {
+            if (!img.src || img.src.includes("placeholder")) {
+                img.style.display = "none";
+            }
+        });
+    }
+
+    adjustAddSpotButton();
+    updateSpotImages();
 });

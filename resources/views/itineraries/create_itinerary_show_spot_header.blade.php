@@ -1,13 +1,15 @@
-<link rel="stylesheet" href="{{ asset('css/itinerary_header_styles.css') }}">
-<!-- Laravelの変数をJSで取得するためのhidden要素 -->
+@push('scripts')
+<link rel="stylesheet" href="{{ asset('css/itinerary_show_spot_header.css') }}">
+@endpush
 
 <form id="itinerary-form" method="POST" action="{{ route('itineraries.save', ['id' => $itinerary->id]) }}">
 @csrf
-<div class="container">
+<div class="container-fluid itinerary-container">
+    <div class="col-md-6 itinerary-list  wrapper">
     <div id="itinerary-data" data-itinerary-id="{{ $itinerary->id }}"></div>
     <input type="hidden" id="user-id" name="user_id" value="{{ auth()->id() }}">
     <div class="row y-0">
-        <div class="col w-50 wrapper">
+        <div class="col-md-6 w-50 wrapper">
             {{-- タイトル・編集ボタン --}}
             <div class="row align-items-center mt-2">
                 <div class="d-flex align-items-center justify-content-start w-100">
@@ -47,7 +49,7 @@
                                 <strong>-</strong> 
                                 <input type="date" name="end_date" id="end_date" value="{{ $itinerary->end_date }}" class="date-input">
                                 <br>
-                                <span id="trip_days">{{ $days }} days</span>
+                                {{-- <span id="trip_days">{{ $days }} days</span> --}}
                             </p>
                             &nbsp;<i class="fa-solid fa-calendar-days mt-3"></i>
                         </div>                        
@@ -84,12 +86,13 @@
                                             <div class="col-2 region-title px-3 py-2 text-white me-3 rounded"
                                                 style="background-color: {{ $region->color }};">
                                                 {{ $region->name }}
-                                            </div>      <!-- Display Prefecture name by Region group -->
+                                            </div>     
+                                             <!-- Display Prefecture name by Region group -->
                                             <div class="col-9 mx-2 d-flex flex-wrap">
                                                 @foreach($region->prefectures as $prefecture)
                                                     <div class="region-options"> 
                                                         <label class="form-check-label d-flex align-items-center pe-3">
-                                                            <input type="checkbox" name="selected_prefectures[]" value="{{ $prefecture->id }}" data-color="{{ $prefecture->color }}" class="form-check-input me-1" {{ in_array($prefecture->id, old('prefectures', $selectedPrefectures) ?? []) ? 'checked' : '' }}>
+                                                            {{-- <input type="checkbox" name="selected_prefectures[]" value="{{ $prefecture->id }}" data-color="{{ $prefecture->color }}" class="form-check-input me-1" {{ in_array($prefecture->id, old('prefectures', $selectedPrefectures) ?? []) ? 'checked' : '' }}> --}}
                                                             <span class="flex-grow-1">{{ $prefecture->name }}</span>
                                                         </label>
                                                     </div>
@@ -132,7 +135,7 @@
                     @foreach($daysList as $day)
                     <div class="swiper-slide day-tab" data-day="{{ $loop->index + 1 }}">
                         <i class="fa-solid fa-arrow-right-arrow-left float-start mt-1"></i> 
-                        {{ $day }}
+                        Day {{ $day }}
                         <i class="fa-solid fa-trash-can float-end mt-1 remove-day"></i>
                     </div>
                 @endforeach
@@ -147,15 +150,11 @@
                 <div class="swiper-button-next me-2"></div>     
         </div>
     </div>
-    <div class="row">
-        <div class="col-6">     
-            @include('itineraries.create_itinerary_body', ['daysList' => $daysList])
-        </div> 
+
 </div>
 </form>
 
 
 @push('scripts')
-<script src="{{ asset('js/create_itinerary_header.js')}}" defer></script>
+<script src="{{ asset('js/create_itinerary_show_spot_header.js') }}"></script>
 @endpush
-<input type="hidden" id="itinerary-id" name="itinerary_id" value="{{ $itinerary->id ?? '' }}">
