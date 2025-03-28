@@ -42,4 +42,14 @@ class RestaurantReview extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * ユーザーがそのレストランをお気に入りにしているかどうかを判定する
+     */
+    public function isFavorite() //TOSHIMI
+    {
+        return FavoriteRestaurant::where('user_id', auth()->id())
+            ->where('place_id', $this->place_id)
+            ->exists();
+    }
 }

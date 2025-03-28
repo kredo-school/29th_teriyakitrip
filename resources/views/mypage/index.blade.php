@@ -15,6 +15,7 @@
                         <div class="col-md-6 text-center">
                             <div style="position: relative; display: inline-block; width: 100%; max-width: 300px;">
                                 <img src="{{ $user->avatar ? Storage::url($user->avatar) : asset('images/default-avatar.jpeg') }}" alt="User Avatar" class="rounded-circle avatar-image" width="100" height="100" style="border: 3px solid #fff; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2;">
+                                
                                 <div style="background-color: #d3d0d0; padding: 70px 20px 20px; border-radius: 10px; margin-top: 50px; position: relative; min-height: 200px;">
                                     <h5 class="mb-3">{{ $user->user_name }}</h5>
                                     <p class="text-center" style="color: #777; font-size: 0.8em; width: 100%; margin: 0 auto; white-space: pre-wrap; word-wrap: break-word;">{!! nl2br(e($user->introduction)) !!}</p>
@@ -64,7 +65,8 @@
 
                     <div class="container toppage mt-5"> <!-- RECOMMENDED ITINERALIES SECTION -->
                         
-                        <div class="row mt-3">
+                        <div class="row">
+                            @if($itineraries->isNotEmpty())
                             @foreach ($itineraries->take(3) as $itinerary) <!-- 3件だけ表示 -->
                                 <div class="col-4 mt-2">
                                     <div class="card card-itinerary shadow-sm border-0 w-100 rounded-4 position-relative">
@@ -76,24 +78,26 @@
                                     </div>
                                 </div>
                             @endforeach
+                            <div class="text-center mt-2">
+                                <a href="#" class="btn btn-secondary more-tab-button text-white mt-3" 
+                                data-target="#itineraries"
+                                style="border-radius: 5px; padding: 0.5rem 1rem;">
+                                    MORE
+                                </a>
+                            </div>
+                            @else
+                            <p class="text-muted">No Itineraries</p>
+                            @endif
                         </div>
                         
                     </div><br>
-                    
-                    <div class="text-center mt-2">
-                        <a href="#" class="btn btn-secondary more-tab-button text-white" 
-                        data-target="#itineraries"
-                        style="border-radius: 5px; padding: 0.5rem 1rem;">
-                            MORE
-                        </a>
-                    </div>
                 </div>
 
                 <!-- Restaurant Reviews Section -->
                 <div class="mt-4 text-center">
                     <p style="color: #E97911; font-size: 3rem; font-weight: bold">Restaurant's Review</p>
                     <div class="container toppage mt-5"> <!-- RECOMMENDED RESTAURANT REVIEWS SECTION -->
-                        <div class="row mt-3">
+                        <div class="row">
                             @if($topRestaurantReviews->isNotEmpty())
                                 @foreach ($topRestaurantReviews->take(3) as $review) <!-- 最新の3件を取得 -->
                                     <div class="col-md-4"> <!-- 3カラムのレイアウト -->
@@ -111,15 +115,15 @@
                                             <div class="card-body top-review-item p-2">
                                                 <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">
                                                     {{ $review->restaurant_name ?? 'Unknown Restaurant' }} <!-- レストラン名 -->
-                                                    <span class="ms-2">
-                                                        @for ($i = 0; $i < 5; $i++)
-                                                            @if ($i < $review->rating)
-                                                                <i class="fa-solid fa-circle" style="color: #E97911;"></i>
-                                                            @else
-                                                                <i class="fa-regular fa-circle text-warning"></i>
-                                                            @endif
-                                                        @endfor
-                                                    </span>
+                                                </h6>
+                                                <h6 class="card-title mb-1 fw-bold" style="font-size: 14px; text-align: left;">
+                                                    @for ($i = 0; $i < 5; $i++)
+                                                        @if ($i < $review->rating)
+                                                            <i class="fa-solid fa-circle" style="color: #E97911;"></i>
+                                                        @else
+                                                            <i class="fa-regular fa-circle text-warning"></i>
+                                                        @endif
+                                                    @endfor
                                                 </h6>
                         
                                                 <!-- レビュー一覧 -->
@@ -138,7 +142,7 @@
                                 @endforeach
                                 <br>
                                 <div class="text-center mt-2">
-                                <a href="#" class="btn btn-secondary more-tab-button text-white" 
+                                <a href="#" class="btn btn-secondary more-tab-button text-white mt-3" 
                                 data-target="#restaurant-reviews"
                                 style="border-radius: 5px; padding: 0.5rem 1rem;">
                                     MORE
@@ -155,50 +159,22 @@
             <!-- Itineraries タブ -->
             <div class="tab-pane fade mb-5" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
                 <div class="container mt-4">
-                    
-                    {{-- <p class="text-center" style="color: #E97911; font-size: 3rem; font-weight: bold">Itinerary</p> --}}
-
-                    <!-- ここにダミーデータのまま Itinerary カードを表示 -->
                     <!-- 📜 Itineraries List -->
                     <div class="row">
-                        @php
-                            $dummyItineraries = [
-                            [
-                                'title' => '2025 Okinawa Trip1',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo1.jpeg'
-                            ],
-                            [
-                                'title' => '2025 Okinawa Trip2',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo2.jpeg'
-                            ],
-                            [
-                                'title' => '2025 Okinawa Trip3',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo3.jpeg'
-                            ],
-                            [
-                                'title' => '2025 Okinawa Trip4',
-                                'description' => '[Day 1] Shakadang Trail, Xiulin Township > Xiaozhuhuilu Trail > Changchun Shrine > Buluowan > Yan zi kou > Jiu qu dong > Baiyang Trail > 瑠璃渓民宿 >',
-                                'photo' => 'images/Okinawa_photo4.jpeg'
-                            ],
-                        ];
-                        @endphp
-
-                        @foreach ($dummyItineraries as $itinerary)
-                            <div class="col-md-12 mb-3">
+                        @if ($allItineraries->isNotEmpty())
+                        @foreach ($allItineraries as $index => $itinerary)
+                            <div class="col-md-12 mb-3 all-itinerary-item" style="display: {{ $index < 5 ? 'block' : 'none' }};">
                                 <div class="card" style="border:none; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
                                     <div class="row g-0">
-                                        <div class="col-md-3">
-                                            <img src="{{ asset($itinerary['photo']) }}" alt="Itinerary Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px 0 0 10px;">
+                                        <div class="col-md-3" style="height: 200px;">
+                                            <img src="{{ asset('storage/itineraries/images/' . $itinerary->photo) }}" alt="Itinerary Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px 0 0 10px;">
                                         </div>
                                         <div class="col-md-9">
                                             <div class="card-body">
-                                                <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{ $itinerary['title'] }}</h5>
-                                                <p class="card-text" style="font-size: 0.8rem; color: #555;">{{ $itinerary['description'] }}</p>
+                                                <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{ $itinerary->title }}</h5>
+                                                <p class="card-text" style="font-size: 0.8rem; color: #555;">{{ $itinerary->description }}</p>
                                                 <div class="text-end">
-                                                    <a href="#" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
+                                                    <a href="{{ route('itineraries.show', $itinerary->id) }}" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -206,11 +182,13 @@
                                 </div>
                             </div>
                         @endforeach
+                        <div class="text-center mt-3">
+                            <button class="btn btn-secondary" id="loadMoreAllItineraries"  style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
+                        </div><br><br>
+                        @else
+                        <p class="text-center text-muted mt-4">No Itineraries</p>
+                        @endif
                     </div>
-
-                    <div class="text-center mt-3">
-                        <button class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
-                    </div><br><br>
                     
                 </div>
             </div>
@@ -252,7 +230,7 @@
                                                 <p class="short-text review-text mb-1">{{ Str::limit($review->body, 200) }}</p>
                                                 <p class="full-text d-none review-text mb-1">{{ $review->body }}</p>
                                         
-                                                @if (Str::length($review->body) > 100)
+                                                @if (Str::length($review->body) > 200)
                                                     <span class="read-more">Read more...</span>
                                                     <span class="read-less d-none">Read less</span>
                                                 @endif
@@ -269,7 +247,7 @@
                             </div>
                         @endforeach
                         <div class="text-center mt-3">
-                            <button id="loadMore" class="btn btn-secondary" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
+                            <button id="loadMore" class="btn btn-secondary mt-3" style="border-radius: 5px; padding: 0.5rem 1rem;">MORE</button>
                         </div>        
                     @else
                         <p class="text-center text-muted mt-4">No Restaurant Review</p>
@@ -290,6 +268,6 @@
 </div>
 
 <!-- JavaScripts -->
-<script src="{{ asset('js/mypage.js') }}"></script>
+<script src="{{ asset('js/mypage_login_user.js') }}"></script>
 
 @endsection

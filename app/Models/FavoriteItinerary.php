@@ -14,10 +14,18 @@ class FavoriteItinerary extends Model
     // ✅ これを追加！created_at / updated_at を使わないよーという意味
     public $timestamps = false;
 
+    // Itineraryとのリレーション
     public function itinerary()
     {
         return $this->belongsTo(Itinerary::class);
     }
+
+    // RestaurantReviewとのリレーション
+    public function restaurantReview()
+    {
+        return $this->hasOne(\App\Models\RestaurantReview::class, 'place_id', 'place_id');
+    }
 }
+
 
 

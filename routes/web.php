@@ -24,6 +24,11 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/restaurants/search', [RestaurantSearchController::class, 'index'])->name('restaurants.search'); //naho
+Route::get('/restaurant-reviews/view', [RestaurantReviewController::class, 'show'])->name('reviews.show'); // naho
+Route::get('/my-itineraries', [MyItineraryController::class, 'index'])->name('my-itineraries.list'); //Toshimi
+Route::put('/my-itineraries/{id}/privacy', [MyItineraryController::class, 'updatePrivacy'])->name('my-itineraries.updatePrivacy');
+// ルートの修正: DELETEメソッドを使用
+Route::delete('/my-itineraries/{id}', [MyItineraryController::class, 'destroy'])->name('myitinerary.destroy');
 
 
 
@@ -199,4 +204,26 @@ Route::get('/mypage/{tab?}', [MypageController::class, 'show'])
 
 // デフォルトのホームページをMypageControllerのindexアクションに設定
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+
+Route::get('/other_users_page/{userId}', [MypageController::class, 'showOtheruserspage'])->name('mypage.show_others');
+
+Route::get('/mypage/get-restaurant-name', [MypageController::class, 'getRestaurantName']);
+
+
+Route::get('/regions/{prefecture_id}/overview', [RegionController::class, 'overview'])
+    ->name('regions.overview'); //naho
+
+Route::get('/regions/{prefecture_id}/restaurant-review', [RegionController::class, 'restaurantReview'])
+    ->name('regions.restaurant-review'); //naho
+
+Route::get('/regions/{prefecture_id}/itinerary', [RegionController::class, 'itinerary'])
+    ->name('regions.itinerary'); //naho
+
+// Toshimi - Favorite function
+Route::middleware(['auth'])->group(function () {
+    Route::post('/favorites/toggle/{placeId}', [FavoritesController::class, 'toggleFavoriteRestaurant'])
+        ->name('favorites.toggle.restaurant');
+
+    Route::post('/itinerary/favorite/{id}', [FavoritesController::class, 'toggleFavoriteItinerary'])
+        ->name('itinerary.favorite');
 });

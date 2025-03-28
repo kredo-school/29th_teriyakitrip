@@ -22,7 +22,6 @@
 </header>
 
 <div class="container mt-4">
-    {{-- <h1 class="page-title">{{ $prefecture->name }} - Restaurant Reviews</h1> --}}
     @if (count($allRestaurants) > 0)
         <div id="restaurant-list">
             @foreach ($allRestaurants as $restaurant)
@@ -45,30 +44,27 @@
                                         @if ($i <= round($restaurant->average_rate))
                                             <i class="fa-solid fa-circle review-circle orange m-1 fs-5"></i>
                                         @else
-                                        <i class="fa-solid fa-circle review-circle gray m-1 fs-5"></i>
+                                            <i class="fa-solid fa-circle review-circle gray m-1 fs-5"></i>
                                         @endif
                                     @endfor
                                 </div>
                             </div>
-                            <div class="row">
-                            @if (isset($restaurantReviews[$restaurant->place_id]))
-                                @foreach ($restaurantReviews[$restaurant->place_id] as $review)
-                                    <div class="col-md-6 review-box">
-                                        <p class="me-3"><strong>{{ $review->title }}</strong></p>
-                                        <div class="rating">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                @if ($i <= $review->rating)
-                                                    <span class="star orange">●</span>
-                                                @else
-                                                    <span class="star gray">●</span>
-                                                @endif
-                                            @endfor
-                                        </div>
-                                        <p>{{ Str::limit($review->body, 200) }}</p>
-                                    </div>
-                                @endforeach
-                            @endif
-                            </div>
+
+                            <!-- お気に入りボタン -->
+                            {{-- <form method="POST"
+                                action="{{ route('favorites.toggle.restaurant', $restaurant->place_id) }}"
+                                class="d-inline position-absolute top-0 end-0 m-2">
+                                @csrf
+                                <button type="submit" class="favorite-btn border-0 bg-transparent">
+                                    @if (App\Models\FavoriteRestaurant::where('user_id', Auth::id())->where('place_id', $restaurant->place_id)->exists())
+                                        <i class="fa-solid fa-star text-warning"></i> <!-- お気に入り登録済み -->
+                                    @else
+                                        <i class="fa-regular fa-star text-secondary"></i> <!-- お気に入り未登録 -->
+                                    @endif
+                                </button>
+                            </form> --}}
+
+                            <p class="text-muted mb-2">{{ Str::limit($restaurant->description, 100) }}</p>
                             <a href="{{ route('reviews.show', ['place_id' => $restaurant->place_id, 'photo' => urlencode($restaurant->photo)]) }}" class="btn-view-itinerary mt-3">
                                 View this Restaurant
                             </a>
@@ -77,23 +73,14 @@
                 </div>
             @endforeach
         </div>
-         <!-- 📌 MORE ボタン -->
+        <!-- 📌 MORE ボタン -->
         <div class="text-center mt-3">
             <button id="load-more-restaurant" class="btn-more">MORE</button>
         </div>
     @else
         <p class="text-center mt-5 text-muted">No Restaurant Review</p>
     @endif
-
 </div>
-
-
-
-<script>
-    
-
-</script>
-<br>
 
 <script src="{{ asset('js/region_restaurant.js') }}"></script>
 @endsection

@@ -95,4 +95,25 @@ class ReviewController extends Controller
 
         return redirect()->route('my-reviews.list')->with('success', 'Review deleted successfully.');
     }
+
+
+    private function getRestaurantPhotoFromGoogleAPI($place_id)
+{
+    return Cache::remember("restaurant_photo_{$place_id}", now()->addHours(6), function () use ($place_id) {
+        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place_id}&key={$apiKey}&language=en";
+
+        $response = Http::get($apiUrl);
+        $data = $response->json();
+
+        // 🔥 `photo_reference` を取得
+        if (isset($data['result']['photos'][0]['photo_reference'])) {
+            $photoReference = $data['result']['photos'][0]['photo_reference'];
+            return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={$photoReference}&key={$apiKey}";
+        }
+
+        // 🔥 写真がない場合のデフォルト画像
+        return asset('images/restaurants/default-restaurant.jpg');
+    });
+}
 }

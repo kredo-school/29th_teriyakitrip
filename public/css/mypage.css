@@ -67,9 +67,35 @@ padding: 0; /* 削除 */
 }
 
 /* card 形式 */
+/* カードの高さを揃えるためにフレックスレイアウトを使用 */
 .card {
 border: none; /* カードの枠線を削除 */
 }
+
+/* 各カードのコンテンツを均等に伸ばして高さを揃える */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* コンテンツが空いているスペースを埋める */
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: auto; /* ボタンが下に寄るように調整 */
+}
+
+/* ボタンの位置調整 */
+.text-end {
+  margin-top: auto; /* ボタンを下に押し込む */
+}
+
+
 
 .list-unstyled li a {
 display: block;
@@ -126,7 +152,9 @@ transform: scale(1.05) translateY(-2px);
   border: 3px solid transparent !important;
   transition: border-color 0.3s ease !important;
 }
-
+.avatar-image{
+  object-fit: cover;
+}
 .nav-item .avatar-image:hover {
   border-color: #E97911 !important;
 }
