@@ -187,7 +187,7 @@
                                                     <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{ $itinerary->title }}</h5>
                                                     <p class="card-text" style="font-size: 0.8rem; color: #555;">{{ $itinerary->description }}</p>
                                                     <div class="text-end">
-                                                        <a href="{{ route('itineraries.show', $itinerary->id) }}" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
+                                                        <a href="{{ route('mypage.show_others', $itinerary->id) }}" class="btn btn-sm" style="background-color: #f0f0f0; color: #333; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; text-decoration: none;">View this itinerary</a>
                                                     </div>
                                                 </div>
                                             </div>
